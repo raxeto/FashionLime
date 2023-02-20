@@ -1,0 +1,40 @@
+en:
+  user:
+    unauthenticated: Please sign in first
+    already_authenticated: You are already signed in
+    invalid: Invalid username or password
+    invalid_password: Invalid password
+    invalid_email: Invalid email
+    must_not_be_guest: For non-guest users only
+  activerecord:
+    models:
+      user: User
+    attributes:
+      user:
+        name: Name
+        email: E-mail
+        current_password: Current password
+        password: Password
+    errors:
+      models:
+        user:
+          blank: 'Please enter %{attribute}'
+          taken: 'A user with the same %{attribute} already exists'
+          attributes:
+            username:
+              too_short: '%{attribute} must be at least %{count} characters long'
+              too_long: '%{attribute} must be at most %{count} characters long'
+              invalid: 'Invalid username. You can use letters, digits, periods, underscore and dashes'
+              punctuation: 'Username cannot have consecutive punctuation characters'
+              prefix: 'Username cannot start with Guest, IM or GM.'
+              taken: '%{attribute} has already been taken'
+            email:
+              blank: '%{attribute} is required'
+              invalid: '%{attribute} has to be a valid e-mail address'
+            name:
+              too_long: '%{attribute} must be at most %{count} characters long'
+            password:
+              too_short: '%{attribute} must be at least %{count} characters long'
+              confirmation: "%{attribute} doesn't match confirmation"
+            current_password:
+              invalid: '%{attribute} is incorrect'

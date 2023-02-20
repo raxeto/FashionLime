@@ -1,0 +1,57 @@
+<% if @merchant.present? %>
+    <% title "Продукти на #{@merchant.name}", true %>
+    <% description "Вижте селекцията от продукти, които #{@merchant.name} представя за Вас.", true %>
+<% else %>
+    <% title "Любими продукти на #{@user.username}", true %>
+    <% description "Вижте кои са продуктите, които #{@user.username} харесва.", true %>
+<% end %>
+<% allow_search_engine_index %>
+
+<%= render :layout => 'layout', :locals => { merchant: @merchant, user: @user } do %>
+  <div id="profile-products">
+      <div class="well well-sm">
+            <%= link_to all_products_path, :class => "btn btn-link btn-all-products" do %>
+              Разгледай всички продукти на сайта<i class="fa fa-chevron-right"></i>
+            <% end %>
+      </div>  
+
+      <%= render partial: 'shared/filtered_dynamic_item_list', locals: {
+        update_url: false,
+        initial_item_count: Conf.search.initial_item_count,
+        load_more_url: @merchant.nil? ? user_profile_favorite_products_load_more_path(@user.url_path) : merchant_profile_products_load_more_path(@merchant.url_path),
+        item_type: 'products',
+        bootstrap_item_col_class: "col-xs-6 col-ms-4 col-sm-4",
+        sort_options: [
+            ['Цена - най-ниска', 'price_asc'],
+            ['Цена - най-висока', 'price_desc'],
+            ['Дата на добавяне', 'created_date'],
+            ['Рейтинг', 'rating'],
+            ['Съвпадение', 'relevance']], 
+        filters: [],
+        model_partial: @merchant.present? ? "FashionLime.Profile.merchantProduct" : "FashionLime.Profile.userProduct"
+        } %>
+
+      <div class="well well-sm">
+            <%= link_to all_products_path, :class => "btn btn-link btn-all-products" do %>
+              Разгледай всички продукти на сайта<i class="fa fa-chevron-right"></i>
+            <% end %>
+      </div>  
+      
+    </div>
+<% end %>
+
+
+<script language="JavaScript">
+    FashionLime.Common.utils.onPageLoad(function () {
+        FashionLime.Shared.dynamicFooter.setup();
+
+        FashionLime.Common.utils.onLoadFromCache(function() {
+            FashionLime.Shared.dynamicFooter.setup(); },
+                '.application-layout');
+
+        FashionLime.Common.utils.onPageUnload(function() {
+            FashionLime.Shared.dynamicFooter.clear(); },
+                '.application-layout');
+    });
+
+</script>

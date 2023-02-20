@@ -1,0 +1,23 @@
+color1:
+  id: 1
+  name: 'Шарен'
+  key:  'colorful'
+
+color2:
+  id: 2
+  name: 'Бял'
+  code: '#FFFFFF'
+  key:  'white'
+
+color3:
+  id: 3
+  name: 'Син'
+  code: '#0000FF'
+  key:  'blue'
+
+color4:
+  id: 4
+  name: 'Червен'
+  code: '#FF0000'
+  key:  'red'
+

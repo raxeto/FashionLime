@@ -1,0 +1,8 @@
+<%= form_for(@color, url: { action: action}, html: { multipart: true } ) do |f| %>
+     Name <%= f.text_field :name %>
+     Color code <%= f.text_field :code %>
+     Key <%= f.text_field :key %>
+     Order Index <%= f.number_field :order_index %>
+     Picture <%= f.file_field :picture %>
+     <%= f.submit(action.to_s.capitalize) %>
+<% end %>

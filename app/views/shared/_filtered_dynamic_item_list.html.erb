@@ -1,0 +1,105 @@
+<% compact = false if local_assigns[:compact].nil? %>
+<% colors_filter_type = 'list' if local_assigns[:colors_filter_type].nil? %>
+<% filters_info = {} if local_assigns[:filters_info].nil? %>
+<% bootstrap_item_col_class = "col-xs-6 col-ms-4 col-sm-4 col-md-3" if local_assigns[:bootstrap_item_col_class].nil? %>
+<% expanded_on_load = false if local_assigns[:expanded_on_load].nil? %>
+<% product_category_id = 0 if local_assigns[:product_category_id].nil? %>
+<% visible_control_selector = '#filtered-items' if local_assigns[:visible_control_selector].nil? %>
+<% 
+if local_assigns[:model_partial].nil? 
+  if item_type == "products"
+    model_partial = "FashionLime.Product.listItem"
+  elsif item_type == "outfits"
+    model_partial = "FashionLime.Outfit.listItem"
+  end
+end 
+%>
+
+<div id="filtered-items">
+
+  <div class="item-filters-holder">
+    <div class="item-filters">
+
+      <% if filters.size > 0 %>
+
+        <% labels = { :sizes => 'Размер', :price => 'Цена', :trademarks => 'Марка', :colors => 'Цвят', :merchants => 'Търговец', :occasions => 'Облекло', :categories => 'Категория' }%>
+        <% controls = {
+          :sizes => select_tag(:sizes, option_groups_from_collection_for_select(SizeCategory.for_product_category(product_category_id).includes(:sizes).order(:order_index), :sizes, :name, :id, :name, params[:sizes]), {:multiple => true, :class => "multiselect-combo filter fashionlime-filter"}),
+          :price => text_field_tag(:price_from, params[:price_from], :class => "form-control price-filter filter fashionlime-filter" + (compact ? " compact input-sm" : "")) + "до" + text_field_tag(:price_to, params[:price_to], :class => "form-control price-filter filter fashionlime-filter" + (compact ? " compact input-sm" : "")) + (!compact ? currency_unit : ""),
+          :trademarks => select_tag(:trademarks, options_from_collection_for_select(TradeMark.order(:name), :id, :name, params[:trademarks]), {:multiple => true, :class => "multiselect-combo multiselect-combo-searchable filter fashionlime-filter"}),
+          :colors => colors_filter_type == 'list' ?
+            render(partial: '/shared/colors_multiselect', locals: {id: 'colors', preselected_color_ids: params[:colors] || []}) :
+            render(partial: '/shared/colors_combo_multiselect', locals: {id: 'colors', preselected_color_ids: params[:colors] || [], multiple: true, classes_list: 'filter fashionlime-filter'}),
+          :merchants => select_tag(:merchants, options_from_collection_for_select(Merchant.active.order(:name), :id, :name, params[:merchants]), {:multiple => true, :class => "multiselect-combo multiselect-combo-searchable filter fashionlime-filter"}),
+          :occasions => select_tag(:occasions, options_from_collection_for_select(Occasion.order(:order_index), :id, :name, params[:occasions]), {:multiple => true, :class => "multiselect-combo filter fashionlime-filter"}),
+          :categories => select_tag(:categories, option_groups_from_collection_for_select(ProductCategory.flat_list, :children, :name_with_parent, :id, :name, params[:categories]), {:multiple => true, :class => "multiselect-combo filter fashionlime-filter"}) 
+        } %>
+
+       <%= render partial: 'shared/filters', locals: {
+          filters: filters,
+          labels:  labels,
+          filters_control: controls,
+          filters_info: filters_info,
+          compact: compact,
+          expanded_on_load: expanded_on_load,
+          setup_multiselects: false
+        } %>
+
+      <% end %>
+    </div>
+
+    <div class="row item-sort-search <%= compact ? "compact" : "" %>">
+      <div class="item-sort">
+          <%= label_tag(:sort_by, 'Подреди по', :class => compact ? " compact input-sm" : "")%>
+          <%= select_tag(:sort_by, options_for_select(sort_options, params[:sort_by] || 'relevance'), { :include_blank => false, :class => 'fashionlime-filter form-control' + (compact ? " compact input-sm" : "") }) %>
+      </div>
+      <div class="item-search">
+        <span class="input-group">
+            <span class="input-group-addon" id="search-addon"><i class="fa fa-search"></i></span>
+            <%= text_field_tag(:search_str, params[:search_str], { :class => "fashionlime-filter form-control" + (compact ? " compact input-sm" : ""), :placeholder => 'Търси', "aria-describedby" => "search-addon"}) %>
+        </span>
+      </div>
+    </div>
+
+  </div>
+
+  <div id="items-section">
+    <div id="item-list" class="row <%= "#{item_type}-list" %>">
+
+    </div>
+
+    <div id="items-footer">
+      <p class="loadMore">
+        <a href="#" class="btn btn-template-main"><i class="fa fa-chevron-down"></i>Виж още</a>
+      </p>
+    </div>
+  </div>
+
+</div>
+
+<script language="JavaScript">
+  FashionLime.Common.utils.onPageLoad(function () {
+    var filter = new FashionLime.Shared.GeneralModelFilter('<%= item_type %>', '<%= load_more_url %>', <%= update_url %>, '<%= bootstrap_item_col_class %>', '<%= model_partial %>');
+    filter.init();
+
+    multiselectOptions = {};
+    <% if compact %>
+      multiselectOptions.buttonClass = 'btn btn-sm btn-default';
+    <% end %>
+    multiselectOptions.onChange = filter.filterOrSortChangedCallback;
+    FashionLime.Shared.comboMultiselect.setupAll('fashionlime-filter', multiselectOptions);
+
+    filter.setItems('#item-list', [
+      <% self.instance_variable_get('@' + item_type).each do |i| %>
+        <%= raw i %>,
+      <% end %>
+    ], <%= initial_item_count %>);
+
+    FashionLime.Common.utils.onLoadFromCache(function() {
+      filter.loadedFromCache(); }, '<%= visible_control_selector %>');
+
+    FashionLime.Common.utils.onPageUnload(function() {
+        filter.cleanup(); }, '<%= visible_control_selector %>');
+  });
+
+</script>

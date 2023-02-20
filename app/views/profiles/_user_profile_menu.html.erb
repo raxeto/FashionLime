@@ -1,0 +1,28 @@
+<div class="panel panel-default sidebar-menu">
+
+  <div class="panel-heading">
+    <h1 class="panel-title"><%= user.username %></h1>
+  </div>
+
+  <div class="panel-body">
+     <ul class="nav nav-pills nav-stacked">
+        <li class="<%= active_class_if_section(:profile) %>">
+          <%= link_to user_profile_path(:url_path => user.url_path) do %>
+            <i class="fa fa-user"></i> Разгледай профил
+          <% end %>
+        </li>
+        <li class="<%= active_class_if_section(:profile_outfits) %>">
+            <%= link_to user_profile_outfits_path(:url_path => user.url_path) do %>
+              <%= outfit_icon %>
+              Разгледай визии
+            <% end %>
+        </li>
+        <li class="<%= active_class_if_section(:favorite_products) %>">
+          <%= link_to user_profile_favorite_products_path(:url_path => user.url_path) do %>
+              <%= product_icon %>
+              Разгледай любими продукти
+          <% end %>
+        </li>
+      </ul>
+    </div>
+</div>

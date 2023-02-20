@@ -1,0 +1,23 @@
+<div class="tabs product-tabs">
+
+  <%= render partial: 'edit_product_menu' %>
+
+  <div class="tab-content">
+    <div class="edit-product-content" id="edit">
+     
+    <%= render partial: 'form', locals: { action: :update } %>
+
+    </div>
+  </div>
+
+</div>
+
+<script language="JavaScript">
+    FashionLime.Common.utils.onPageLoad(function () {
+      <% if @product.errors.any? && @product.errors[:article_deletition] %>
+        <% @product.errors[:article_deletition].each do |msg| %>
+          FashionLime.Common.notifications.alert('<%= msg %>');
+        <% end %>
+      <% end %>
+    });
+</script>

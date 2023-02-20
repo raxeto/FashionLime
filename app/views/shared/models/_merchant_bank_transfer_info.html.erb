@@ -1,0 +1,34 @@
+<div class="payment-info-container bank-transfer-payment">
+  
+  <% if show_title %>
+    <div class="payment-type-title">
+      Банков превод
+    </div>
+  <% end %>
+
+  <div>
+    Име на получателя: <strong><%= info.company_name %></strong>
+  </div>
+
+  <div>
+    Основание за превод - информация за получателя: <strong> Поръчка номер <%= payment_code %></strong>
+  </div>
+
+  <div>
+    Име на банката на получателя: <strong><%= info.bank_name %></strong>
+  </div>
+
+  <div>
+    IBAN на получателя: <strong><%= info.iban %></strong>
+  </div>
+
+  <div>
+    BIC на банката получател: <strong><%= info.bic_code %></strong>
+  </div>
+
+  <div>
+    Валута: <strong><%= info.currency %></strong>
+  </div>
+</div>
+
+

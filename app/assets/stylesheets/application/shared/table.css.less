@@ -1,0 +1,44 @@
+  table {
+      thead > tr > th {
+      vertical-align: middle !important;
+    }
+
+    &.centered {
+      td {
+        vertical-align: middle !important;
+      }
+    }
+
+    thead.centered-header {
+      tr {
+          td, th {
+          text-align: center;
+        }
+      }
+    }
+
+    tr {
+      td, th {
+        &.right-aligned {
+          text-align: right;
+          input {
+            text-align: right;
+          }
+        }
+      }
+    }
+
+    tbody {
+      tr {
+        td {
+          input.range         { display: inline-block; }
+          input.numeric       { display: inline-block; text-align: right; }
+          input.numeric-short { width: 50px  !important; text-align: right; }
+          input.numeric-long  { width: 100px !important; text-align: right; }
+          input.date          { width: 100px !important; text-align: right; }
+          select.combo        { width: 100px !important; text-align: right; }
+        }
+        td.word-wrapped       { word-wrap: break-word; }
+      }
+    }
+  }

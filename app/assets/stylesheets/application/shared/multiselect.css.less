@@ -1,0 +1,30 @@
+@import "/template/less/modules/variables-custom.css.less";
+
+.multiselect-container {
+  &.dropdown-menu {
+    li a {
+        padding: 0px;
+    }
+  }
+}
+
+button.multiselect.dropdown-toggle {
+  .multiselect-selected-text {
+    font-weight: normal;
+    text-transform: none;
+  }
+  b.caret {
+    position: absolute;
+    right: 4px;
+    top: 48%;
+  }
+}
+
+.multiselect-combo {
+    display: none;
+}
+
+
+li.multiselect-combo-selected a {
+    background-color: @gray-lighter;
+}

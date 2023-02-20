@@ -1,0 +1,22 @@
+bg:
+  enums:
+    user:
+      status:
+        active: Активен
+        not_active: Неактивен
+  user:
+    invalid_password: Невалидна парола
+    invalid_email: Невалиден имейл
+    must_not_be_guest: Само за регистрирани потребители
+    guest_username_prefix: не може да започва с "guest"
+    guests_cant_sign_in: Не може да влезнете като гост
+  activerecord:
+    models:
+      user: Потребител
+    attributes:
+      user:
+        name: Име
+        email: Имейл
+        username: Потребителско име
+        reset_password_token: Токенът за смяна на парола
+        current_password: Текуща парола

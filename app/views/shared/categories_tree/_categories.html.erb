@@ -1,0 +1,22 @@
+ <ul class="nav nav-pills nav-stacked">
+  <% categories.each do |c| %>
+
+    <li class="<%= selected_category.present? && c.id == selected_category.id ? "active" : "" %>">
+       <% expand = expand_category? c, selected_category %>
+      
+       <%= link_to category_path(c) do %>
+        <% if !expand %>
+          <i class="fa fa-chevron-right" aria-hidden="true"></i> 
+        <% elsif has_children? c %>
+          <i class="fa fa-chevron-down" aria-hidden="true"></i>
+        <% end %>
+
+          <%= category_text(c) %>
+       <% end %>
+
+        <% if expand && has_children?(c) %>
+          <%= render partial: 'shared/categories_tree/categories', locals: { selected_category: selected_category, categories: category_children(c) } %>
+        <% end %>
+    </li>
+  <% end %>
+</ul>

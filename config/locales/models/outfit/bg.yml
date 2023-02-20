@@ -1,0 +1,6 @@
+bg:
+  activerecord:
+    models:
+      outfit:
+        one: Визия
+        other: Визии

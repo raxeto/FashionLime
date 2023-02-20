@@ -1,0 +1,284 @@
+<div id="outfit-form" class="col-xs-12">
+
+    <%= render partial: 'outfits/product_pictures' %>
+  
+    <% action_text = if action == :create then "Създай" else "Запази" end %>
+
+    <div class="modal fade" id="outfit-attrubutes-modal" tabindex="-1" role="dialog" aria-labelledby="outfit-attributes" aria-hidden="true">
+      <div class="modal-dialog modal-sm">
+
+          <div class="modal-content">
+              <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                  <h5 class="modal-title" id="outfit-attributes"><%= if action == :create then "Създаване " else "Редактиране " end %> на визия</h5>
+              </div>
+              <div class="modal-body">
+                
+                <%= bootstrap_form_for(@outfit, url: { action: action}, html: { id: 'outfit_form' }) do |f| %>
+
+                    <%= f.text_field :name, :label => "Заглавие", :help => I18n.t('errors.messages.blank') %>
+                    
+                    <div class="form-group">
+                      <%= f.label :occasion_ids, "Тип облекло", :class => "control-label required" %>
+                      <%= f.collection_select_without_bootstrap(:occasion_ids,
+                            Occasion.all.order("order_index"),
+                            :id, :name,
+                            {:selected => @outfit.occasion_ids},
+                            {:multiple => true, :class => "multiselect-combo occasions"}) %>
+                      <span class="blank-occasions-error help-block">
+                        <%= I18n.t('errors.messages.blank') %>
+                      </span>
+                      <span class="max-occasions-error help-block">
+                        <%= I18n.t('activerecord.errors.models.outfit.attributes.occasion_ids', :max_count => Conf.occasions.relation_max_count) %>
+                      </span>
+                    </div>
+
+                    <%= f.hidden_field :outfit_category_id, { :value => 1 } %>
+                   
+                    <div class="form-group text-center">
+                      <%= f.submit action_text, :class => "btn btn-template-primary" %>    
+                    </div>
+                    <!-- hidden fields to support editing of products -->
+
+                    <%= f.hidden_field :image_filter %>
+                    <%= f.hidden_field :serialized_json %>
+                    <%= hidden_field_tag :serialized_svg %>
+                    <div id="outfit_product_pictures_container">
+                      <%= f.fields_for :outfit_product_pictures do |p|%>
+                        <span class="outfit_product_picture_container">
+                          <%= p.hidden_field(:product_picture_id, :class=>'product_picture_id') %>
+                          <%= p.hidden_field(:product_id, { :value => p.object.product_picture.try(:product_id) || 0, :class=> 'product_id'}) %>
+                          <%= p.hidden_field(:color_id, { :value => p.object.product_picture.try(:color_id) || (p.object.product_picture.nil? ? 0 : p.object.product_picture.product.single_color.try(:id)) || 0, :class=>'color_id' }) %>
+                          <%= p.hidden_field(:instances_count, :class=>'instances_count') %>
+                          <% if p.object.id == -1 %>
+                            <%= hidden_field_tag("template_row_index", p.options[:child_index]) %>
+                          <% end %>
+                        </span>
+                        <% if p.object.id == -1 %>
+                          <%= hidden_field_tag("_newly_added_records", 0) %>
+                          <%= hidden_field_tag("_existing_records", @outfit.outfit_product_pictures.size - 1) %>
+                        <% end %>
+                        <%= p.hidden_field(:id) %>
+                      <% end %>
+                    </div>
+
+                    <!-- end hidden fields -->
+
+                  <% end %>
+
+              </div>
+          </div>
+      </div>
+    </div> 
+
+    <% if @outfit.errors[:offensive_words_content].present? %>
+      <%= alert_tag :danger, @outfit.errors[:offensive_words_content].join(', ') %>
+    <% end %>
+
+    <div class="row">
+
+      <div class="col-md-6 col-md-push-6 filtered-items-col">
+            <a href="#filtred-products-panel" id="show-filtred-products" class="hidden-md hidden-lg" data-toggle="collapse">
+                <i class="fa fa-plus-circle" aria-hidden="true"></i>Добавяне на продукти
+            </a>
+            <div id="filtred-products-panel" class="collapse">
+              <%= render partial: 'shared/filtered_dynamic_item_list', locals: {
+                  initial_item_count: Conf.search.initial_item_count,
+                  update_url: false,
+                  load_more_url: load_more_products_outfits_path,
+                  item_type: 'products',
+                  compact: true,
+                  sort_options: [
+                  ['Цена - най-ниска', 'price_asc'],
+                  ['Цена - най-висока', 'price_desc'],
+                  ['Дата на добавяне', 'created_date'],
+                  ['Рейтинг', 'rating'],
+                  ['Съвпадение', 'relevance']], 
+                  filters: [:categories, :price, :colors, :merchants], 
+                  colors_filter_type: 'combo',
+                  bootstrap_item_col_class: 'col-xs-4 col-sm-3',
+                  model_partial: "FashionLime.Outfit.product",
+                  visible_control_selector: "#outfit-form"
+              } %>
+            </div>
+      </div>
+
+      <div class="col-md-6 col-md-pull-6 outfit-setup-col">
+          <div class="row">
+            <div class="col-sm-12">
+              <a href="#products_collection_panel" id="show_product_info" data-toggle="collapse">
+                  <i class="fa fa-info-circle" aria-hidden="true"></i>Добавени продукти
+              </a>
+              <div id="products_collection_panel" class="collapse">
+                <div class="table-responsive">
+                  <table class="table" id="outfit_products_table">
+                      <tfoot>
+                          <tr>
+                              <th colspan="4">Общо</th>
+                              <th class="right-aligned"><span id="outfit_total"></span></th>
+                          </tr>
+                      </tfoot>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+              <div class="col-sm-12">
+
+                <div class="btn-toolbar" id="canvas_functions_toolbar" role="toolbar">
+                  <div class="btn-group btn-rounded-group group-functions" role="group">
+                    <button type="button" class="btn btn-default" title="Добави текст" id="add_text_element_button">
+                      <i class="fa fa-pencil-square-o"></i>Текст
+                    </button>
+                    <button type="button" class="btn btn-default add_decoration_button" data-decoration-category="frame" title="Добави рамки">
+                      <i class="fa fa-square-o" aria-hidden="true"></i>Рамки
+                    </button>
+                    <button type="button" class="btn btn-default add_decoration_button" data-decoration-category="doodle" title="Добави завъртулки">
+                      <i class="fa fa-paint-brush" aria-hidden="true"></i>Завъртулки
+                    </button>
+                    <button type="button" class="btn btn-default add_decoration_button" data-decoration-category="graphic" title="Добави графични елементи">
+                      <i class="fa fa-sun-o" aria-hidden="true"></i>Графики
+                    </button>
+                    <button type="button" class="btn btn-default add_decoration_button" data-decoration-category="image" title="Добави лартинки">
+                      <i class="fa fa-picture-o" aria-hidden="true"></i>Картинки
+                    </button>
+                  </div>
+
+                  <div class="btn-group btn-rounded-group group-functions" role="group">
+                    <button type="button" class="btn btn-default" title="Изтрий текущо избрания елемент"  id="remove_element_button">
+                      <i class="fa fa-times"></i>Изтрий
+                    </button>
+                    <button type="button" class="btn btn-default" title="Започни отначало" id="clear_all_elements_button">
+                      <i class="fa fa-refresh"></i>Изчисти
+                    </button>
+                  </div>
+
+                   <div class="btn-group pull-right" role="group">
+                      <button type="button" class="btn btn-template-primary" id="btn-save">
+                        <%= action_text %>
+                      </button>
+                  </div>
+                </div>
+            </div>
+          </div>
+
+          <div id="text_panel" class="features-panel options-panel panel panel-default" style="display: none;">
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-sm-5">
+                    <input type="text" id="element_text_input" placeholder="Въведете текст" class="text_element_setting form-control"/>
+                </div>
+                <div class="col-sm-7">
+                  <div class="row text-settings">
+                    <div class="col-xs-2">
+                      <%= hidden_field_tag("element_text_color", nil,
+                          :class => "text_element_setting form-control") 
+                      %>
+                    </div>
+                    <div class="col-xs-6 text-settings-font-container">
+                      <%= select_tag("element_text_font_family", 
+                        options_for_select(Conf.outfit.text_font_families.sort_by { |f| f.second }.map { |f| [f.second, f.second, { "data-font-family": f.first }] }), 
+                          :class => "combo-font-families text_element_setting form-control") 
+                      %>
+                    </div>
+                    <div class="col-xs-4 text-settings-font-settings">
+                      <button type="button" id="element_text_bold" class="btn btn-default btn-bold">B</button>
+                      <button type="button" id="element_text_italic" class="btn btn-default btn-italic">I</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-12 action-buttons">
+                  <a title="Добави текст" id="add_text_ok_button"><i class="fa fa-check-circle"></i></a>
+                  <a title="Отказ" id="add_text_cancel_button"><i class="fa fa-times"></i></a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <% OutfitDecoration.categories.keys.each do |c| %>
+            <div class="row features-panel decorations-category-<%= c %>"  style="display: none;">
+              <div class="col-sm-12">
+                 <%= render partial: '/outfits/outfit_decorations', locals: { 
+                    category: c
+                  } %>
+              </div>
+            </div>
+          <% end %>
+
+          <div id="decorations-color" class="options-panel panel panel-default" style="display: none;">
+            <div class="panel-body">
+              <div class="row">
+                  <div class="col-xs-4 col-sm-3 col-md-4 col-lg-3">
+                    <label for="element_decoration_color">Промяна на цвят</label>
+                  </div>
+                  <div class="col-xs-1">
+                    <%= hidden_field_tag("element_decoration_color", nil) %>
+                  </div>
+              </div>
+
+              <div class="action-buttons">
+                  <a title="Приложи цвета" id="add_decoration_color_ok_button"><i class="fa fa-check-circle"></i></a>
+                  <a title="Отказ" id="add_decoration_color_cancel_button"><i class="fa fa-times"></i></a>
+              </div>
+            </div>
+          </div>
+            
+          <div class="row">
+            <div class="col-sm-12">
+              <div id="images_panel" class="form-inline features-panel" style="display: none;">
+                <%= select_tag("image_filters_list", options_from_collection_for_select(Outfit.image_filters.collect { |f| [ f.first, f.first ] }, :first, :first), :include_blank => 'Без ефект', :class => "form-control") %>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-12" id="canvas_container">
+              <span id="outfit_saving_prompt" class="center-vertical center-horizontal">Запаметяване . . .</span>
+              <canvas id="outfit_canvas">
+              </canvas>
+            </div>
+            <div class="col-sm-12 fonts-preloading-panel">
+              <% Conf.outfit.text_font_families.each do |ff| %>
+                <div style="font-family: '<%= ff.second %>';">Зареждане на шрифтове/Fonts loading/123</div>
+              <% end %>
+              <div class="font-cover">&nbsp;</div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+</div>
+
+<script language="JavaScript">
+  FashionLime.Common.utils.onPageLoad(function() {
+    var productsCollection = new FashionLime.Outfit.Products();
+
+    FashionLime.Shared.comboMultiselect.setupAll('occasions');
+   
+    var comboTextFonts = FashionLime.Shared.combo.setupSingle('element_text_font_family');
+    var colorSwatches = <%= raw Conf.outfit.text_colors.map { |c| c.first } %>;
+
+    var form = new FashionLime.Outfit.Form(productsCollection, <%= Conf.occasions.relation_max_count %>, <%= image_width(@outfit.picture,  :original) %>, <%= @outfit.errors.any? %>, comboTextFonts, colorSwatches);
+    form.init();
+
+    productsCollection.addMany(
+      <%= raw items_array @outfit.products_thumb_data(from_db: false).map(&:to_json) %>
+    );
+
+    FashionLime.Common.utils.onLoadFromCache(function() {
+      form.initFromCache();
+    }, '#outfit-form');
+
+    FashionLime.Common.utils.onPageUnload(function() {
+      form.cleanup();
+    }, '#outfit-form');
+
+  });
+
+</script>

@@ -1,0 +1,17 @@
+<p>
+Здравейте <%= "#{@contact_inquiry.name}" %>,
+</p>
+<p>
+<%= @contact_inquiry.reply_message %>
+</p>
+
+<p>
+  Получавате това съобщение във връзка със запитване номер <strong># <%= @contact_inquiry.id %></strong> направено на <%= date_time_to_s(@contact_inquiry.created_at) %>.
+  <br/>
+  Относно: <%= @contact_inquiry.subject %>
+  <br/>
+  Съобщение: <%= @contact_inquiry.message %>
+</p>
+
+<%= render partial: '/shared/mailer/user_email_signature' %>
+

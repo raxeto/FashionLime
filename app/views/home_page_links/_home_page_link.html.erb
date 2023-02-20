@@ -1,0 +1,24 @@
+<div class="home-page-link">
+  <%= link_to home_page_link.url_path do %>
+    <%= home_page_link_image home_page_link, :medium, :class => "img-responsive img-center" %>
+  <% end %>
+
+  <div class="info">
+    <div class="text">
+      <p class="title">
+        <%= link_to home_page_link.url_path do %>
+          <%= home_page_link.title %>
+        <% end %>
+      </p>
+      <p class="subtitle">
+        <%= home_page_link.subtitle %>
+      </p>
+    </div>
+
+    <div>
+        <%= link_to home_page_link.url_path, :class => "btn btn-template-main" do %>
+             Разгледай
+        <% end %>
+    </div>
+  </div>
+</div>

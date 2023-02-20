@@ -1,0 +1,78 @@
+<%= render partial: 'shared/report', locals: { 
+  form_id: "reportOrdersForm",
+  report_path: merchant_reports_generate_orders_path,
+  filters: [ :order_date, :order_status, :product_name, :product_size, :user, :location],
+  filter_labels:  { :order_date => 'Дата', :order_status => 'Статус поръчка', :product_name => 'Продукт', :product_size => 'Размер', :user => 'Потребител', :location => 'Нас.място'},
+  filters_control: {
+    :order_date => "#{text_field_tag("selected_filters[order_date][date_from]", !params["selected_filters"].nil? && !params["selected_filters"]["order_date"].nil? ? params["selected_filters"]["order_date"]["date_from"] : "", :class => "form-control filter date-filter")} до #{text_field_tag("selected_filters[order_date][date_to]", !params["selected_filters"].nil? && !params["selected_filters"]["order_date"].nil? ? params["selected_filters"]["order_date"]["date_to"] : "", :class => "form-control filter date-filter")}".html_safe,
+    :order_status => collection_select("selected_filters", :order_status, MerchantOrder.statuses.collect { |s| [s.second, MerchantOrder.statuses_i18n[s.first]]}, :first, :last, {:selected => !params[:selected_filters].nil? ? params[:selected_filters][:order_status] : ""}, {:multiple => true, :class => "form-control multiselect-combo filter"}),
+    :product_name => text_field_tag("selected_filters[product_name]", !params[:selected_filters].nil? ? params[:selected_filters][:product_name] : "", :class => "form-control filter"),
+    :product_size => select_tag("selected_filters[product_size]", option_groups_from_collection_for_select(SizeCategory.includes(:sizes).order(:order_index), :sizes, :name, :id, :name, !params[:selected_filters].nil? ? params[:selected_filters][:product_size] : ""), {:multiple => true, :class => "multiselect-combo filter"}),
+    :user => text_field_tag("selected_filters[user]", !params[:selected_filters].nil? ? params[:selected_filters][:user] : "", :class => "form-control filter"),
+    :location => text_field_tag("selected_filters[location]", !params[:selected_filters].nil? ? params[:selected_filters][:location] : "", :class => "form-control filter")
+  },
+  fields: {
+      :order_fields => { 
+        :title => 'Поръчка', :fields => { 
+          :order_number => 'Номер поръчка', 
+          :status => 'Статус', 
+          :shipment => 'Доставка', 
+          :merchant_payment_type_id => 'ID начин на плащане',
+          :payment_type => 'Плащане', 
+          :payment_code => 'Код за плащане',
+          :date => 'Дата', 
+          :month => 'Месец', 
+          :quarter => 'Тримесечие', 
+          :year => 'Година', 
+          :day => 'Ден', 
+          :order_return_number => 'Номер заявка за връщане',
+          :order_return_type => 'Тип заявка'
+        }
+      },
+      :model_fields => { 
+        :title => 'Продукт', :fields => { 
+          :product_name => 'Име продукт', 
+          :product_id => 'ID продукт', 
+          :size => 'Размер', 
+          :color => 'Цвят', 
+          :trade_mark => 'Търговска марка'
+        }
+      },
+      :user_fields => { 
+        :title => 'Потребител', :fields => { 
+          :username => 'Потребителско име', 
+          :user_first_name => 'Име', 
+          :user_last_name => 'Фамилия', 
+          :location => 'Населено място', 
+          :email => 'Имейл', 
+          :phone => 'Телефон',
+          :issue_invoice => 'Фактура'
+        }
+      }
+  },
+  sumators:  { 
+    :order_total => 'Сума без отстъпка', 
+    :order_discount => 'Отстъпка в лева', 
+    :order_total_with_discount => 'Сума с отстъпка', 
+    :order_shipment_total => 'Сума доставка', 
+    :order_returned_total_with_discount => 'Сума върнати продукти', 
+    :order_products_count_total => 'Брой продукти',
+    :order_products_count_ordered => 'Брой поръчани продукти',
+    :order_products_count_to_return => 'Брой очакващи връщане продукти',
+    :order_products_count_returned => 'Брой върнати продукти'
+  },
+  field_types: { 
+    :date => :date,
+    :merchant_payment_type_id => :integer,
+    :product_id => :integer, 
+    :order_total => :float, 
+    :order_discount => :float, 
+    :order_total_with_discount => :float, 
+    :order_shipment_total => :float,
+    :order_returned_total_with_discount => :float, 
+    :order_products_count_total => :integer,
+    :order_products_count_ordered => :integer,
+    :order_products_count_to_return => :integer,
+    :order_products_count_returned => :integer
+  }
+} %>

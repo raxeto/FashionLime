@@ -1,0 +1,13 @@
+bg:
+  merchant_shipment:
+    business_days:
+      one: работен ден
+      other: работни дни
+    week_days:
+      one: ден
+      other: дни
+  enums:
+    merchant_shipment:
+      period_type:
+        business_days: работни дни
+        week_days: почивни и работни дни

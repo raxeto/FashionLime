@@ -1,0 +1,58 @@
+<div class="table-responsive">
+  <table class="table centered">
+    <thead class="centered-header">
+      <tr>
+        <th>Продукт</th>
+        <th>Количество</th>
+        <th>Цена</th>
+        <th>Общо</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% min_total = 0.0 %>
+      <% max_total = 0.0 %>
+      <% @outfit.products_thumb_data.each do |p| %>
+        <tr>
+          <td>
+              <%= link_to product_path(p[:product]), :target => "_blank" do %>
+                <b><%= p[:product].name %></b>
+              <% end %>
+              от
+               <%= link_to merchant_profile_path(:url_path => p[:product].merchant.url_path) do %>
+                  <%= p[:product].merchant.name %>
+               <% end %>
+              <br/>
+              <% unless p[:color].nil? %>
+                Цвят: <%= p[:color].name %> 
+              <% end %>
+          </td>
+          <% if !p[:product].is_visible? %>
+            <td colspan="3"> Продуктът е недостъпен.</td>
+          <% elsif !p[:product].available? %>
+            <td colspan="3"> Продуктът не е наличен.</td>
+          <% elsif p[:product].not_active? %>
+            <td colspan="3"> Продуктът не е пуснат в продажба.</td>
+          <% else %>
+            <% min_total += (p[:min_price] * p[:qty]) %>
+            <% max_total += (p[:max_price] * p[:qty]) %>
+            <td class="right-aligned"> <%= p[:qty] %> </td>
+            <td class="right-aligned"> <%= numbers_to_currency_range(p[:min_price], p[:max_price]) %> </td>
+            <td class="right-aligned"> <%= numbers_to_currency_range((p[:min_price] * p[:qty]).round(2), (p[:max_price] * p[:qty]).round(2)) %></td>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+    <tfoot>
+    <tr>
+      <th colspan="3">
+        Общо
+      </th>
+      <th class="right-aligned">
+       <%= numbers_to_currency_range(min_total, max_total) %>
+      </th>
+    </tr>
+    </tfoot>
+  </table>
+</div>
+

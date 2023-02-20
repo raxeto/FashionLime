@@ -1,0 +1,41 @@
+<%= form_for(@campaign, url: { action: :create_outfits}, html: { method: :post, multipart: true, id: "admin-campaign-new-outfits" } ) do |f| %>
+    <div>
+        <%= label_tag(:selected_outfits, "Визии") %> <br/>
+        <%= text_field_tag(:selected_outfits, @selected_outfits, :class => "selected-campaign-ids") %>
+        <span> Разделени със запетая ID-та на визии. </span>
+    </div>
+
+    <%= f.submit("Добави визии") %>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6">
+                <h3>Визии</h3>
+                <%= render partial: 'shared/filtered_dynamic_item_list', locals: {
+                        initial_item_count: Conf.search.initial_item_count,
+                        update_url: true,
+                        load_more_url: admin_campaign_load_more_outfits_path,
+                        item_type: 'outfits',
+                        sort_options: [ ['Дата на добавяне', 'created_date'], ['Рейтинг', 'rating'], ['Съвпадение', 'relevance']],
+                        filters: [:categories, :price, :trademarks, :merchants],
+                        filters_info: { :categories => 'Ако филтърът е попълнен, поне един от продуктите във визията ще е от избраните категории.'},
+                        bootstrap_item_col_class: "col-sm-6 campaign-object-col",
+                        model_partial: "FashionLime.Admin.Campaign.outfit"
+                    } %>
+              
+            </div>
+            <div class="col-sm-6">
+                <h3>Избрани визии</h3>
+                <div class="row selected-campaign-objects-list">
+                </div>
+            </div>
+        </div>
+    </div>
+<% end %>
+
+
+<script language="JavaScript">
+  FashionLime.Common.utils.onPageLoad(function() {
+    FashionLime.Admin.Campaign.addObjects.setup("admin-campaign-new-outfits");
+  });
+</script>

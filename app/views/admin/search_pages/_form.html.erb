@@ -1,0 +1,20 @@
+<%= form_for(@search_page, url: { action: action}, html: { multipart: true } ) do |f| %>
+     Title <%= f.text_field :title %>
+     <br>
+     Description <%= f.text_area :description %>
+     <br>
+     Meta Title <%= f.text_field :meta_title %>
+     <br>
+     Meta Description <%= f.text_area :meta_description %>
+     <br>
+     Category   <%= f.collection_select(:category, SearchPage.categories, :first, :first) %>
+     <br>
+     OG Image <%= f.file_field :og_image %>
+     <br>
+     OG Image Preview
+        <% if f.object.og_image.present? %>
+          <%= image_tag f.object.og_image.url(:original) %> 
+        <% end %>
+     <br>
+     <%= f.submit(action.to_s.capitalize) %>
+<% end %>

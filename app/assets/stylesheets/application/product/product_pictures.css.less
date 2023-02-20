@@ -1,0 +1,34 @@
+@import "/template/less/modules/variables-custom.css.less";
+
+.sp-product-pictures {
+  margin: 0 auto;
+  max-width: 500px;
+}
+
+.sp-wrap {
+  float: none;
+  background: #FFFFFF;
+  width: 100%; // Fix for IE where the plugin overlap the next column
+  max-width: 500px;
+  margin: 0;
+}
+
+.sp-zoom {
+  img {
+    background: #FFFFFF;
+  }
+}
+
+.sp-lightbox {
+  background: rgba(248, 248, 248, .9);
+  z-index: @zindex-picture-viewer;
+ 
+  // iPhone fix http://stackoverflow.com/questions/3705937/document-click-not-working-correctly-on-iphone-jquery
+  cursor: pointer;
+
+  img {
+    background: #FFFFFF;
+    border: 2px solid @gray-lighter;
+  }
+}
+

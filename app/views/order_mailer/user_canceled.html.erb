@@ -1,0 +1,23 @@
+<p>
+Здравейте <%= "#{@merchant_order.order.user_first_name} #{@merchant_order.order.user_last_name}" %>,
+</p>
+
+<p>
+Съжаляваме, но поръчката Ви с номер <%= @merchant_order.number %> за покупка на:
+</p>
+
+<%= render partial: 'order_details', locals: { :merchant_order => @merchant_order } %>
+
+<p>
+беше отказана от търговеца.
+</p>
+
+<p>
+  Причина за отказа: <%= @merchant_order.cancellation_note %>
+</p>
+
+<p>
+  От екипа на Fashion Lime се извиняваме за причиненото неудобство. Надяваме се, че за в бъдеще ще продължите да пазарувате от сайта ни.
+</p>
+
+<%= render partial: '/shared/mailer/user_email_signature' %>

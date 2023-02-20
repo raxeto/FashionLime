@@ -1,0 +1,30 @@
+1. Capistrano:
+  - Опиши всяка машина във въпросния config/deploy/<target>.rb
+  - направи един успешен deploy на машините
+2. MySQL setup
+  - comment out the bind-address and skip-networking lines in /etc/mysql/my.conf
+  - restart the mysql daemon
+  - open port 3306 (if on amazon or any other cloud config, you may need to allow incoming traffic to it)
+  - run the following in the mysql client:
+    CREATE USER 'root'@'<remote IP>' IDENTIFIED BY '<root pass>';
+    GRANT ALL PRIVILEGES ON *.* TO 'root'@'<remote IP>' WITH GRANT OPTION;
+3. elasticsearch
+  - runs on one of the machines (should be the main one)
+  - open up port 9200 for outside connections from the other hosts
+  - edit config/initializers/elasticsearch.yml for the desired env
+  - edit /etc/elasticsearch/elasticsearch.yml bind_host to 0.0.0.0
+  - sudo service elasticsearch restart
+4. additional puma servers
+  - bind to a specific port (bind 'tcp://127.0.0.1:9292')
+  - open that port to the public (amazon console)
+  list those servers in the web server's nginx.conf
+5. NOT TESTED!!! - paperclip uploading images should work!
+
+
+
+
+
+Tips:
+* watch out for <! directives in the nginx conf
+* careful for the puma config
+* careful what your puma environment is

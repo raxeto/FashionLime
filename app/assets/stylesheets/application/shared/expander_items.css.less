@@ -1,0 +1,99 @@
+@import "/template/less/modules/variables-custom.css.less";
+
+.expander-items-container {
+  .items-label {
+    color: white;
+    background: @expander-item-color;
+    border-radius: 0px;
+  }
+
+  .items-header {
+    outline: none;
+    color: rgb(85, 85, 85);
+    font-weight: bold;
+    letter-spacing: 0.08em;
+    font-size: 13px;
+    text-transform: uppercase;
+
+    &.compact {
+      letter-spacing: 0.00em;
+      font-size: 12px;
+    }
+    &.items-header-xs {
+      margin-bottom: 10px;
+      margin-top: 30px;
+    }
+
+    div.popover {
+      font-weight: normal;
+      letter-spacing: normal;
+      text-transform: none;
+    }
+    .item-info {
+      color: @brand-primary;
+    }
+
+    .item-header {
+      display: block;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    div {
+      border-right: 1px solid @expander-item-color;
+      &:last-child {
+        border: 0px;
+      }
+      i {
+        &.expand-icon {
+          position: absolute;
+          right: 5px;
+          display: none;
+        }
+        &.collapse-icon {
+          position: absolute;
+          right: 5px;
+          display: inline;
+        }
+      }
+    }
+    &.collapsed {
+      div {
+        i.expand-icon {
+          display: inline;
+        }
+        i.collapse-icon {
+          display: none;
+        }
+      }
+    }
+  }
+
+  .items-inner-container {
+    @media (min-width: @grid-float-breakpoint) { 
+      margin-top: 15px;
+    }
+    @media (max-width: @grid-float-breakpoint-max) { 
+      margin-top: -15px;
+    }
+    margin-bottom: 15px;
+  }
+
+  .items-footer {
+    .items-footer-container {
+      border-top: 1px solid @expander-item-color;
+    }
+
+    button {
+      float: right;
+      margin-top: 10px;
+      margin-left: 10px;
+    }
+  }
+
+  .box {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+  }
+}

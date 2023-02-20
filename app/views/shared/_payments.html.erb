@@ -1,0 +1,9 @@
+<% compact = false if local_assigns[:compact].nil? %>
+
+<div class="payment-types-list row">
+  <% payment_types.each do |t| %>
+    <div class="payment-type <%= compact ? "payment-type-compact" : "" %> light-tooltip" data-toggle="tooltip" data-placement="top" title="<%= t.description %>">
+      <%= payment_type_image t, compact ? { :height => 38 } : {} %>
+    </div>
+  <% end %>
+</div>

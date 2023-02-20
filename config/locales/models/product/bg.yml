@@ -1,0 +1,12 @@
+bg:
+  activerecord:
+    models:
+      product:
+        one: Продукт
+        other: Продукти
+  enums:
+    product:
+      status:
+        normal: Видим
+        hidden: Скрит
+        not_active: Видим без възможност за продажба

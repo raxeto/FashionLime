@@ -1,0 +1,58 @@
+<% help_steps "edit_merchant" %>
+
+<div class="col-sm-12">
+  <%= bootstrap_form_for(@merchant, url: { action: "update_merchant"}, html: { multipart: true } ) do |f| %>
+
+      <%= render "merchant/activation/activation_header" %>
+
+        <div class="box">
+          <div class="row">
+            <div class="col-sm-6">
+              <span id="logo_file_name">
+              </span>
+              <br/>
+              <span>Препоръчван размер на снимката: ширина 512px и височина 512px </span>
+              <span class="btn btn-default btn-file">
+                Качи лого <%= f.file_field_without_bootstrap :logo, :id => "logo_input", :onchange => "FashionLime.Merchant.Merchant.editMerchant.onLogoSelected();", :class => "help-tour-step-9" %>
+              </span>
+              <br/>
+              <% if !f.object.logo_file_name.nil? %>
+                <%= image_tag f.object.logo.url(:original), :id => "logo_image" %>
+              <% end %>
+            </div>
+            <div class="col-sm-6">
+
+              <%= f.text_field :name, :label => "Име", :readonly => true, :class => "help-tour-step-1" %>
+
+              <%= f.text_area :description, :label => "Описание", :rows => "5", :class => "help-tour-step-2" %>
+
+              <%= f.text_field :phone, :label => "Телефон за връзка", :class => "help-tour-step-3", :wrapper => { :class => "#{f.object.phone.blank? ? 'has-error' : ''}" } %>
+
+              <div class="form-group <%= f.object.errors.any? && f.object.errors[:return_days].present? ? 'has-error' : ''%>">
+                <%= f.label :return_days, 'Срок за връщане или замяна', :class =>"required" %>
+                <div class="input-group">
+                  <%= f.number_field_without_bootstrap :return_days, :class => 'form-control required-field help-tour-step-4', :min => Conf.merchant.return_days_min %>
+                  <span class="input-group-addon">дни</span>
+                </div>
+                <span class="help-block">* изчислени след датата на доставката</span>
+              </div>
+
+              <%= f.text_area  :return_policy, :label => "Политика за връщане и замяна", :rows => "5", :class => "help-tour-step-5", :wrapper => { :class => "#{f.object.return_policy.blank? ? 'has-error' : ''}" } %>
+
+              <%= f.text_area  :return_instructions, :label => "Указания към клиента за връщане и замяна", :rows => "5", :class => "help-tour-step-6", :help => 'напишете указания, които потребителят да изпълни при връщане или замяна. Напр. "Върнете продукта до офис София Аксаков на Еконт до фирма "Биценс" ООД, тел. 0899 999 999. Изпратете пратката с наложен платеж./ Попълнете данни за банкова сметка в бележката на заявката".', :wrapper => { :class => "#{f.object.return_instructions.blank? ? 'has-error' : ''}" } %>
+
+              <%= f.text_field  :website, :label => "Website", :help => "* yебсайтът трябва да започва с http:// или https:// в зависимост от протокола на сайта Ви. Например http://www.example.com", :class => "help-tour-step-7" %>
+
+              <%= f.form_group :agree_terms_of_use, :class => "help-tour-step-8" do %>
+                <%= f.check_box :agree_terms_of_use, :label => "Запознат съм с #{link_to 'Общите условия', terms_of_use_path, :target => '_blank'}, съгласен съм с тях и се задължавам да ги спазвам.".html_safe %>
+              <% end %>
+
+              <%= f.submit "Запази", :class => "btn btn-template-main help-tour-step-10" %>
+
+            </div>
+          </div>
+        </div>
+
+  <% end %>
+</div>
+

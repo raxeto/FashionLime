@@ -1,0 +1,107 @@
+<% outfit_desc = "Представя сполучлива модна комбинация от #{@outfit.product_names.to_sentence}"%>
+
+<% title "Визия #{@outfit.name} от #{@outfit.profile.name}", true %>
+<% description "#{outfit_desc} от тип облекло #{Modules::StringLib.unicode_downcase(@outfit.occasion_names.to_sentence)}.", false %>
+<% allow_search_engine_index %>
+
+<% meta_tag "og:description", "#{outfit_desc}. Разгледайте още от нашите визии във FashionLime - онлайн платформата за мода на Бълагария." %>
+<% if @picture_generated %>
+    <% og_images [{
+        :url => image_url(@outfit.picture.url(:open_graph)),
+        :type => @outfit.picture_content_type,
+        :width => 1200,
+        :height => 630
+    }]%>
+<% end %>
+
+<div class="col-sm-12 outfit-show">
+    <div class="row">
+        <div class="col-md-6">
+            <% if @picture_generated %>
+                <%= outfit_image @outfit, :original, :class => "img-responsive outfit-image" %>
+            <% else %>
+                <div id="outfit-canvas-container">
+                    <canvas id="outfit-canvas">
+                    </canvas>
+                </div>
+            <% end %>
+        </div>
+
+        <div class="col-md-6">
+            <div class="box">
+                <div class="text-center main-info">
+                    <h1 class="lead model-name">
+                        <% if @outfit.profile_id == current_profile.id %>
+                            <%= link_to edit_outfit_path(@outfit), class: 'edit-icon-link' do %>
+                              <i class="fa fa-edit" aria-hidden="true"></i>
+                            <% end %>
+                        <% end %>
+
+                        <%= @outfit.name %>
+                    </h1>
+
+                    <%= render partial: '/shared/rating', locals: { model: @outfit, use_cache: false } %>
+
+                    <p class="text-center model-owner">
+                        <%= render :layout => '/shared/profile_link', :locals => {user: @outfit.user } do %>
+                            <%= @outfit.profile.name %>
+                            <%= render partial: '/shared/owner_rating', locals: { owner: @outfit.profile.owner, add_parentheses: true, add_rating_word: false } %>
+                        <% end %>
+                    </p>
+
+                    <% if flash.key?(:outfit_just_created) && !user_signed_in? %>
+                        <div class="alert alert-warning fade in">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+                            Хей! Знаете ли, че можете да се регистрирате. Така ще имате профил и списък с Вашите визии. 
+                            <br>
+                            <%= link_to new_user_registration_path, :class => "btn btn-warning btn-register-now" do %>
+                               Регистрирайте се тук
+                            <% end %>
+                        </div>
+                    <% end %>
+
+                    <p class="link-small-centred model-additional-info-link">
+                       <%= render :layout => '/shared/profile_outfits_link', :locals => {user: @outfit.user } do %>
+                          Виж още визии от този потребител
+                      <% end %>
+                    </p>
+
+                    Добавена преди <%= time_ago_in_words(@outfit.created_at) %>
+                   
+                </div>
+
+                <% if @outfit.outfit_product_pictures.size > 0 %>
+                    <%= render partial: 'products', locals: { outfit: @outfit } %>
+                <% end %>
+
+                <p class="model-add-to-cart text-center">
+                    <%= link_to add_to_cart_outfit_path(@outfit), :class => "btn btn-template-primary" do %>
+                        <i class="fa fa-shopping-cart"></i> Добави в количката
+                    <% end %>
+                </p>
+
+                <%= render partial: '/shared/social_network_share' %>
+                
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <%= render partial: '/shared/related_items', locals: { title: "Сходни визии", items_control_id: "related-outfits",  items: @related_outfits,  item_partial: 'FashionLime.Outfit.relatedItem' } if @related_outfits.length > 0  %>
+        </div>
+    </div>
+</div>
+
+<script language="JavaScript">
+    FashionLime.Common.utils.onPageLoad(function() {
+        var showJs = new FashionLime.Outfit.Show(<%= @outfit.id %>, '<%= @picture_generated ? "" : @outfit.serialized_json.html_safe %>', <%= flash.key?(:popup_share_after_create)%>);
+        showJs.init();
+
+        FashionLime.Common.utils.onLoadFromCache(function() {
+            showJs.loadedFromCache(); }, '.outfit-show');
+
+        FashionLime.Common.utils.onPageUnload(function() {
+            showJs.cleanup(); }, '.outfit-show');
+    });
+</script>
+

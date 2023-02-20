@@ -1,0 +1,118 @@
+<%= render partial: '/shared/mailer/layout_header' %>
+
+<% if @message_html.present? %>
+<table class="full-width">
+  <tbody>
+    <tr>
+      <td>
+        <%= @message_html %>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<% end %>
+
+<% @product_collections.each do |p| %>
+  <%= render partial: '/shared/mailer/product_collection', locals: { :product_collection => p } %>
+<% end %>
+
+<% if @outfits.size > 0 %>
+<table class="full-width title margin-top-large">
+  <tbody>
+    <tr>
+      <td>
+          Най-харесвани визии
+      </td>
+    </tr>
+  </tbody>
+</table>
+<% end %>
+
+<table class="full-width">
+  <tbody>
+    <tr>
+      <td>
+        <%= render partial: '/shared/mailer/outfit', locals: { :outfit => @outfits[0]} %>
+      </td>
+      <td>
+        <%= render partial: '/shared/mailer/outfit', locals: { :outfit => @outfits[1]} %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <%= render partial: '/shared/mailer/outfit', locals: { :outfit => @outfits[2]} %>
+      </td>
+      <td>
+        <%= render partial: '/shared/mailer/outfit', locals: { :outfit => @outfits[3]} %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <%= render partial: '/shared/mailer/outfit', locals: { :outfit => @outfits[4]} %>
+      </td>
+      <td>
+        <%= render partial: '/shared/mailer/outfit', locals: { :outfit => @outfits[5]} %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <%= render partial: '/shared/mailer/outfit', locals: { :outfit => @outfits[6]} %>
+      </td>
+      <td>
+        <%= render partial: '/shared/mailer/outfit', locals: { :outfit => @outfits[7]} %>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<% if @products.size > 0 %>
+<table class="full-width title margin-top-large">
+  <tbody>
+    <tr>
+      <td>
+          Актуални продукти
+      </td>
+    </tr>
+  </tbody>
+</table>
+<% end %>
+
+<table class="full-width">
+  <tbody>
+    <tr>
+      <td>
+        <%= render partial: '/shared/mailer/product', locals: { :product => @products[0]} %>
+      </td>
+      <td>
+        <%= render partial: '/shared/mailer/product', locals: { :product => @products[1]} %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <%= render partial: '/shared/mailer/product', locals: { :product => @products[2]} %>
+      </td>
+      <td>
+        <%= render partial: '/shared/mailer/product', locals: { :product => @products[3]} %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <%= render partial: '/shared/mailer/product', locals: { :product => @products[4]} %>
+      </td>
+      <td>
+        <%= render partial: '/shared/mailer/product', locals: { :product => @products[5]} %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <%= render partial: '/shared/mailer/product', locals: { :product => @products[6]} %>
+      </td>
+      <td>
+        <%= render partial: '/shared/mailer/product', locals: { :product => @products[7]} %>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+<%= render partial: '/shared/mailer/layout_footer' %>

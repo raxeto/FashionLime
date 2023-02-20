@@ -1,0 +1,27 @@
+<%= render partial: '/shared/mailer/layout_header' %>
+
+<% if @message_text.present? || @message_html.present? %>
+<%= @message_text.present? ? @message_text : @message_html %>
+<% end %>
+
+<% @product_collections.each do |p| %>
+<%= render partial: '/shared/mailer/product_collection', locals: { :product_collection => p } %>
+<% end %>
+
+<% if @outfits.size > 0 %>
+** Най-харесвани визии **
+<% end %>
+
+<% @outfits.each do |o| %>
+<%= render partial: '/shared/mailer/outfit', locals: { :outfit => o} %>
+<% end %>
+
+<% if @products.size > 0 %>
+** Актуални продукти **
+<% end %>
+
+<% @products.each do |p| %>
+<%= render partial: '/shared/mailer/product', locals: { :product => p} %>
+<% end %>
+
+<%= render partial: '/shared/mailer/layout_footer' %>

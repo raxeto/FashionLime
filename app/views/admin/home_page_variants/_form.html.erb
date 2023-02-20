@@ -1,0 +1,35 @@
+<%= form_for(@variant, url: { action: action}, html: { multipart: true } ) do |f| %>
+    <div>
+        <%= label_tag(:home_page_links, "Home page линкове") %> <br/>
+        <%= text_field_tag(:home_page_links, @home_page_links) %>
+        <span> Разделени със запетая ID-та на Home page links. </span>
+    </div>
+
+    <div>
+        <%= label_tag(:product_collections, "Колекции продукти") %> <br/>
+        <%= text_field_tag(:product_collections, @product_collections) %>
+        <span> Разделени със запетая ID-та на колекции продукти. </span>
+    </div>
+
+    <div>
+        <%= label_tag(:outfits, "Визии") %> <br/>
+        <%= text_field_tag(:outfits, @outfits) %>
+        <span> Разделени със запетая ID-та на визии. </span>
+    </div>
+
+    <div>
+        <%= label_tag(:merchants, "Търговци") %> <br/>
+        <%= text_field_tag(:merchants, @merchants) %>
+        <span> Разделени със запетая ID-та на търговци. </span>
+    </div>
+
+    <div>
+        <%= label_tag(:products, "Продукти") %> <br/>
+        <%= text_field_tag(:products, @products) %>
+        <span> Разделени със запетая ID-та на продукти. </span>
+    </div>
+
+    <%= f.hidden_field(:id) %>
+    
+    <%= f.submit(action.to_s.capitalize) %>
+<% end %>

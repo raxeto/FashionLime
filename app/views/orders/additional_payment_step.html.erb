@@ -1,0 +1,41 @@
+<div id="orders-additional-payment-step" class="col-md-12">
+
+
+  <div>
+    <div class="smile-face">
+      <i class="fa fa-smile-o" aria-hidden="true"></i>
+    </div>
+    <div>
+      <p class="success-message lead">
+        Поръчката Ви беше успешно направена.
+      </p>
+    </div>
+  </div>
+
+  <p class="payment-message">
+    За да бъде потвърдена, трябва да осъществите плащане с информацията, дадена по-долу.
+  </p>
+
+  <% @merchant_orders.each do |mo| %>
+    <div class="row payment-info">
+      <div class="col-md-4">
+        <div class="merchant-order-info">
+          <div class="merchant-profile-link">
+            <%= render partial: '/shared/merchant_profile_link', locals: { merchant: mo.merchant } %>
+          </div>
+          <div class="merchant-order-total">
+            <strong>Общо: <%= mo.total_with_shipment_formatted %></strong>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-8" id="payment-info-<%= mo.number %>">
+        <%= render partial: "shared/payment_info", locals: {
+            info: mo.merchant_payment_type.info,
+            payment_code: mo.payment_code,
+            merchant_order_number: mo.number,
+            holder_id: '#payment-info-' + mo.number } %>
+      </div>
+    </div>
+  <% end %>
+
+</div>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <%= render "shared/general_header_content" %>
+</head>
+<body class="basic-layout-body">
+
+  <div id="all" class="basic-layout">
+
+    <div class="container">
+        <div class="row">
+            <div id="flash-notifications" class="col-sm-12">
+            </div>
+        </div>
+    </div>
+
+    <%= yield %>
+  </div>
+
+</body>
+</html>

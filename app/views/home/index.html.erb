@@ -1,0 +1,220 @@
+<% title "Fashion Lime: Българската онлайн платформа за мода", true %>
+<% description "Купете дрехи, обувки и аксесоари от любимите си български и чужди марки и вижте как да ги комбинирате в цели тоалети.", true %>
+<% allow_search_engine_index %>
+
+<div id="home-index">
+
+        <% if @main_home_page_link.present? %>
+        <section class="bar background-white no-mb">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <%= link_to @main_home_page_link.url_path do %>
+                            <%= home_page_link_image @main_home_page_link, :original, :class => "img-responsive img-center" %>
+                        <% end %>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <% end %>
+
+        <% if @home_page_links.present? %>
+            <section class="bar background-white no-mb">
+                <div class="container" data-animate="fadeInUp">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <% if @main_home_page_link.present? %>
+                                <div class="heading text-center">
+                                    <h1>Кампании</h1>
+                                </div>
+                            <% end %>
+                            <div class="row">
+                              <% @home_page_links.each do |l| %>
+                                <div class="col-sm-6">
+                                    <%= render partial: '/home_page_links/home_page_link', locals: { home_page_link: l } %>
+                                </div>
+                              <% end %>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </section>
+        <% end %>
+
+        <section class="bar background-white no-mb">
+            <div class="container" data-animate="fadeInUp">
+                <div class="row">
+                    <div class="col-md-12">
+
+                        <div class="row">
+                            <div class="portfolio-showcase clearfix">
+                                <div class="col-sm-3 company-about">
+                                    <%= image_tag "fashionlime-logo-square.png", :alt => "Fashion Lime лого", :class => "img-responsive img-about-us img-center" %>
+                                    <br>
+                                    <%= link_to "Прочетете повече за нас", about_us_path, :class=> "btn btn-default" %>
+                                </div>
+                                <div class="col-sm-9 company-info">
+                                    <div class="heading">
+                                        <h1>Кои сме ние?</h1>
+                                    </div>
+                                    <p class="main">
+                                      Ние <i>не</i> сме маркетингови специалисти, нито финансови или пък модни експерти.
+                                      Обичаме да създаваме красиви неща, влагайки цялата си изобретателност и сърце в това, което правим. А и да - програмираме. :)
+                                    </p>
+                                    <p class="main">
+                                      А каква е нашата цел? <br/>
+                                    </p>
+                                    <p class="emphasized main italic company-moto">
+                                      Да направим вас щастливи.
+                                    </p>
+                                    <% if !user_signed_in? %>
+                                        <p>
+                                          Можете да ни подкрепите, като се регистрирате.
+                                        </p>
+                                        <p>
+                                          <%= link_to new_user_registration_path, :class => "btn btn-template-main" do  %>
+                                              Регистрация
+                                          <% end %>
+                                        </p>
+                                    <% end %>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+         </section>   
+
+
+        <% if @outfits.present? %>
+        <section class="bar background-white no-mb">
+          <div class="container" data-animate="fadeInUp">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="heading text-center">
+                        <h1>Избрани визии</h1>
+                    </div>
+
+                    <div class="row outfits-list">                    
+                    </div>
+
+                    <div class="see-more">
+                        <%= link_to all_outfits_path, :class => "btn btn-template-main" do %>
+                            Виж още от нашите визии
+                        <% end %>
+                    </div>
+                </div>
+              </div>
+            </div>
+        </section>
+        <% end %>
+
+
+        <% if @products.present? %>
+        <section class="bar background-white no-mb">
+          <div class="container" data-animate="fadeInUp">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="heading text-center">
+                        <h1>Избрани продукти</h1>
+                    </div>
+
+                    <div class="row products-list ">
+                    </div>
+
+                    <div class="see-more">
+                        <%= link_to products_path, :class => "btn btn-template-main" do %>
+                            Виж още от нашите продукти
+                        <% end %>
+                    </div>
+                </div>
+              </div>
+            </div>
+        </section>
+        <% end %>
+
+        <% if @product_collections.present? %>
+        <section class="bar background-white no-mb">
+          <div class="container" data-animate="fadeInUp">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="heading text-center">
+                        <h1>Колекции</h1>
+                    </div>
+
+                    <div class="row product-collections-list">
+                        <% @product_collections.each do |c| %>
+                          <div class="col-ms-6 col-sm-6 col-md-4">
+                            <%= render partial: '/product_collections/product_collection', locals: { product_collection: c, show_owner: true } %>
+                          </div>
+                        <% end %>
+                    </div>
+                </div>
+              </div>
+            </div>
+        </section>
+        <% end %>
+
+        <% if @merchants.present? %>
+        <section class="bar background-white no-mb">
+          <div class="container" data-animate="fadeInUp">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="heading text-center">
+                        <h1>Партньори</h1>
+                    </div>
+
+                    <div class="row merchants-list">
+                      <% @merchants.each do |m| %>
+                        <div class="col-xs-6 col-ms-4 col-sm-4 col-md-3">
+                            <%= render partial: '/merchant/merchant', locals: { merchant: m, pic_style: :medium } %>
+                        </div>
+                      <% end %>
+                    </div>
+                </div>
+              </div>
+            </div>
+        </section>
+        <% end %>
+
+</div>
+
+<script type="text/javascript">
+  FashionLime.Common.utils.onPageLoad(function() {
+    $('.owl-carousel.homepage').owlCarousel({
+        navigation: false, // Show next and prev buttons
+        navigationText: ["<i class='fa fa-angle-left'></i>", "<i class='fa fa-angle-right'></i>"],
+        slideSpeed: 2000,
+        paginationSpeed: 1000,
+        autoPlay: 10000,
+        stopOnHover: true,
+        singleItem: true,
+        lazyLoad: false,
+        addClassActive: true,
+        afterInit: function () {
+        //animationsSlider();
+        },
+        afterMove: function () {
+        //animationsSlider();
+        }
+    });
+    FashionLime.Common.list.setup(
+      ".products-list",
+      <%= raw items_array @products %>,
+      "FashionLime.Product.listItem",
+      function(itemHtml) {
+        return "<div class='col-xs-6 col-ms-4 col-sm-4 col-md-3'>" + itemHtml + "</div>"
+      }
+    );
+
+     FashionLime.Common.list.setup(
+      ".outfits-list",
+      <%= raw items_array @outfits %>,
+      "FashionLime.Outfit.listItem",
+      function(itemHtml) {
+        return "<div class='col-xs-6 col-ms-4 col-sm-4'>" + itemHtml + "</div>";
+      }
+    );
+  });
+</script>

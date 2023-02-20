@@ -1,0 +1,135 @@
+<div class="col-md-9 clearfix" id="customer-order">
+
+    <p class="lead">Поръчка номер <strong><%= @merchant_order.number %></strong> е направена на <strong><%= date_to_s(@merchant_order.created_at) %></strong> 
+      и в момента има статус <strong><%= @merchant_order.status_i18n %></strong>.
+        <% if !@merchant_order.acknowledged_date.nil? %>
+            Ще бъде доставена на <strong><%= date_to_s(@merchant_order.acknowledged_date) %></strong>.
+        <% else %>
+          <% if @merchant_order.aprox_delivery_date_from == @merchant_order.aprox_delivery_date_to %>
+            Очаква се да бъде доставена на 
+          <% else %>
+            Очаква се да бъде доставена в периода
+          <% end %>
+            <strong><%= @merchant_order.aprox_delivery %></strong>.
+        <% end %>
+    </p>
+    <div class="return-section">
+      <% if @merchant_order.merchant_order_return.present? %>
+        <div class="well">
+          <i>Изпратена е заявка за връщане или замяна за тази поръчка.</i>
+        </div>
+      <% else %>
+        <%= link_to return_order_path(@merchant_order), { :class => "btn btn-default btn-return", :title => "Генерирай заявка за връщане или замяна за тази поръчка"} do %>
+          <i class="fa fa-exchange" aria-hidden="true"></i>Връщане / замяна
+        <% end %> 
+      <% end %> 
+    </div>
+    <div class="box">
+        <div class="table-responsive">
+            <table class="table">
+                <thead class="centered-header">
+                  <tr>
+                      <th colspan="2">Продукт</th>
+                      <th>Количество</th>
+                      <th>Ед.цена</th>
+                      <th>Отстъпка</th>
+                      <th>Общо</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                 <% @merchant_order.merchant_order_details.each do |d| %>
+                    <tr>
+                      <td>
+                        <%= render partial: '/shared/picture', locals: { picture: d.article.product.main_product_picture(color_id: d.article.color_id), style: :thumb, type: :product } %>
+                      </td>
+                      <td>
+                        <%= link_to product_path(d.article.product) do %>
+                          <%= d.article.product.name %>
+                        <% end %>
+                        <br>
+                        Цвят: <%= d.article.color.name %> Размер: <%= d.article.size.name %>
+                      </td>
+                      <td class="right-aligned">
+                        <%= d.qty.to_i %>
+                      </td>
+                      <td class="right-aligned"> <%= d.price_formatted %> </td>
+                      <td class="right-aligned"> <%= number_to_percentage(d.perc_discount) %> </td>
+                      <td class="right-aligned"> <%= d.total_with_discount_formatted %> </td>
+                    </tr>
+                <% end %>
+                </tbody>
+
+                <tfoot>
+                    <tr>
+                        <th colspan="5" class="right-aligned">Сума</th>
+                        <th class="right-aligned"><%= @merchant_order.total_with_discount_formatted %></th>
+                    </tr>
+                    <tr>
+                        <th colspan="5" class="right-aligned">Доставка</th>
+                        <th class="right-aligned"><%= @merchant_order.shipment_price_formatted %></th>
+                    </tr>
+                    <tr>
+                        <th colspan="5" class="right-aligned">Общо</th>
+                        <th class="right-aligned"><%= @merchant_order.total_with_shipment_formatted %></th>
+                    </tr>
+                </tfoot>
+            </table>
+
+        </div>
+        <!-- /.table-responsive -->
+
+        <div class="row">
+          <div class="col-sm-12">
+            <h4 class="text-uppercase">Плащане</h4>
+
+            <p>
+              Начин на плащане: <strong><%= @merchant_order.merchant_payment_type.payment_type.name %></strong>
+            </p>
+
+            <% if @merchant_order.has_additional_payment? %>
+              <div id="payment-info-<%= @merchant_order.number %>">
+                  <%= render partial: "shared/payment_info", locals: {
+                      info: @merchant_order.merchant_payment_type.info,
+                      payment_code: @merchant_order.payment_code,
+                      merchant_order_number: @merchant_order.number,
+                      holder_id: '#payment-info-' + @merchant_order.number,
+                      show_title: false 
+                  } %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+
+        <div class="shipment-note-section row">
+            <div class="col-sm-6">
+                <h4 class="text-uppercase">Адрес за доставка</h4>
+                <p>
+                  <%= @merchant_order.order.address.location.name %>
+                  <br/>
+                  <%= @merchant_order.order.address.description %>
+                </p>
+            </div>
+            <div class="col-sm-6">
+                <h4 class="text-uppercase">Забележки</h4>
+                <h5>От Вас към търговеца</h5>
+                <p>
+                  <%= !@merchant_order.order.note_to_merchants.blank? ? @merchant_order.order.note_to_merchants : 'Няма забележка.' %>
+                </p>
+                <h5>От търговеца към Вас</h5>
+                <p>
+                  <%= !@merchant_order.note_to_user.blank? ? @merchant_order.note_to_user : 'Няма забележка.' %>
+                </p>
+            </div>
+        </div>
+
+    </div>
+    <!-- /.box -->
+
+</div>
+
+<div class="col-md-3">
+    
+    <%= render partial: '/shared/user_profile_menu' %>
+
+</div>

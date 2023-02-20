@@ -1,0 +1,30 @@
+@import "/template/less/modules/variables-custom.css.less";
+
+#checkout, #basket, #customer-order, #createReturnForm, #outfit-add-to-cart {
+    .table {
+        tbody {
+            tr {
+              td {
+                vertical-align: middle;
+                &.price-col {
+                  width: 100px;
+                }
+                input.numeric {
+                  width: 50px; 
+                  text-align: right;
+                }
+                select.combo {
+                  width: 100px; 
+                  text-align: right;
+                }
+                img {
+                  width: 50px;
+                }
+              }
+            }
+        }
+        tfoot {
+          font-size: @font-size-large;
+        }
+    }
+}

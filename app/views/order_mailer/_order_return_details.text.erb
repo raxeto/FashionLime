@@ -1,0 +1,13 @@
+<% details = order_return.merchant_order_return_details.where(:return_type => MerchantOrderReturnDetail.return_types[return_type]) %>
+<% if details.length > 0 %>
+
+<% case return_type %>
+  <% when :return %>
+Артикули за връщане
+  <% when :exchange %>
+Артикули за замяна
+<% end %>
+<% details.each do |d| %>
+Артикул: <%= d.merchant_order_detail.article.full_name %>, Количество поръчка: <%= d.merchant_order_detail.qty.to_i %>, Ед.цена с отстъпка: <%= d.merchant_order_detail.price_with_discount_formatted %>, <%= case return_type when :return then "Количество за връщане: #{d.return_qty.to_i}, Сума за връщане: #{d.return_total_formatted};" when :exchange then "Количество за замяна: #{d.return_qty.to_i};" end %>
+<% end %>
+<% end %>

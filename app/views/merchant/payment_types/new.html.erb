@@ -1,0 +1,26 @@
+<% help_steps "new", [{:location =>"merchant.payment_type.form", :start_index => 1}] %>
+
+<div class="merchant-payment-types-new col-sm-12">
+
+  <% if @payment.present? && @payment.payment_type.present? %>
+
+    <%= render partial: 'form', locals: { action: :create, payment: @payment } %>
+
+  <% else %>
+    <div class="form-inline select-initial-payment well well-sm">
+      <div class="form-group">
+        <%= label_tag(:filter_payment_type, "Изберете начин на плащане:") %>
+        <%= collection_select(:filter, :payment_type, @payment_types, :id, :name, {:include_blank => true }, {:class => "form-control help-tour-step-1"}) %>
+      </div>
+    </div>
+  <% end %>
+
+
+</div>
+
+
+<script language="JavaScript">
+  FashionLime.Common.utils.onPageLoad(function() {
+    FashionLime.Shared.postBackFilter.setup('filter_payment_type', 'payment_type');
+  });
+</script>

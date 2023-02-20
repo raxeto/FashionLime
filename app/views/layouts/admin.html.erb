@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <%= render "shared/general_header_content" %>
+</head>
+<body>
+
+<table>
+  <tr>
+    <td id="admin-menu"><%= render "admin/admin_menu" %></td>
+    <td id="login-menu">
+       <% if user_signed_in? %>
+            <%= link_to(edit_user_registration_path) do %>
+              <i class="fa fa-user"></i> <span class="hidden-xs text-uppercase">Акаунт</span>
+            <% end %>
+        <% else %>
+            <%= link_to('#', {"data-toggle" => "modal", "data-target" => "#login-modal"}) do %>
+              <i class="fa fa-sign-in"></i> <span class="hidden-xs text-uppercase">Влез</span>
+            <% end %>
+        <% end %>
+        <% if user_signed_in? %>
+            <%= link_to(destroy_user_session_path, :method => :delete) do %>
+              <i class="fa fa-sign-out"></i> <span class="hidden-xs text-uppercase">Излез</span>
+            <% end %>
+        <% else %>
+            <%= link_to(new_user_registration_path) do  %>
+              <i class="fa fa-user"></i> <span class="hidden-xs text-uppercase">Регистрирай се</span>
+            <% end %>
+        <% end %>
+    </td>
+  </tr>
+</table>
+
+<div id="admin-content">
+  <h1>Admin panel</h1>
+
+  <% flash.each do |key, value| %>
+    <%= content_tag :p, value, class: "flash #{key}" %>
+  <% end %>
+
+  <%= yield %>
+</div>
+
+</body>
+</html>

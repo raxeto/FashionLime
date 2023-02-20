@@ -1,0 +1,417 @@
+<% logo_path = root_path if local_assigns[:logo_path].nil? %>
+
+<!DOCTYPE html>
+<html>
+<head>
+  <%= render "shared/general_header_content" %>
+</head>
+<body>
+
+    <div id="all">
+
+        <div id="cookie-policy-banner">
+            <div class="container">
+                <p>
+                    Този сайт използва "бисквитки" (cookies).
+                    Ако желаете, можете да научите повече <%= link_to 'тук', cookies_policy_path, target: "_blank" %>.
+                    <button class="btn btn-template-main btn-xs" type="button">РАЗБРАХ</button>
+                </p>
+            </div>
+        </div>
+
+        <header>
+
+            <!-- *** TOP ***
+_________________________________________________________ -->
+
+            <div id="top">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xs-6 col-sm-5">
+                            <% if !is_client_layout %>
+                                <a href="#" class="help-tour-start btn-help-tour">
+                                    <i class="fa fa-question-circle" aria-hidden="true"></i>
+                                    <span class="hidden-xs text-uppercase">Помощ</span>
+                                </a>
+                            <% end %>
+                            <div class="social contact-links">
+                                <%= link_to Conf.contact.facebook_url, :class => "facebook", :title => "Намери ни във Facebook", :target => "_blank", :rel => 'nofollow', "data-animate-hover" => "pulse" do %>
+                                    <i class="fa fa-facebook" aria-hidden="true"></i>
+                                <% end %>
+                                <%= link_to Conf.contact.instagram_url, :class => "instagram", :title => "Намери ни в Instagram", :target => "_blank", :rel => 'nofollow', "data-animate-hover" => "pulse" do %>
+                                    <i class="fa fa-instagram" aria-hidden="true"></i>
+                                <% end %>
+                                <%= mail_to Conf.contact.clients_email, :class => "email", :title => "Напиши ни e-mail", :target => "_blank", :rel => 'nofollow', "data-animate-hover" => "pulse" do %>
+                                    <i class="fa fa-envelope" aria-hidden="true"></i>
+                                <% end %>
+                                <%= link_to Conf.contact.address_google_maps, :class => "maps", :title => "Адрес в Google Maps", :target => "_blank", :rel => 'nofollow', "data-animate-hover" => "pulse" do %>
+                                    <i class="fa fa-map-marker" aria-hidden="true"></i>
+                                <% end %>
+                            </div>
+                        </div>
+                        <div class="col-xs-6 col-sm-7">
+                            <div class="login">
+                                <% if is_client_layout %>
+                                    <%= link_to(merchant_root_path, :class => "change-sections") do %>
+                                        <i class="fa fa-users"></i> <span class="hidden-xs text-uppercase">За търговци</span>
+                                    <% end %>
+                                <% else %>
+                                    <%= link_to(root_path, :class => "change-sections") do %>
+                                        <i class="fa fa-male"></i> <span class="hidden-xs text-uppercase">За клиенти</span>
+                                    <% end %>
+                                <% end %>
+
+                                 <% if user_signed_in? %>
+                                      <%= link_to(edit_user_path) do %>
+                                        <i class="fa fa-user"></i> <span class="hidden-xs text-uppercase">Акаунт</span>
+                                      <% end %>
+                                  <% else %>
+                                      <%= link_to('#', {"data-toggle" => "modal", "data-target" => "#login-modal"}) do %>
+                                        <i class="fa fa-sign-in"></i> <span class="hidden-xs text-uppercase">Влез</span>
+                                      <% end %>
+                                  <% end %>
+                                  <% if user_signed_in? %>
+                                      <%= link_to(sign_out_path, :method => :delete) do %>
+                                        <i class="fa fa-sign-out"></i> <span class="hidden-xs text-uppercase">Излез</span>
+                                      <% end %>
+                                  <% else %>
+                                      <%= link_to(new_user_registration_path) do  %>
+                                        <i class="fa fa-user"></i> <span class="hidden-xs text-uppercase">Регистрирай се</span>
+                                      <% end %>
+                                  <% end %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- *** TOP END *** -->
+
+            <!-- *** NAVBAR ***
+    _________________________________________________________ -->
+
+            <div class="navbar-affixed-top" data-offset-top="200">
+
+                <div class="navbar navbar-main navbar-default yamm" role="navigation" id="navbar">
+
+                    <div class="container">
+                        <div class="navbar-header">
+
+                            <%= link_to logo_path, :class => 'logo-small-link hidden-sm hidden-md hidden-lg' do %>
+                                <%= render partial: "shared/logo_image" %>
+                            <% end %>
+
+                            <div class="navbar-buttons">
+
+                                <button type="button" class="navbar-toggle btn-template-main" data-toggle="collapse" data-target="#navigation">
+                                    <span class="sr-only">Меню</span>
+                                    <i class="fa fa-align-justify"></i>
+                                </button>
+
+                            </div>
+                        </div>
+                        <!--/.navbar-header -->
+
+                        <div class="navbar-collapse collapse main-menu" id="navigation">
+                            <%= render partial: menu_path, locals: { logo_path: logo_path } %>
+                        </div>
+
+                        <!--/.nav-collapse -->
+                    </div>
+
+
+                </div>
+                <!-- /#navbar -->
+
+            </div>
+
+            <!-- *** NAVBAR END *** -->
+
+        </header>
+
+
+        <%= render "shared/login" %>
+
+
+        <% if use_breadcrumbs %>
+        <div id="heading-breadcrumbs" class="<%= if content_for?(:breadcrumbs_class) then yield(:breadcrumbs_class) else '' end %>">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4">
+                        <h1><%= @breadcrumbs.last.try(:options).try(:[], :title) || @breadcrumbs.last.name %></h1>
+                    </div>
+                    <div class="col-md-8">
+                        <ul class="breadcrumb">
+                            <%= render_breadcrumbs(:tag => :li, :separator => "" )%>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <% end %>
+
+        <div id="content">
+
+            <div class="container">
+                <div class="row">
+                    <div id="flash-notifications" class="col-sm-12">
+                    </div>
+                </div>
+            </div>
+
+            <div class="application-layout">
+                <% if use_container %>
+
+                    <div class="container">
+                        <div class="row">
+                <% end %>
+
+                        <%= yield %>
+
+                <% if use_container %>
+                        </div>
+                    </div>
+                <% end %>
+
+            </div>
+
+
+        </div>
+        <!-- /#content -->
+
+
+        <!-- *** GET IT ***
+_________________________________________________________ -->
+
+        <div id="get-it">
+            <div class="container">
+            <% if !user_signed_in? %>
+                <div class="col-md-8 col-sm-12">
+                    <h4 id="join-question">Искате да станете част от семейството на Fashion Lime?</h4>
+                </div>
+                <div class="col-md-4 col-sm-12">
+                     <%= link_to new_user_registration_path, :class => 'btn btn-template-transparent-primary' do %>
+                        Присъединете се сега
+                    <% end %>
+                </div>
+            <% end %>
+            </div>
+        </div>
+
+
+        <!-- *** GET IT END *** -->
+
+
+        <!-- *** FOOTER ***
+_________________________________________________________ -->
+
+        <footer id="footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4 col-sm-6">
+                        <h4>За нас</h4>
+
+                        <p>Fashion Lime е стартираща компания, чиято мисия е да свързва създатели и консуматори на мода в единна онлайн платформа.</p>
+
+                        <hr>
+
+                        <h4>Абонирайте се за нашия бюлетин</h4>
+
+                        <form id="newsletter-subscribe">
+                            <div class="input-group">
+
+                                <input id="newsletter-email" type="email" placeholder="Имейл" class="form-control">
+
+                                <span class="input-group-btn">
+
+                                    <button class="btn btn-default" type="submit">
+                                        <i class="fa fa-send" aria-hidden="true"></i>
+                                    </button>
+
+                                </span>
+
+                            </div>
+                            <p>
+                                Обичате модата? И ние! Позволете ни да Ви осведомяваме за всичко, което ни интересува.
+                            </p>
+                        </form>
+
+                        <hr>
+
+                        <h4>Методи на плащане</h4>
+
+                        <%= render partial: '/shared/payments', locals: { payment_types: PaymentType.order(:order_index), compact: true } %>
+
+
+                        <hr class="hidden-md hidden-lg">
+
+                    </div>
+                    <!-- /.col-md-4 -->
+
+                    <div class="col-md-4 col-sm-6">
+
+                        <h4>Полезни страници</h4>
+
+                        <div class="useful-links">
+                            <ul>
+                                <% if is_client_layout %>
+                                    <li>
+                                        <%= link_to "За нас", about_us_path %>
+                                    </li>
+                                    <li>
+                                        <%= link_to "Контакт", contact_path %>
+                                    </li>
+                                    <li>
+                                        <%= link_to "Доставка и плащане", information_delivery_payment_path %>
+                                    </li>
+                                    <li>
+                                        <%= link_to "Информация за търговци", information_new_merchant_path %>
+                                    </li>
+                                    <li>
+                                        <%= link_to "Заявка за връщане на продукт", new_return_order_path %>
+                                    </li>
+                                    <li>
+                                        <%= link_to "Общи условия", terms_of_use_path %>
+                                    </li>
+                                    <li>
+                                        <%= link_to "Политика за използване на бисквитки", cookies_policy_path %>
+                                    </li>
+                                    <li>
+                                        <%= link_to "Политика за поверителност", privacy_policy_path %>
+                                    </li>
+                                    <% if user_signed_in? && current_user.merchant? %>
+                                        <li>
+                                            <%= link_to "Към търговската секция", merchant_root_path %>
+                                        </li>
+                                    <% end %>
+                                <% else %>
+                                    <li>
+                                        <%= link_to "Контакт", merchant_contact_path %>
+                                    </li>
+                                    <li>
+                                        <%= link_to "Към клиентската секция", root_path %>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="help-tour-start">
+                                            Помощ
+                                        </a>
+                                    </li>
+                                <% end %>
+                            </ul>
+                        </div>
+
+                        <hr class="hidden-md hidden-lg">
+
+                    </div>
+                    <!-- /.col-md-4 -->
+
+                    <div class="col-md-4 col-sm-12">
+
+                        <h4>Връзка с нас</h4>
+
+                        <div class="contact">
+                            <p class="phone">
+                                <%= link_to "tel:#{Conf.contact.clients_phone_number}", :class => "btn-contact btn-phone", :rel => 'nofollow', "data-animate-hover" => "pulse" do %>
+                                    <i class="fa fa-phone" aria-hidden="true"></i>
+                                <% end %>
+                                <span class="phone-text"><%= Conf.contact.clients_phone %></span>
+                                <br/>
+                                Работим за Вас <%= Conf.contact.support_working_hours_text %>
+                            </p>
+
+                            <p>
+                                <% if is_client_layout %>
+                                    <%= link_to contact_path, { :class => "btn btn-small btn-template-main"} do %>
+                                        Отиди към страницата за контакт
+                                    <% end %>
+                                <% else %>
+                                    <%= link_to merchant_contact_path, { :class => "btn btn-small btn-template-main"} do %>
+                                        Помощ за търговци
+                                    <% end %>
+                                <% end %>
+                            </p>
+
+                            <p class="contact-links">
+                                <%= link_to Conf.contact.facebook_url, :class => "btn-contact facebook", :title => "Намери ни във Facebook", :target => "_blank", :rel => 'nofollow', "data-animate-hover" => "pulse" do %>
+                                    <i class="fa fa-facebook" aria-hidden="true"></i>
+                                <% end %>
+                                <%= link_to Conf.contact.instagram_url, :class => "btn-contact instagram", :title => "Намери ни в Instagram", :target => "_blank", :rel => 'nofollow', "data-animate-hover" => "pulse" do %>
+                                    <i class="fa fa-instagram" aria-hidden="true"></i>
+                                <% end %>
+                                <%= mail_to Conf.contact.clients_email, :class => "btn-contact email", :title => "Напиши ни e-mail", :target => "_blank", :rel => 'nofollow', "data-animate-hover" => "pulse" do %>
+                                    <i class="fa fa-envelope" aria-hidden="true"></i>
+                                <% end %>
+                                <%= link_to Conf.contact.address_google_maps, :class => "btn-contact maps", :title => "Адрес в Google Maps", :target => "_blank", :rel => 'nofollow', "data-animate-hover" => "pulse" do %>
+                                    <i class="fa fa-map-marker" aria-hidden="true"></i>
+                                <% end %>
+                            </p>
+                        </div>
+
+
+                        <hr class="hidden-md hidden-lg">
+
+                    </div>
+                    <!-- /.col-md-4 -->
+
+                </div>
+                <!-- /.row -->
+
+            </div>
+            <!-- /.container -->
+        </footer>
+        <!-- /#footer -->
+
+        <!-- *** FOOTER END *** -->
+
+        <!-- *** COPYRIGHT ***
+_________________________________________________________ -->
+
+        <div id="copyright">
+            <div class="container">
+                <div class="col-md-12">
+                    <p class="pull-left">&copy; 2018 FashionLime</p>
+                </div>
+            </div>
+        </div>
+        <!-- /#copyright -->
+
+        <!-- *** COPYRIGHT END *** -->
+
+
+
+    </div>
+
+    <script language="JavaScript">
+      FashionLime.Common.utils.onPageLoad(function () {
+       <% flash.each do |key, value| %>
+          <% unless key.starts_with?('action')%>
+              FashionLime.Common.notifications.showFlash('<%=key%>', '<%=value%>');
+          <% end %>
+       <% end %>
+       FashionLime.Validation.requiredField.setup();
+       FashionLime.Newsletter.subscribe.setup();
+
+       initTemplateFront();
+
+       FashionLime.Common.animations.browserCompatible();
+
+       $('#login-modal').on('hidden.bs.modal', function() {
+            $('#login-modal-warn').hide();
+       });
+
+       FashionLime.Common.socialUtils.initFbShareButtons();
+       <% if flash.key?(:action_popup_share_dialog)%>
+        FashionLime.Common.socialUtils.openFbShareDialog();
+       <% end %>
+
+       FashionLime.Shared.backToTopBtn.setup();
+       FashionLime.Shared.cookiesPolicy.setup();
+
+       FashionLime.Shared.helpTour.setup(<%= help_tour_steps(@help_steps_location, @help_steps_partial_locations) %>);
+      });
+    </script>
+
+</body>
+
+</html>

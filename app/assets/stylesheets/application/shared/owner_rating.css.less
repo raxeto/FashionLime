@@ -1,0 +1,16 @@
+@import "/template/less/modules/variables-custom.css.less";
+
+.owner-rating {
+  color: @gray;
+
+  .star-icon {
+    margin: 0;
+
+    &.positive {
+      color: #ffcc66;
+    }
+    &.negative {
+      color: lighten(@brand-primary, 30%);
+    }
+  }
+}

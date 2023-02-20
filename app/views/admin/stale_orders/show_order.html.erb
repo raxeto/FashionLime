@@ -1,0 +1,69 @@
+<h2>Merchant Order #<%= @merchant_order.number %></h2>
+
+<h4>Обща информация</h4>
+<ul>
+  <li> Merchant Order N#: <%= @merchant_order.number %></li>
+  <li> Merchant order ID: <%= @merchant_order.id %></li>
+  <li> Търговец:
+    <%= link_to @merchant_order.merchant.name, merchant_profile_path(@merchant_order.merchant.url_path) %>
+  </li>
+  <li> Бележка към потребителя: <%= @merchant_order.note_to_user %></li>
+  <li> Бележка към търговеца: <%= @order.note_to_merchants %> </li>
+  <li> Поръчката е направена на: <%= date_time_to_s(@merchant_order.created_at)%> </li>
+  <li> Преди: <%= time_ago_in_words(@merchant_order.created_at) %> </li>
+  <li> Доставка: <%= @merchant_order.merchant_shipment.full_name %></li>
+  <li> Цена на доставка: <%= @merchant_order.shipment_price %> лв </li>
+  <li> Доставка от: <%= date_to_s(@merchant_order.aprox_delivery_date_from)%> до: <%= date_to_s(@merchant_order.aprox_delivery_date_to)%></li>
+  <li> Статус: <%= @merchant_order.status_i18n %></li>
+  <li> Начин за плащане: <%= @merchant_order.payment_type.name %> </li>
+  <li> Маркирай като <%= link_to 'потвърдена', admin_stale_confirm_order_path(@merchant_order), method: :post, data: { confirm: 'Сигурен ли си?' } %> </li>
+</ul>
+
+<% if @return.present? %>
+  <h4>Направена е заявка за връщане/замяна:</h4>
+  <ul>
+    <li>Линк към <%= link_to 'заявката', admin_stale_return_path(@return) %> </li>
+    <li>Заявката е подадена на: <%= date_time_to_s(@return.created_at)%></li>
+    <li>Заявката чака от: <%= time_ago_in_words(@return.created_at) %></li>
+  </ul>
+<% end %>
+
+<h4>Данни за клиента</h4>
+<ul>
+  <li>Имена: <%= @order.user_first_name %> <%= @order.user_last_name %></li>
+  <li>email: <%= @order.user_email %></li>
+  <li>телефон: <%= @order.user_phone %></li>
+  <li>адрес: <%= @order.address.text %></li>
+</ul>
+
+<h4>Детайли</h4>
+<table class="table centered">
+  <thead>
+    <tr>
+      <th>Продукт</th>
+      <th>SKU</th>
+      <th>Цвят</th>
+      <th>Размер</th>
+      <th>Количество</th>
+      <th>Единична цена с отстъпка</th>
+      <th>Крайна цена с отстъпка</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @merchant_order.merchant_order_details.each do |detail| %>
+      <tr>
+        <td> <%= link_to detail.article.product.name, product_path(detail.article.product) %> </td>
+        <td> <%= detail.article.sku %> </td>
+        <td> <%= detail.article.color.name %> </td>
+        <td> <%= detail.article.size.name %> </td>
+        <td> <%= detail.qty %> </td>
+        <td> <%= detail.price_with_discount %> лв </td>
+        <td> <%= detail.total_with_discount %> лв </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+
+

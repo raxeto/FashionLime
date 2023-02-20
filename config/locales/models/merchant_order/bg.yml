@@ -1,0 +1,8 @@
+bg:
+  enums:
+    merchant_order:
+      status:
+        active: Активна
+        waiting_payment: Очаква плащане
+        confirmed: Потвърдена
+        canceled: Отказана

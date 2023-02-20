@@ -1,0 +1,32 @@
+<% name = @merchant.nil? ? @user.username : @merchant.name %>
+<% title "Визии на #{name}", true %>
+<% description "Вижте как #{name} изразява модните си възгледи чрез визиите, които е създал.", true %>
+<% allow_search_engine_index %>
+
+<%= render :layout => 'layout', :locals => {merchant: @merchant, user: @user } do %>
+  <%= render partial: 'shared/filtered_dynamic_item_list', locals: {
+          update_url: false,
+          initial_item_count: Conf.search.initial_item_count,
+          load_more_url: @merchant.nil? ? user_profile_outfits_load_more_path(@user.url_path) : merchant_profile_outfits_load_more_path(@merchant.url_path),
+          item_type: 'outfits',
+          sort_options: [ ['Дата на добавяне', 'created_date'], ['Рейтинг', 'rating'], ['Съвпадение', 'relevance']],
+          filters: [],
+          bootstrap_item_col_class: "col-xs-6 col-ms-4 col-sm-4",
+          model_partial: "FashionLime.Profile.outfit"
+  } %>
+<% end %>
+
+<script language="JavaScript">
+    FashionLime.Common.utils.onPageLoad(function () {
+        FashionLime.Shared.dynamicFooter.setup();
+
+        FashionLime.Common.utils.onLoadFromCache(function() {
+            FashionLime.Shared.dynamicFooter.setup(); },
+                '.application-layout');
+
+        FashionLime.Common.utils.onPageUnload(function() {
+            FashionLime.Shared.dynamicFooter.clear(); },
+                '.application-layout');
+    });
+
+</script>

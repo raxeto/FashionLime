@@ -1,0 +1,55 @@
+<% help_steps "activation" %>
+
+<div class="merchant-payment-types-activation col-sm-12">
+   
+   <%= bootstrap_form_tag url: { action: "create_activation"}, html: { method: :post  }  do |f| %>
+
+    <%= render "merchant/activation/activation_header" %>
+
+    <% @payments.each_with_index do |payment, ind| %>
+      <%= f.fields_for "payment", payment, index: ind do |p|%>
+        <div class="payment">
+          <%= p.hidden_field :payment_type_id %>
+
+          <p class='lead question <%= "help-tour-step-#{ind + 1}"%>'>
+            Желаете ли да използвате начин на плащане <strong><%= payment.payment_type.name %></strong>?
+          </p>
+
+          <div class="btn-group answers" data-toggle="buttons">
+            <label class="btn btn-template-main <%= payment.active == 1 ? "active" : "" %>">
+              <%= p.radio_button_without_bootstrap :active, 1, checked: payment.active == 1, :class => "answer" %>
+              Да
+            </label>
+            <label class="btn btn-template-main <%= payment.active == 0 ? "active" : "" %>">
+              <%= p.radio_button_without_bootstrap :active, 0, checked: payment.active == 0, :class => "answer" %>
+              Не
+            </label>
+          </div>
+
+          <% if payment.payment_type.info_class_name.present? %>
+            <div class="payment-info <%= payment.active == 1 ? "active" : "" %>">
+              <%= render partial: "payment_info", locals: { payment_form: p, payment: payment, action: :create } %>
+            </div>
+          <% end %>
+
+          </div>
+
+        <hr/>
+
+      <% end %>
+    <% end %>
+
+      <button type="submit" class='btn btn-template-main btn-save <%= "help-tour-step-#{@payments.size + 1}" %>'>
+        <i class="fa fa-floppy-o"></i> Запази
+      </button>
+
+  <% end %>
+
+</div>
+
+
+<script language="JavaScript">
+  FashionLime.Common.utils.onPageLoad(function () {
+    FashionLime.Merchant.PaymentType.activation.setup();
+  });
+</script>

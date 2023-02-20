@@ -1,0 +1,37 @@
+<h2>Shipment Types</h2>
+
+<%= link_to('Create New', new_admin_shipment_type_path) %>
+
+<table class="centered">
+  <thead>
+    <tr>
+      <th class="id">ID</th>
+      <th class="name">Name</th>
+      <th class="text">Description</th>
+      <th class="int">Order Index</th>
+      <th class="date">Created</th>
+      <th class="date">Updated</th>
+      <th class="file">Picture</th>
+      <th class="actions">Actions</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @shipment_types.each do |t| %>
+      <tr>
+        <td class="id"> <%= t.id %> </td>
+        <td class="name"> <%= t.name %> </td>
+        <td class="text"> <%= t.description %> </td>
+        <td class="int"> <%= t.order_index %> </td>
+        <td class="date"> <%= date_to_s(t.created_at) %> </td>
+        <td class="date"> <%= date_to_s(t.updated_at) %> </td>
+        <td class="file"> 
+          <% if t.picture.exists? %>
+            <%= image_tag t.picture.url(:original) %> 
+          <%end%>
+        </td>
+        <td class="link"><%= link_to('edit', edit_admin_shipment_type_path(t.id)) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

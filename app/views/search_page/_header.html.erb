@@ -1,0 +1,17 @@
+<% title @search_page.meta_title, true %>
+<% description @search_page.meta_description, true %>
+<% allow_search_engine_index %>
+<% canonical_url search_page_url({:search_page => @search_page }) %>
+<% og_image @search_page %>
+
+<div class="search-page-header">
+  <p class="emphasized">
+    <%= link_to see_all_url, {"class" => "btn btn-template-main btn-see-all #{@search_page.description.blank? ? '' : "floatable-right"}"} do %>
+      <i class="fa fa-search"></i> <%= see_all_text %>
+    <% end %>
+
+    <%= @search_page.description %>
+  </p>
+</div>
+
+

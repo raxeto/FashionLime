@@ -1,0 +1,8 @@
+bg:
+  enums:
+    outfit_decoration:
+      category:
+        frame: Рамка
+        doodle: Завъртулка
+        graphic: Графика
+        image: Картинка

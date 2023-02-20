@@ -1,0 +1,171 @@
+@import "/template/less/modules/variables-custom.css.less";
+
+#outfit-form {
+  padding-bottom: 20px;
+
+  #outfit_form {
+    .form-group {
+      .help-block {
+        display: none;
+      }
+      &.has-error {
+        .help-block {
+          display: block;
+        }
+      }
+    }
+  }
+
+  #canvas_container {
+    #outfit_saving_prompt {
+      display: none;
+      left: 43%;
+    }
+
+    #outfit_canvas {
+      border: 2px solid @gray-lighter;
+    }
+  }
+
+  #show_product_info, #show-filtred-products {
+    text-transform: uppercase;
+  }
+
+  #show_product_info {
+    color: @btn-default-color;
+  }
+
+  #products_collection_panel {
+    margin-top: 10px;
+    table {
+      margin-bottom: 0px;
+    }
+  }
+
+  #canvas_functions_toolbar {
+    margin-top: 20px;
+    margin-left: 0px;
+    .btn-group {
+      padding-bottom: 10px;
+    }
+
+    .group-functions {
+      button {
+        font-weight: normal;
+        text-transform: none;
+      }
+    }
+  }
+
+  #text_panel, #images_panel {
+    margin-bottom: 10px;
+  }
+
+  #text_panel {
+    #element_text_input {
+      @media (max-width: @screen-xs-max) {
+        margin-bottom: 10px;
+      } 
+    }
+
+    .text-settings {
+      .text-settings-font-container, .text-settings-font-settings {
+        padding-left: 5px;
+        padding-right: 5px;
+      }
+
+    }
+  }
+
+  #images_panel {
+    select {
+      min-width: 150px;
+    }
+  }
+
+  .filtered-items-col {
+
+    #filtered-items {
+      .item-filters-holder {
+        margin-bottom: 10px;
+      }
+
+      #items-section {
+        overflow-y: auto;
+      }
+    }
+
+    @media (min-width: @screen-md-min) { 
+      #filtred-products-panel {
+        height: auto !important;
+        display: block;
+      }
+
+      #items-section {
+        max-height: 580px;
+      }
+    }
+
+    @media (max-width: @screen-sm-max) { 
+       #items-section {
+        max-height: 350px;
+      }
+    }
+  }
+
+  .outfit-setup-col {
+    @media (max-width: @screen-sm-max) { 
+      margin-top: 25px;
+    }
+  }
+
+  .add_picture_button {
+    cursor: pointer;
+  }
+
+  .tooltip {
+    position: fixed;
+  }
+
+  #element_text_bold {
+    width: 35px;
+    font-weight: bold;
+  }
+  #element_text_italic {
+    width: 35px;
+    font-style: italic;
+  }  
+
+  .fonts-preloading-panel {
+    div {
+      background: white;
+      position: absolute;
+    }
+    .font-cover {
+      height: 30px; 
+      width: 100%;
+    }
+  }
+
+  .minicolors-input-swatch {
+    width: 32px;
+    height: 32px;
+    .minicolors-swatch-color {
+      width: 32px;
+      height: 32px;
+      border: solid 1px #ccc;
+    }
+  }
+
+  .panel {
+    border: 1px solid #eeeeee;
+    .panel-body {
+      padding: 5px;
+    }
+  }
+
+ .action-buttons {
+    margin-top: 10px;
+  }
+
+}

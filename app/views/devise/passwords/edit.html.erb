@@ -1,0 +1,30 @@
+<div class="col-sm-12">
+
+  <% if resource.errors[:reset_password_token].any? %>
+    <%= alert_tag :danger, resource.errors.full_messages_for(:reset_password_token).join(',') %>
+  <% end %>
+
+  <div class="box">
+    <%= bootstrap_form_for(resource, as: resource_name, url: password_path(resource_name), data: { no_turbolink: true }, html: { method: :put} ) do |f| %>
+
+      <%= f.hidden_field :reset_password_token %>
+
+      <div class="row">
+        <div class="col-sm-4">
+          <%= f.password_field :password, autofocus: true, autocomplete: "off", label: "Нова парола", label_class: "required", help: "(най-малко #{@minimum_password_length} символа)" %>
+          <%= f.password_field :password_confirmation, autocomplete: "off", label: "Потвърдете новата парола", label_class: "required" %>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-4">
+          <button type="submit" class="btn btn-template-main btn-save">
+            <i class="fa fa-floppy-o"></i> Запази
+          </button>
+        </div>
+      </div>
+
+    <% end %>
+  </div>
+</div>
+

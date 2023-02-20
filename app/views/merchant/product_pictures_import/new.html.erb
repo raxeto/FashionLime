@@ -1,0 +1,99 @@
+<% help_steps "new" %>
+
+<div id="merchant-product-pictures-import-new" class="col-sm-12">
+
+  <div class="box">
+
+    <div class="box-header help-tour-step-1">
+        <strong>Инструкции</strong>
+        <ul>
+          <li>
+            Можете да избирате повече от един файл за импортиране, като при избора задържите клавиша Ctrl. Максималният брой файлове за един импорт е <%= Conf.product.import_pictures_max_count %>.
+          </li>
+          <li>
+            За всеки от избраните файлове изберете продукт, към който да бъде качен той.
+            Това става като започнете да изписвате името на търсения продукт в полето под снимката.
+            Ще излезе списък с предложения, от който можете да го изберете.
+          </li>
+          <li>
+            <%= render partial: '/merchant/products/picture_size_message'%>
+          </li>
+          <li>
+            Снимките трябва да бъдат с бял фон, а тези, предназначени за правене на визии, трябва да бъдат с прозрачен фон. След като изберете файловете, задайте им параметри и натиснете бутона "Качи".
+          </li>
+        </ul>
+    </div>
+
+    <div class="determine-products-error">
+      <%= alert_tag :danger, "Не можаха да бъдат определени продуктите за някои от снимките.", "Грешка!" %>
+    </div>
+
+    <div class="help-tour-step-2">
+      <input id="import-file-input" type="file" multiple="true">
+    </div>
+  </div>
+
+</div>
+
+
+<script language="JavaScript">
+    var footerTemplate =
+      '<div class="file-thumbnail-footer picture-container">\n' +
+      '     <div class="row">' +
+      '       <div class="col-sm-4">' +
+      '         <label class="control-label">Продукт</label>' +
+      '       </div>'+
+      '       <div class="col-sm-8">' +
+      '         <div class="scrollable-typeahead-container">' +
+      '           <input id="product_name__TAG_NUM_" class="product-name form-control input-sm" type="text">'+
+      '         </div>'+
+      '         <div class="product-error">Грешка при определяне на продукта!</div>'+
+      '         <input id="product_id__TAG_NUM_" class="product-id" type="hidden">'+
+      '       </div>'+
+      '     </div>'+
+      '     <div class="row color-row">' +
+      '       <div class="col-sm-4">' +
+      '         <label for="color_id__TAG_NUM_" class="control-label">Цвят</label>' +
+      '       </div>'+
+      '       <div class="col-sm-8">' +
+      '        <%= escape_javascript(select_tag("color_id__TAG_NUM_", options_from_collection_for_select([], :id, :name), {:include_blank => true, :class=>"color-id form-control input-sm"})) %>' +
+      '        <span class="help-block">попълнете цвят</span>' +
+      '       </div>'+
+      '     </div>'+
+      '     <div class="row">' +
+      '       <div class="col-sm-4">' +
+      '        <label for="order_index__TAG_NUM_" class="control-label">Подредба</label>' +
+      '       </div>'+
+      '       <div class="col-sm-8">' +
+      '        <%= number_field_tag "order_index__TAG_NUM_", "", :class=>"order-index form-control input-sm" %>' +
+      '       </div>'+
+      '     </div>'+
+      '   {actions}\n' +
+      '   <div class="upload-success-message">' +
+      '       Успешно качване' +
+      '   </div>'+
+      '</div>';
+
+    FashionLime.Common.utils.onPageLoad(function() {
+      FashionLime.Shared.fileInput.setup();
+
+      var products =  [
+            <% @products.map { |p| { :name => "#{p.name}, ID: #{p.id}", :id => p.id }}.each do |p| %>
+              <%= p.to_json.html_safe %>,
+            <% end %>
+            ];
+
+      var newJS = new FashionLime.Merchant.ProductPicturesImport.New(products);
+      newJS.init('<%= merchant_create_product_picture_import_path %>', footerTemplate, <%= Conf.product.import_pictures_max_count %>);
+
+    });
+
+    FashionLime.Common.utils.onLoadFromCache(function() {
+      FashionLime.Shared.fileInput.setupFromCache();
+    }, '#merchant-product-pictures-import-new');
+
+    FashionLime.Common.utils.onPageUnload(function() {
+      FashionLime.Shared.fileInput.cleanup();
+    }, '#merchant-product-pictures-import-new');
+
+</script>

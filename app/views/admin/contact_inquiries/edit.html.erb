@@ -1,0 +1,26 @@
+<div class="container">  
+
+  <%= form_for(@inquiry, url: { action: :update} ) do |f| %>
+       UserName: <%= @inquiry.user.try(:username) %><br/>
+       Name: <%= @inquiry.name %><br/>
+       Email: <%= @inquiry.email %><br/>
+       Status: <%= @inquiry.status %><br/>
+       Subject: <%= @inquiry.subject %><br/>
+       Message: <%= @inquiry.message %><br/>
+       <% if @inquiry.submited? %>
+       Reply: <%= f.text_area :reply_message %>
+       <br/>
+       <%= f.submit "Reply", :class => "btn btn-template-main" %>
+       <% else %>
+       Reply: <%= @inquiry.reply_message %>
+       <% end %>
+  <% end %>
+
+  <% if @inquiry.submited? %>
+    <br/>
+    <br/>
+    <%= link_to "Set as NOT valid", set_not_valid_admin_contact_inquiry_path(@inquiry), method: :patch %>
+  <% end %>
+
+</div>
+

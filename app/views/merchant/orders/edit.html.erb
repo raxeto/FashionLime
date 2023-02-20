@@ -1,0 +1,245 @@
+<% help_steps "edit" %>
+
+<div id="orderDetail" class="col-sm-12 clearfix">
+    <div class="box">
+      <%= bootstrap_form_for(@merchant_order, url: { action: :update}, html: { id: "edit-merchant-order-form" } ) do |f| %>
+
+      <button type="submit" class="btn btn-template-main btn-save btn-bottom-shifted">
+        <i class="fa fa-floppy-o"></i> Запази
+      </button>
+
+      <div class="row">
+        <div class="col-sm-6">
+          <h4>Поръчка</h4>
+
+          <div class="table-responsive">
+            <table class="table">
+              <tr class="help-tour-step-1">
+                <td>Номер</td>
+                <td><%= f.object.number %></td>
+              </tr>
+              <tr class="help-tour-step-2">
+                <td>Дата</td>
+                <td><%= date_time_to_s(f.object.created_at) %></td>
+              </tr>
+              <tr>
+                <td>ID начин на плащане</td>
+                <td><%= f.object.merchant_payment_type_id %></td>
+              </tr>
+              <tr class="help-tour-step-3">
+                <td>Начин на плащане</td>
+                <td><%= f.object.payment_type.name %></td>
+              </tr>
+              <tr class="help-tour-step-4">
+                <td>Информация за плащане</td>
+                <td><%= f.object.merchant_payment_type.info_text %></td>
+              </tr>
+              <tr class="help-tour-step-5">
+                <td>Код за плащане</td>
+                <td><%= f.object.payment_code_human_readable %></td>
+              </tr>
+              <tr class="help-tour-step-6">
+                <td>Доставка</td>
+                <td><%= f.select :merchant_shipment_id, options_for_select(
+                    @merchant.merchant_shipments.map { |s| [s.full_name, s.id, {'data-price'=>s.price}] }, selected_key = f.object.merchant_shipment_id), {:include_blank => false, :hide_label => true}, :class => 'merchant_shipment_select' %>
+                </td>
+              </tr>
+              <tr class="help-tour-step-7">
+                <td>Прогнозиран срок</td>
+                <td><%= f.object.aprox_delivery %></td>
+              </tr>
+              <tr class="help-tour-step-8">
+                <td>Дата на доставка</td>
+                <td><%= f.date_field :acknowledged_date, :hide_label => true, :value => f.object.acknowledged_date.nil? ? "" : f.object.acknowledged_date.to_date.to_formatted_s(:db) %></td>
+              </tr>
+              <tr class="help-tour-step-9">
+                <td>Цена на доставка</td>
+                <td>
+                  <div class="input-group">
+                     <%= f.text_field :shipment_price, { :class => "shipment_price", :hide_label => true, :value => f.object.shipment_price_formatted_without_unit }%>
+                    <span class="input-group-addon"><%= currency_unit %></span>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>Сума поръчка</td>
+                <td><%= f.text_field_without_bootstrap :total_with_discount, { :disabled => true, :class => "header_total_with_discount disabled-hidden", :value => f.object.total_with_discount_formatted } %></td>
+              </tr>
+              <tr>
+                <td>Общо</td>
+                <td><b><%= f.text_field_without_bootstrap :total_with_shipment, { :disabled => true, :class => "header_total_with_shipment disabled-hidden", :value => f.object.total_with_shipment_formatted } %></b></td>
+              </tr>
+              <tr class="help-tour-step-10">
+                <td>Бележка към клиента</td>
+                <td><%= f.text_area :note_to_user, :hide_label => true %></td>
+              </tr>
+              <tr class="help-tour-step-11">
+                <td>Статус</td>
+                <td><%= f.collection_select(:status, MerchantOrder.statuses_i18n, :first, :last, :hide_label => true) %> </td>
+              </tr>
+              <tr class="cancellation_note_row">
+                <td>Причина за отказ</td>
+                <td><%= f.text_area :cancellation_note, :hide_label => true %></td>
+              </tr>
+            </table>
+          </div>
+        </div>
+
+        <div class="col-sm-6">
+          <h4 class="help-tour-step-12">Клиент</h4>
+          <div class="table-responsive">
+            <table class="table" valign="top">
+              <tr>
+                <td>Име</td>
+                <td><%= f.object.order.user_full_name %></td>
+              </tr>
+              <tr>
+                <td>Адрес</td>
+                <td><%= f.object.order.address.text %></td>
+              </tr>
+              <tr class="help-tour-step-13">
+                <td>Само в работни дни</td>
+                <td><%= check_box_tag "bisuness_days", 0, f.object.order.only_business_days == 1, disabled: true %></td>
+              </tr>
+              <tr class="help-tour-step-14">
+                <td>Желае фактура</td>
+                <td><%= check_box_tag "issue_invoice", 0, f.object.order.issue_invoice == 1, disabled: true %></td>
+              </tr>
+              <tr>
+                <td>Телефон</td>
+                <td><%= f.object.order.user_phone %></td>
+              </tr>
+              <tr>
+                <td>Имейл</td>
+                <td><%= mail_to f.object.order.user_email %></td>
+              </tr>
+              <tr class="help-tour-step-15">
+                <td>Бележка от клиента</td>
+                <td><%= f.object.order.note_to_merchants %></td>
+              </tr>
+            </table>
+          </div>
+          <% if @order_return.present? %>
+            <% if @order_return.active? %>
+              <div class="help-tour-step-25">
+                <%= alert_tag(:warning, "Има заявка за връщане или замяна към тази поръчка, която чака да бъде обработена.", "Внимание") %>
+              </div>
+            <% else %>
+              <div class="help-tour-step-26">
+                <%= alert_tag(:info, "Има заявка за връщане или замяна към тази поръчка.", "Информация") %>
+              </div>
+            <% end %>
+             <div class="table-responsive">
+              <table class="table">
+                <tr>
+                  <td colspan="2">
+                    <%= link_to merchant_order_return_path(:number => @order_return.number), :title => "Отиди към заявката за връщане/замяна" do %>
+                      <i class="fa fa-link" aria-hidden="true"></i>Линк към заявка
+                    <% end %>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Номер заявка</td>
+                  <td><%= @order_return.number %></td>
+                </tr>
+                <tr>
+                  <td>Дата заявка</td>
+                  <td><%= date_time_to_s(@order_return.created_at) %></td>
+                </tr>
+                <tr>
+                  <td>Статус</td>
+                  <td><%= label_for_return_status(@order_return) %></td>
+                </tr>
+              </table>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
+       <div class="row">
+        <div class="col-sm-12">
+
+          <h4 class="help-tour-step-16">Артикули</h4>
+          <div class="table-responsive">
+            <table id="table_order_details" class="table table-hover centered">
+              <thead>
+                <tr>
+                  <th>ID артикул</th>
+                  <th>Артикул</th>
+                  <th>SKU</th>
+                  <th class="help-tour-step-17">Цена</th>
+                  <th class="help-tour-step-18">Отстъпка</th>
+                  <th class="help-tour-step-19">Цена с отстъпка</th>
+                  <th class="help-tour-step-20">Количество</th>
+                  <th class="help-tour-step-21">К-во очакващо връщане</th>
+                  <th class="help-tour-step-22">Върнато количество</th>
+                  <th class="help-tour-step-23">Общо</th>
+                  <th class="help-tour-step-24">Партиди</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @merchant_order.merchant_order_details.each do |d| %>
+                  <tr>
+                      <td>
+                          <%= d.article_id %>
+                      </td>
+                      <td>
+                        <span class="article_full_name">
+                          <% if d.article.try(:product).present? %>
+                            <%= link_to d.article.product.name, edit_merchant_product_path(d.article.product) %>,
+                          <% end %>
+                          <%= d.article.try(:color_size_combo_name) || "" %>
+                        </span>
+                      </td>
+                      <td>
+                          <%= d.article.try(:sku) || "N/A" %>
+                      </td>
+                      <td>
+                          <%= d.price_formatted %>
+                      </td>
+                      <td>
+                          <%= number_to_percentage(d.perc_discount) %>
+                      </td>
+                      <td>
+                          <%= d.price_with_discount_formatted %>
+                      <td>
+                          <%= d.qty.to_i %>
+                      </td>
+                      <td class="color-qty">
+                        <% if d.qty_to_return >= Conf.math.QTY_EPSILON %>
+                          <%= bootstrap_label_tag(:warning, d.qty_to_return.to_i) %>
+                        <% else %>
+                          <%= d.qty_to_return.to_i %>
+                        <% end %>
+                      </td>
+                      <td class="color-qty">
+                        <% if d.qty_returned >= Conf.math.QTY_EPSILON %>
+                          <%= bootstrap_label_tag(:danger, d.qty_returned.to_i) %>
+                        <% else %>
+                          <%= d.qty_returned.to_i %>
+                        <% end %>
+                      </td>
+                      <td class="detail_total_with_discount">
+                          <%= d.total_with_discount_formatted %>
+                      <td>
+                          <%= d.parts_text %>
+                      </td>
+                    </tr>
+                  <% end %>
+               </tbody>
+            </table>
+          </div>
+
+        </div>
+       </div>
+
+    <% end %>
+   </div>
+</div>
+
+<script language="JavaScript">
+  FashionLime.Common.utils.onPageLoad(function() {
+    FashionLime.Merchant.Order.edit.setup();
+  });
+</script>
+

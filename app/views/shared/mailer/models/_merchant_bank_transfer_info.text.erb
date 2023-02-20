@@ -1,0 +1,6 @@
+Име на получателя: <%= merchant_order.merchant_payment_type.info.company_name %>
+Основание за превод - информация за получателя: Поръчка номер <%= merchant_order.payment_code %>
+Име на банката на получателя: <%= merchant_order.merchant_payment_type.info.bank_name %>
+IBAN на получателя: <%= merchant_order.merchant_payment_type.info.iban %>
+BIC на банката получател: <%= merchant_order.merchant_payment_type.info.bic_code %>
+Валута: <%= merchant_order.merchant_payment_type.info.currency %>

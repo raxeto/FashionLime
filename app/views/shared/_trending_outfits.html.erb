@@ -1,0 +1,16 @@
+<div class="row outfits-list">
+</div>
+
+<script type="text/javascript">
+  FashionLime.Common.utils.onPageLoad(function() {
+     FashionLime.Common.list.setup(
+      ".outfits-list",
+      <%= raw items_array Modules::OutfitJsonBuilder.instance.outfits_partial_data(Outfit.trending_last_days(90, 12), current_or_guest_user) %>,
+      "FashionLime.Outfit.listItem",
+      function(itemHtml) {
+        return "<div class='col-xs-6 col-ms-4 col-sm-4 col-md-3'>" + itemHtml + "</div>";
+      }
+    );
+  });
+</script>
+

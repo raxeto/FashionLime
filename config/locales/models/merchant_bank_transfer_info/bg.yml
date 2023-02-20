@@ -1,0 +1,10 @@
+bg:
+  activerecord:
+    attributes:
+      merchant_bank_transfer_info:
+        company_name: "Получател"
+        iban: "IBAN"
+        bic_code: "BIC на банката"
+        bank_name: "Име на банката"
+        currency: "Валута"
+

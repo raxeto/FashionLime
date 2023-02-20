@@ -1,0 +1,86 @@
+<% help_steps "form", [{:location =>"merchant.product.edit_product_menu", :start_index => 0}] %>
+
+<%= bootstrap_form_for(@product, url: { action: action }, html: { id: "product_form" } ) do |f| %>
+
+  <div class="row">
+   <div class="col-sm-12">
+      <button type="submit" class="btn btn-template-main btn-save help-tour-step-12">
+        <i class="fa fa-floppy-o"></i> Запази
+      </button>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-6">
+      <%= f.text_field :name, :label => "Име", :class => "help-tour-step-1" %>
+    </div>
+    <div class="col-sm-6">
+      <%= f.collection_select(:product_collection_id, current_merchant.product_collections.joins(:season).order("product_collections.year desc, seasons.order_index desc"), :id, :full_name, { :include_blank => true, :label => "Колекция"}, {:class => "help-tour-step-2"}) %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-12">
+      <%= f.text_area :description, :label => "Описание", :class => "help-tour-step-3" %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-4">
+      <%= f.collection_select(:trade_mark_id, TradeMark.all.order("name"), :id, :name, { :include_blank => true, :label => "Търговска марка" }, { :class => "help-tour-step-4" }) %>
+    </div>
+    <div class="col-sm-4">
+      <%= f.select(:product_category_id, option_groups_from_collection_for_select(ProductCategory.flat_list, :children, :name_with_parent, :id, :name, @product.product_category_id),
+          { :include_blank => true, :label => "Категория"}, { :class => "product-category-id help-tour-step-5" }) %>
+    </div>
+    <div class="col-sm-4">
+      <%= f.collection_select(:status, Product.statuses_i18n, :first, :last, { :label => "Статус" }, { :class => "help-tour-step-6" }) %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-4">
+      <%= f.select(:size_ids, 
+          option_groups_from_collection_for_select(SizeCategory.includes(:sizes).order(:order_index), 
+          :sizes, :name, :id, :name, @product.size_ids), { :label => "Размери", :label_class => "required help-tour-step-7" }, 
+          { :multiple => true, :class => "sizes multiselect-combo"}) %>
+    </div>
+    <div class="col-sm-4">
+       <%= f.collection_select(:color_ids,
+            Color.all.order("name"),
+            :id, :name, {:selected => @product.color_ids, :label => "Цветове", :label_class => "required help-tour-step-8" }, 
+            {:multiple => true, :class => "multiselect-combo"}) %>
+    </div>
+    <div class="col-sm-4">
+        <%= f.collection_select(:occasion_ids,
+            Occasion.all.order("order_index"),
+            :id, :name, {:selected => @product.occasion_ids, :label => "Тип облекло", :label_class => "help-tour-step-9", :help => "* Изберете най-много #{Conf.occasions.relation_max_count} типа"}, 
+            {:multiple => true, :class => "multiselect-combo"}) %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-6">
+      <%= f.number_field :min_available_qty, :value => f.object.min_available_qty.try(:to_i), :label => "Имейл при мин. количество", :class => "help-tour-step-10", :min => 0, :help => "* Получавате предупреждение по имейла, когато наличното количество на някой от вариантите стане равно на това число. Ако е празно няма да получавате имейл." %>
+    </div>
+    <div class="col-sm-6">
+        <% if action == :create %>
+          <% base_price_help = "* Първоначално задаване на цената за всички варианти от цветове и размери. След създаване на продукта може да се промени и да бъде различна за различните варианти." %>
+        <% else %>
+          <% base_price_help = "* Трябва да бъде попълнена при добавяне на нови цветове или размери, за да се зададе като цена на новодобавените варианти." %>
+        <% end %>
+
+      <%= f.text_field :base_price, :label => "Базова цена", :label_class => action == :create ? 'required' : '', :help => base_price_help, :class => "help-tour-step-11" %>
+    </div>
+  </div>
+
+<% end %>
+
+<script language="JavaScript">
+  FashionLime.Common.utils.onPageLoad(function () {
+    FashionLime.Shared.comboMultiselect.setupAll('multiselect-combo', {});
+    FashionLime.Merchant.Product.form.setup();
+});
+
+</script>
+

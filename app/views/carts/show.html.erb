@@ -1,0 +1,150 @@
+<div class="col-md-12">
+  <p class="text-muted lead">
+  <% cart_details_count = @cart_details.length %>
+  <% if cart_details_count == 0 %>
+    Количката Ви е празна.
+  <% else %>
+    Имате <%= cart_details_count.to_s + ' ' + t('product', count: cart_details_count) %> в количката си.
+  <% end %>
+  </p>
+</div>
+
+<% if cart_details_count > 0 %>
+<div class="col-md-9 clearfix" id="basket">
+
+    <div class="box">
+
+      <div class="table-responsive">
+          <table class="table">
+              <thead class="centered-header">
+                  <tr>
+                      <th colspan="2">Артикул</th>
+                      <th>Ед. цена</th>
+                      <th>Количество</th>
+                      <th colspan="2">Общо</th>
+                  </tr>
+              </thead>
+              <tbody>
+                 <% @cart_details.each do |c| %>
+                    <tr>
+                      <td>
+                        <%= render partial: '/shared/picture', locals: { picture: c.article.product.main_product_picture(color_id: c.article.color_id), style: :thumb, type: :product } %>
+                      </td>
+                      <td>
+                        <% if !c.article.nil? %>
+                          <%= link_to product_path(c.article.product) do %>
+                            <b><%= c.article.product.name %></b>
+                          <% end %>
+                          от
+                          <%= link_to merchant_profile_path(:url_path => c.article.product.merchant.url_path) do %>
+                            <%= c.article.product.merchant.name %>
+                          <% end %>
+                          <br/>
+                          Цвят: <%= c.article.color.name %>, Размер: <%= c.article.size.name %>
+                        <% end %>
+                      </td>
+                      <% if !c.article.product.is_visible? %>
+                        <td colspan="3">
+                          Продуктът е недостъпен.
+                        </td>
+                      <% elsif c.article.product.not_active? %>
+                        <td colspan="3">
+                          Продуктът не е пуснат в продажба.
+                        </td>
+                      <% else %>
+                        <td class="right-aligned">
+                          <% if c.price != c.price_with_discount %>
+                            <s class="gray-text"><%= c.price_formatted %> </s><br/>
+                          <% end %>
+                          <b> <%= c.price_with_discount_formatted %> </b>
+                        </td>
+                        <td class="right-aligned">
+                          <%= number_field_tag c.id, c.qty.to_i , min: 1, class: 'qty_field numeric form-control required-field' %>
+                        </td>
+                        <td class="right-aligned" id="item-<%= c.id %>-total"> <%= c.total_with_discount_formatted %> </td>
+                      <% end %>
+                      <td>
+                        <a class="delete_qty_button" type="button" name="<%= c.id %>">
+                          <i class="fa fa-trash-o"></i>
+                        </a>
+                      </td>
+                    </tr>
+                <% end %>
+              </tbody>
+              <tfoot>
+                  <tr>
+                      <th colspan="4">Общо</th>
+                      <th class="total-items-price right-aligned"><%= @cart.total_visible_with_discount_formatted %></th>
+                      <th> &nbsp; </th>
+                  </tr>
+              </tfoot>
+          </table>
+
+      </div>
+      <!-- /.table-responsive -->
+
+      <div class="box-footer">
+        <div class="row">
+          <div class="col-sm-6">
+            <%= link_to products_path, :class => "btn btn-default left-content" do %>
+              <i class="fa fa-chevron-left"></i> Пазарувай още
+            <% end %>
+          </div>
+          <div class="col-sm-6">
+              <%= link_to new_order_path, :class => "btn btn-template-main right-content" do %>
+                Започни поръчка <i class="fa fa-chevron-right"></i>
+              <% end %>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <!-- /.box -->
+
+</div>
+<!-- /.col-md-9 -->
+
+<div class="col-md-3">
+    <div class="box" id="order-summary">
+        <div class="box-header">
+            <h3>Поръчка</h3>
+        </div>
+        <p class="text-muted">
+          Цена за доставката може да бъде определена, след като започнете поръчката и изберете начин на плащане.
+          Може да не потвърждавате поръчката, ако цената не Ви удовлетворява.
+        </p>
+
+        <div class="table-responsive">
+            <table class="table">
+                <tbody>
+                    <tr class="total">
+                        <td>Обща стойност</td>
+                        <th class="total-items-price right-aligned"><%= @cart.total_visible_with_discount_formatted %></th>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
+<!-- /.col-md-3 -->
+<% end %>
+
+<script language="JavaScript">
+  FashionLime.Common.utils.onPageLoad(function() {
+    var cart = new FashionLime.Cart.Show([
+        <% @cart_details.each do |c| %>
+          <%= raw c.client_data %>,
+        <% end %>
+      ]);
+    cart.init();
+
+    <% if Rails.env.production? && flash.key?(:products_added_to_cart) %>
+        FashionLime.FacebookPixelUtils.trackAddToCart(
+          <%= flash[:products_added_to_cart][:ids] %>,
+          <%= flash[:products_added_to_cart][:value] %>
+        );
+    <% end %>
+  });
+</script>
+

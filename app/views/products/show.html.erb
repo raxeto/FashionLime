@@ -1,0 +1,223 @@
+<% @not_available = !@product.available? %>
+<% occasion_names = @product.occasion_names %>
+
+<% title "#{@product.name} от #{@product.merchant.name}", true %>
+<% description "Категория: #{@product.product_category.name}#{occasion_names.present? ? ", Тип облекло: #{Modules::StringLib.unicode_downcase(@product.occasion_names.to_sentence)}" : ""}, Цена: #{(@not_available || @product.not_active?) ? @product.general_price_text(active: false) : @product.general_price_text(active: true)}, Описание: #{@product.description}" %>
+<% allow_search_engine_index %>
+
+<% meta_tag "og:description", @product.description %>
+<% og_images @product.non_outfit_pictures.map { |pp| {
+    :url => image_url(pp.picture.url(:medium)),
+    :type => pp.picture_content_type,
+    :width => image_width(pp.picture, :medium),
+    :height => image_height(pp.picture, :medium)
+}}%>
+
+<div id="productDetails" class="col-sm-12">
+  <% @size_chart = @product.size_chart %>
+   <div class="row product_container" id="productMain">
+        <div class="col-sm-6 col-lg-5">
+          <%= render partial: 'product_pictures', locals: { product: @product } %>
+        </div>
+        <div class="col-sm-6 col-lg-7">
+            <div class="box">
+                <h1 class="lead text-center model-name">
+                  <%= @product.name %>
+                </h1>
+                <div class="product-ref-number">
+                  Номер: <%= @product.id %>
+                </div>
+                <% if !@product.product_collection.nil? %>
+                <div>
+                  <p class="model-collection-link">
+                   <%= link_to product_collection_path(@product.product_collection), { :title => 'Разгледай всички продукти от колекцията' } do %>
+                      <%= @product.product_collection.full_name %>
+                    <% end %>
+                  </p>
+                </div>
+                <% end %>
+                <div class="text-center">
+                    <%= render partial: '/shared/rating', locals: { model: @product, use_cache: false} %>
+                </div>
+
+                <p class="text-center model-owner">
+                    <%= render :layout => '/shared/profile_link', :locals => { merchant: @merchant } do %>
+                        <%= @merchant.name %>
+                        <%= render partial: '/shared/owner_rating', locals: { owner: @merchant, add_parentheses: true, add_rating_word: false } %>
+                    <% end %>
+                </p>
+
+                <p class="link-small-centred model-additional-info-link">
+                  <a href="#details" class="scroll-to">
+                    Отиди на Описание, Доставка, Начини на плащане и Връщане и замяна
+                  </a>
+                </p>
+
+                <div class="prices_container price-text">
+                  <% @has_different_prices = @product.has_different_prices? %>
+                  <% if @not_available || @product.not_active? %>
+                     <%= @product.general_price_text(active: false) %>
+                  <% else %>
+                    <% if @has_different_prices %>
+                    <div class="general_price">
+                      <%= @product.general_price_text(active: true) %>
+                      <% if @product.has_price_range? %>
+                        <div class="well well-xs">
+                             * Изберете цвят и размер за точна цена
+                        </div>
+                      <% end %>
+                    </div>
+                    <div class="article_price">
+                      <s class="price gray-text"></s>
+                      <b class="price_with_discount"></b>
+                    </div>
+                    <%else%>
+                        <%if (@product.price - @product.price_with_discount).abs >= Conf.math.PRICE_EPSILON %>
+                          <s class="gray-text"><%= num_to_currency(@product.price) %></s>
+                        <%end%>
+                        <b><%= num_to_currency(@product.price_with_discount) %></b>
+                    <%end%>
+                  <% end %>
+                </div>
+
+
+               <% if @product.not_active? %>
+                  <h4 class="text-center">Продуктът не е пуснат в продажба</h4>
+                <%elsif @not_available %>
+                  <h4 class="text-center">Продуктът е изчерпан  </h4>
+                <%else%>
+                  <%= form_tag(product_add_to_cart_path(:id => @product.id), :method=>'post', :id => 'product_form' ) do %>
+                    <div class="row">
+                      <div class="col-sm-4">
+                         <div class="form-group">
+                          <label class="control-label" for="color_id">Цвят</label>
+                            <%= select_tag(:color_id, options_from_collection_for_select(@colors, :id, :name, @color_id), :class => 'form-control color_id') %>
+                          </div>
+                      </div>
+                       <div class="col-sm-4">
+                         <div class="form-group size-form-group">
+                            <label class="control-label" for="size_id">Размер</label>
+                            <%= select_tag(:size_id, options_from_collection_for_select(@sizes, :id, :name, @size_id), { :class => 'form-control size_id', :include_blank => true } ) %>
+                          </div>
+                          <% unless @size_chart.nil? %>
+                            <div class="size-chart-link">
+                              <%= link_to('#', {"data-toggle" => "modal", "data-target" => "#sizeChartModal"}) do %>
+                                <i class="fa fa-info-circle"></i>Кой е моят размер?
+                              <% end %>
+                            </div>
+                          <% end %>
+                      </div>
+                      <div class="col-sm-4">
+                         <div class="form-group">
+                          <label class="control-label" for="qty">Количество</label>
+                          <%= number_field_tag(:qty, 1, :min => 1, :class => 'form-control') %>
+                          </div>
+                      </div>
+                    </div>
+
+                    <p class="model-add-to-cart text-center">
+                        <button type="submit" class="btn btn-template-primary">
+                          <i class="fa fa-shopping-cart"></i> Добави в количката
+                        </button>
+                    </p>
+                  <% end %>
+                <% end %>
+
+                <div class="model-add-to-cart text-center">
+                    <%= link_to product_outfits_path(@product), :class => 'link-important product-outfits', :title => 'Разгледай всички визии, в които този продукт участва'  do %>
+                      <%= outfit_icon %> 
+                      Визии с този продукт
+                    <% end %>
+                </div>
+
+
+                <%= render partial: '/shared/social_network_share' %>
+
+            </div>
+        </div>
+
+    </div>
+
+    <% if !@product.not_active? && !@not_available %>
+
+       <ul id="details" class="nav nav-tabs">
+          <li class="active">
+            <a href="#description" data-toggle="tab">
+              Описание на продукта
+            </a>
+          </li>
+          <li>
+            <a href="#shipments" data-toggle="tab">
+              Доставка
+            </a>
+          </li>
+          <li>
+            <a href="#payments" data-toggle="tab">
+              Начини на плащане
+            </a>
+          </li>
+          <li>
+            <a href="#return-policy" data-toggle="tab">
+              Връщане и замяна
+            </a>
+          </li>
+      </ul>
+      <div class="tab-content">
+          <div class="tab-pane active" id="description">
+              <p class="emphasized italic">
+                <%= @product.description %>
+              </p>
+          </div>
+
+          <div class="tab-pane" id="shipments">
+              <%= render partial: '/shared/merchant_shipments', locals: { merchant: @merchant, limit_count: true } %>
+          </div>
+
+          <div class="tab-pane" id="payments">
+            <%= render partial: '/shared/payments', locals: { payment_types: @merchant.available_payment_types } %>
+          </div>
+
+          <div class="tab-pane" id="return-policy">
+            <%= @merchant.return_policy %>
+          </div>
+      </div>
+
+    <% end %>
+
+
+    <%= render partial: '/shared/size_chart', locals: { size_chart: @size_chart, size_chart_modal_id: "sizeChartModal" } unless @size_chart.nil? %>
+
+    <%= render partial: '/shared/related_items', locals: { title: "Сходни продукти", items_control_id: "relatedProducts",  items: @related_products,  item_partial: 'FashionLime.Product.relatedItem' } if @related_products.length > 0  %>
+    <%= render partial: '/shared/related_items', locals: { title: "Комбинирайте с",  items_control_id: "suitableProducts", items: @suitable_products, item_partial: 'FashionLime.Product.relatedItem' } if @suitable_products.length > 0 %>
+
+</div>
+
+<% has_color_size_selects = (!@product.not_active? && !@not_available) %>
+<script language="JavaScript">
+  FashionLime.Common.utils.onPageLoad(function() {
+    var state = new FashionLime.Product.Show("<%= @product.id %>", [
+      <% @product.non_outfit_pictures.each do |pp| %>
+        {
+          color: '<%= pp.color.try(:name) %>',
+          url: '<%= pp.picture.url(:original) %>',
+        },
+      <% end %>
+      ], <%= @has_different_prices %>,
+         <%= has_color_size_selects %>);
+    <% if Rails.env.production? %>
+    FashionLime.FacebookPixelUtils.trackViewProduct(
+      <%= @product.id %>,
+      <%= @product.catalog_price %>
+    );
+    FashionLime.FacebookPixelUtils.trackViewProductCategory(
+      '<%= @product.product_category.key %>'
+    );
+    FashionLime.FacebookPixelUtils.trackViewProductCategory(
+      '<%= @product.product_category.parent.key %>'
+    );
+    <% end %>
+  });
+
+</script>
+
+

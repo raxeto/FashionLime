@@ -1,0 +1,95 @@
+<% help_steps "index" %>
+
+<div id="merchantHome" class="container">
+
+  <div class="row">
+    <div class="heading help-tour-step-1">
+      <h3 class="welcome-heading">Добре дошли, <%=current_user.username %>. Вие сте част от <%= current_merchant.name %>. </h3>
+    </div>
+  </div>
+
+  <% if current_merchant.not_completed? %>
+  <div class="row activation-invitation bar background-gray">
+    <p class="lead">
+      Профилът Ви все още не е активиран. Трябва да попълните малко информация.
+      <%= link_to merchant_activation_path, :class => "btn btn-template-main help-tour-step-5" do %>
+         Започни активирането
+      <% end %>
+    </p>
+  </div>
+  <% elsif current_merchant.has_missing_profile_info? %>
+  <div class="row activation-invitation bar background-gray">
+    <p class="lead">
+      Въведохме нова задължителна информация, която трябва да попълните.
+      <%= link_to merchant_edit_merchant_path, :class => "btn btn-template-main help-tour-step-6" do %>
+         Въведи информацията
+      <% end %>
+    </p>
+  </div>
+  <% end %>
+
+
+  <div class="row">
+
+    <div class="container notifications">
+        <div class="row same-height-row">
+            <div class="col-sm-4">
+            <% wait_confirm_orders_cnt = current_merchant.merchant_orders.where(:status => [MerchantOrder.statuses["active"], MerchantOrder.statuses["waiting_payment"]]).count %>
+             <%= link_to merchant_orders_path(:status => ["active", "waiting_payment"]) do %>
+                <div class="box-simple same-height help-tour-step-2">
+                    <div class="icon">
+                        <i class="fa fa-list"></i>
+                    </div>
+                    <br/>
+                    <span class="badge notification-badge"><%= wait_confirm_orders_cnt %></span>
+                    <h3>
+                        Поръчки
+                    </h3>
+                    <p>Вие имате <%= wait_confirm_orders_cnt %> нови поръчки, които очакват да бъдат потвърдени.</p>
+                </div>
+              <% end %>
+            </div>
+
+            <div class="col-sm-4">
+            <% active_returns_cnt = current_merchant.merchant_order_returns.active.count %>
+             <%= link_to merchant_order_returns_path(:status => "active") do %>
+                <div class="box-simple same-height help-tour-step-3">
+                    <div class="icon">
+                        <i class="fa fa-exchange"></i>
+                    </div>
+                    <br/>
+                    <span class="badge notification-badge"><%= active_returns_cnt %></span>
+                    <h3>
+                        Заявки за връщане или замяна
+                    </h3>
+                    <p>Вие имате <%= active_returns_cnt %> нови заявки за връщане или замяна, които очакват да бъдат обработени.</p>
+                </div>
+              <% end %>
+            </div>
+
+            <% last_days_filter = { :date_from => (Time.zone.today - 6).to_s(:db), :date_to => Time.zone.today.to_s(:db) } %>
+            <div class="col-sm-4">
+             <% product_views = GaPageView.merchant_products_last_days_count(current_merchant.id, 7) %>
+             <% outfit_views  = GaPageView.merchant_outfits_last_days_count(current_merchant.id, 7) %>
+             <% profile_views = GaPageView.merchant_profile_last_days_count(current_merchant.id, 7) %>
+
+                <div class="box-simple same-height help-tour-step-4">
+                    <div class="icon">
+                        <i class="fa fa-users"></i>
+                    </div>
+                    <br/>
+                    <h3>
+                        Преглеждания от потребители
+                    </h3>
+                    <div>
+                      Очаквайте скоро
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+  </div>
+
+</div>
+

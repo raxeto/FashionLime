@@ -1,0 +1,6 @@
+bg:
+  enums:
+    home_page_link:
+      position:
+        in_list: В списък
+        main: Основна

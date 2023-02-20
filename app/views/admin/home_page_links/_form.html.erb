@@ -1,0 +1,8 @@
+<%= form_for(@home_page_link, url: { action: action}, html: { multipart: true } ) do |f| %>
+     Title <%= f.text_field :title %> <br/>
+     Subtitle <%= f.text_field :subtitle %> <br/>
+     Url path <%= f.text_field :url_path  %> <br/>
+     Position <%= f.collection_select(:position, HomePageLink.positions_i18n, :first, :last) %> <br>
+     Picture <%= f.file_field :picture %> <br/>
+     <%= f.submit(action.to_s.capitalize) %>
+<% end %>

@@ -1,0 +1,45 @@
+<div id="devise-client-sign-in-sign-up-form" class="col-sm-12">
+  <div id="col-sign-up" class="col-md-6">
+    <h2>Нова регистрация</h2>
+
+    <p class="welcoming-message">
+      Щастливи сме да разберем, че искате да станете част от нашето семейство!
+    </p>
+
+    <%= bootstrap_form_for(@sign_up_user || User.new, as: resource_name, url: registration_path(resource_name), data: { no_turbolink: true }, html: { id: "register_user" } ) do |f| %>
+
+      <%= f.text_field :username, autofocus: (autofocus_field == 'sign_up' ? true : false), label: "Потребителско име", help: "може да съдържа букви, цифри и '?', '!', '-', '_' и '.', например iva_ivanova", id: "register_username" %>
+
+      <%= f.email_field :email_o, label: "Имейл", help: "не е задължителен", id: "register_email" %>
+
+      <%= f.password_field :password, autocomplete: "off", label: "Парола", help: "най-малко #{@minimum_password_length} символа", id: "register_password" %>
+
+      <div class="form-group">
+        <button type="submit" class="btn btn-template-main">
+          <i class="fa fa-user"></i> Регистрирай се
+        </button>
+      </div>
+    <% end %>
+
+    <div class="new-merchant-info">
+      <p>
+        Искате да се регистрирате като търговец?
+      </p>
+      <%= link_to information_new_merchant_path, :class => "link-important" do %>
+          <i class="fa fa-info-circle" aria-hidden="true"></i>Информация нов търговец
+      <% end %>
+    </div>
+
+  </div>
+  <div class="col-md-6">
+    <h2>Вход</h2>
+
+    <p class="welcoming-message">
+      Ако вече имате профил - добре дошли обратно! Използвайте тази форма, за да влезете в системата.
+    </p>
+
+    <%= render partial: "devise/shared/new_user_session_long_form", locals: { form_url: new_user_session_path, autofocus: (autofocus_field == 'sign_in' ? true : false) } %>
+
+    <%= link_to "Забравена парола?", new_password_path(resource_name) %>
+  </div>
+</div>

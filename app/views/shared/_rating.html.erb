@@ -1,0 +1,23 @@
+<% size = nil if local_assigns[:size].nil? %>
+
+<div class='rating_container'>
+  <span class='rating rating-text'>
+    <%= model.rating.to_i %>
+  </span>
+  <span class="user_rating" style="display: none;">
+    <%= userRating = (use_cache ? model.cached_user_rating(current_profile.id, model.id) : model.user_rating(current_profile.id)) || 0 %>
+  </span>
+  <span class="rating-text">
+    рейтинг
+  </span>
+  <div class="btn-group <%= size.present? ? "btn-group-#{size}" : "" %> btn-rounded-group" role="group" aria-label="...">
+    <button type="button" class="btn btn-default btn-increase <%= userRating == 1 ? 'selected' : '' %>"
+      onclick="FashionLime.Rating.utils.increase(this, <%= model.id %>, '<%= model.class.name.demodulize%>');">
+      <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+    </button>
+    <button type="button" class="btn btn-default btn-decrease <%= userRating == -1 ? 'selected' : '' %>"
+      onclick="FashionLime.Rating.utils.decrease(this, <%= model.id %>, '<%= model.class.name.demodulize%>');" >
+      <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+    </button>
+  </div>
+</div>

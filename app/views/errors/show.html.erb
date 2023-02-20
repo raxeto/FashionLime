@@ -1,0 +1,35 @@
+<% title "Грешка #{@error_code}", true %>
+<% description @error_message, true %>
+<% allow_search_engine_index %>
+
+<div id="error-show" class="col-xs-12">
+
+  <div class="box">
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3 error-container">
+        <p class="sad-face-icon">
+          <i class="fa fa-frown-o" aria-hidden="true"></i>
+        </p>
+        <p class="lead message">
+          Съжаляваме! <%= @error_message %>
+        </p>
+        <% if @error_explanation.present? %>
+          <p class="explanation">
+            <%= @error_explanation %>
+          </p>
+        <% end %>
+
+        <%= render partial: 'shared/additional_help' %>
+
+      </div>
+    </div>
+
+    <div class="heading trending-outfits-heading">
+      <h3>Актуални визии</h3>
+    </div>
+
+    <%= render partial: 'shared/trending_outfits' %>
+    
+  </div>
+
+</div>

@@ -1,0 +1,35 @@
+<h2>Open Graph Tags</h2>
+
+<%= link_to('Create New', new_admin_open_graph_tag_path) %>
+
+<table class="table centered">
+  <thead>
+    <tr>
+      <th class="id">ID</th>
+      <th class="id">Page Link</th>
+      <th class="name">Title</th>
+      <th class="key">Description</th>
+      <th class="key">Picture Width</th>
+      <th class="key">Picture Height</th>
+      <th class="date">Created</th>
+      <th class="date">Updated</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @tags.each do |t| %>
+      <tr>
+        <td class="id"> <%= t.id %> </td>
+        <td class="id"> <%= t.page_link %> </td>
+        <td class="id"> <%= t.title %> </td>
+        <td class="id"> <%= t.description %> </td>
+        <td class="id"> <%= t.picture_width %> </td>
+        <td class="id"> <%= t.picture_height %> </td>
+        <td class="date"> <%= date_to_s(t.created_at)%> </td>
+        <td class="date"> <%= date_to_s(t.updated_at)%> </td>
+        <td class="link"><%= link_to('edit', edit_admin_open_graph_tag_path(t.id)) %></td>
+        <td class="link"><%= link_to('delete', admin_open_graph_tag_path(t.id), method: :delete) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

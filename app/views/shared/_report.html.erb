@@ -1,0 +1,129 @@
+<% help_steps nil, [{:location => "shared.report"}, {:location =>"shared.bootstrap_table"}] %>
+
+<% field_labels = {}
+     fields.each_value do |v|
+      field_labels = field_labels.merge(v[:fields])
+     end
+     field_labels = field_labels.merge(sumators)
+%>
+
+<div class="col-xs-12">
+  <%= form_tag report_path, method: :post, id: form_id do %>
+    <div id="reportContainer">
+      <div id="reportFilters" class="report-filters-container">
+      <%= render partial: 'shared/filters', locals: {
+        filters: filters,
+        labels:  filter_labels,
+        filters_control: filters_control
+      } %>
+      </div>
+
+      <div id="reportFields" class="report-fields-container">
+        <%= render partial: 'shared/report_fields/expander', locals: {
+        form_id: form_id,
+        fields: fields,
+        sumators: sumators
+      } %>
+      </div>
+
+      <div id="reportOptions">
+          <div class="report-type">
+            <div class="btn-group" data-toggle="buttons">
+              <label class="btn btn-default" title="Табличен вид на справката"
+              data-toggle="popover" data-trigger="hover" data-content="За да генерирате таблица може да избирате колкото искате обикновени полета и суматори.">
+                <%= radio_button_tag(:report_type, "table", {}, :autocomplete => "off") %>
+                <i class="fa fa-th"></i>
+              </label>
+              <label class="btn btn-default" title="Линейна графика на справката"
+                data-toggle="popover" data-trigger="hover" data-content="За да генерирате линейна графика е необходимо да изберете точно един суматор и едно или две обикновени полета.">
+                <%= radio_button_tag(:report_type, "lineChart", {}, :autocomplete => "off") %>
+                <i class="fa fa-area-chart"></i>
+              </label>
+
+              <label class="btn btn-default" title="Бар графика на справката"
+                data-toggle="popover" data-trigger="hover" data-content="За да генерирате бар графика е необходимо да изберете точно един суматор и едно или две обикновени полета.">
+                <%= radio_button_tag(:report_type, "barChart", {}, :autocomplete => "off") %>
+                <i class="fa fa-bar-chart-o"></i>
+              </label>
+              <label class="btn btn-default" title="Пай графика на справката"
+                data-toggle="popover" data-trigger="hover" data-content="За да генерирате пай графика е необходимо да изберете точно един суматор и точно едно обикновено поле.">
+                <%= radio_button_tag(:report_type, "pieChart", {}, :autocomplete => "off") %>
+                <i class="fa fa-pie-chart"></i>
+              </label>
+            </div>
+          </div>
+
+          <button class="btn btn-template-main btn-generate" type="submit" title="Генерира справка с избраните полета и филтри">
+            <i class="fa fa-refresh"></i> Генерирай
+          </button>
+      </div>
+
+      <div id="reportControl" class="box report-result">
+        <% unless @records.nil? %>
+          <% if @reportType == "table" %>
+            <div class="table-responsive">
+              <table id="reportTable" class="table">
+              </table>
+            </div>
+          <% elsif @reportType == "lineChart" || @reportType == "barChart" || @reportType == "pieChart"  %>
+            <div id="reportChartWarning" class="alert alert-warning">
+            </div>
+            <div id="reportChartContainer" class="row">
+              <div class="col-sm-10">
+                <canvas id="reportChart"></canvas>
+              </div>
+              <div id="reportChartLegend" class="col-sm-2">
+              </div>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+
+    </div>
+  <% end %>
+</div>
+
+<script language="JavaScript">
+  FashionLime.Common.utils.onPageLoad(function () {
+    var reportType = '<%= params[:report_type] || "table" %>';
+    if (!FashionLime.Common.utils.isNullOrEmpty(reportType)) {
+      $('#report_type_' + reportType).parent('label').button('toggle');
+    }
+    <% if !@records.nil? %>
+      var data = [
+        <% @records.each do |r| %>
+          <%= r.to_json.html_safe %>,
+        <% end %>
+      ];
+
+     <% if @reportType == "table" && !@records.first.nil? %>
+      FashionLime.Shared.bootstrapTable.create('reportTable',
+        [
+          <% @records.first.each_key do |k| %>
+            {
+              id : "<%= k %>",
+              name : "<%= field_labels[k.to_sym] %>",
+              filterType: "<%= case field_types[k.to_sym] when :integer then 'range' when :float then 'range_float' when :date then 'range_date'  else 'search' end %>",
+              dataType: "<%= case field_types[k.to_sym] when :integer then 'integer' when :float then 'float' when :date then 'date' else 'string' end %>"
+            },
+         <% end %>
+        ],
+        data
+      );
+     <% elsif (@reportType == "lineChart" || @reportType == "barChart" || @reportType == "pieChart") %>
+        FashionLime.Shared.chart.create("reportChart", "<%= @reportType.sub("Chart", "") %>",
+        <% if @selectedFields.nil? %>
+          [], [],
+        <% else %>
+          [<%= @selectedFields.select { |f| !sumators.key?(f.to_sym)}.map {|str| "\"#{str}\""}.join(',').html_safe %>],
+          <%= @selectedFields.select { |f| sumators.key?(f.to_sym)}.map {|s| { :key => s, :label => sumators[s.to_sym]}}.to_json.html_safe %>,
+        <% end %>
+        data,
+        "reportChartWarning",
+        "reportChartLegend");
+      <% end %>
+    <% end %>
+    $('[data-toggle="popover"]').popover();
+  });
+
+</script>

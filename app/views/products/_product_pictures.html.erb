@@ -1,0 +1,11 @@
+<div class="sp-product-pictures">
+  <div class="sp-wrap">
+    <% if product.non_outfit_pictures.size == 0 %>
+      <%= link_to(product_picture_image(nil, :original), Product::DefaultProductPicture.new.url(:original)) %>
+    <% else %>
+      <% product.non_outfit_pictures.each do |p| %>
+        <%= link_to(product_picture_image(p, :original), p.picture.url(:original)) %>
+      <% end %>
+    <% end %>
+  </div>
+</div>

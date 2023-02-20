@@ -1,0 +1,77 @@
+ <div class="modal fade size-chart" id="<%= size_chart_modal_id %>" tabindex="-1" role="dialog" aria-labelledby="SizeChart" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h5 class="modal-title" id="SizeChart">Таблица с размери</h5>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+                  <div class="col-sm-12">
+                    <span class="lead size-chart-name">
+                      <%= size_chart.name %>
+                    </span>
+                  </div>
+                </div>
+
+                <% unless size_chart.note.blank? %>
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <div class="well well-sm size-chart-note">
+                        <%= "* " + size_chart.note %>
+                      </div>
+                    </div>
+                  </div>
+                <% end %>
+
+                <div class="row">
+                  <div class="col-sm-12">
+                    <div class="table-responsive">
+                      <table class="table centered">
+                        <thead class="centered-header">
+                          <tr>
+                            <th>Размер</th>
+                            <% size_chart.size_category.size_descriptors.each do |d| %>
+                            <th>
+                              <%= d.name %>
+                            </th>
+                            <% end %>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <% size_col_width = 10 %>
+                          <% descr_col_width = ((100 - size_col_width)/size_chart.size_category.size_descriptors.size).round %>
+                          <% prev_size = 0 %>
+                          <% size_chart.size_chart_descriptors.each do |d| %>
+                            <% new_row = (prev_size != d.size_id) %>
+
+                            <% if new_row %>
+                              <% if prev_size > 0 %>
+                                </tr>
+                              <% end %>
+                              <tr>
+                                <td style="width:<%=size_col_width%>%">
+                                  <%= d.size.name %>
+                                </td>
+                            <% end %>
+
+                              <td class="right-aligned" style="width:<%=descr_col_width%>%">
+                                <%= d.value %>
+                              </td>
+                            <% prev_size = d.size_id %>
+                          <% end %>
+                          <% if prev_size > 0 %>
+                              </tr>
+                          <% end %>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

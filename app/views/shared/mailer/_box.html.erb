@@ -1,0 +1,30 @@
+<table class="full-width">
+  <tbody>
+    <tr>
+      <td class="centered v-centered" colspan="<%= same_row_link ? 2 : 1 %>">
+        <%= mailer_link_to link do %>
+          <%= image_tag image_url, :alt => "Снимка на #{title}", :width => image_width, :height => image_height %>
+        <% end %>
+      </td>
+    </tr>
+    <tr>
+      <td class="left padded title-cell">
+        <%= mailer_link_to link do %>
+          <%= title %> 
+        <% end %>
+      </td>
+      <% if same_row_link %>
+        <td class="left padded">
+          <%= mailer_link_to "Разгледай", link, :class => "btn-template" %>
+        </td>
+      <% end %>
+    </tr>
+    <% if !same_row_link %>
+      <tr>
+        <td class="left padded">
+          <%= mailer_link_to "Разгледай", link, :class => "btn-template" %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

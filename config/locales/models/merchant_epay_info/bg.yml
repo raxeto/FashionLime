@@ -1,0 +1,6 @@
+bg:
+  activerecord:
+    attributes:
+      merchant_epay_info:
+        min_code: "КИН"
+        secret: "Тайна"

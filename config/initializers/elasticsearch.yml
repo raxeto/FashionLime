@@ -1,0 +1,24 @@
+# TODO: Finish the synonim analyzer and use an analyzer chain
+# set it as the default analyzer and use it in all models
+# http://stackoverflow.com/questions/24288423/custom-analyzer-elasticsearch-rails
+# https://www.elastic.co/guide/en/elasticsearch/guide/current/synonyms-analysis-chain.html
+# https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-synonym-tokenfilter.html
+# https://github.com/elastic/elasticsearch-rails/issues/63
+# index:
+#   analysis:
+#     analyzer:
+#       my_bulgarian:
+#         type: bulgarian
+#         synonyms_path: "/Users/work-mac/Development/fashionlime/config/search/synonyms.txt"
+#   number_of_shards: 1
+
+development: &default
+  host: 'http://localhost:9200/'
+  log: false # enable this for debugging only
+test:
+  <<: *default
+staging:
+  log: false # enable this for debugging only
+  host: 'http://localhost:9200/' # host: 'http://0.0.0.0:9200/'
+production:
+  <<: *default

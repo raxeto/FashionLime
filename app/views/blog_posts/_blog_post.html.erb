@@ -1,0 +1,26 @@
+ <div class="box-image-text blog-post" aria-haspopup="true" onclick="">
+    <div class="top">
+        <div class="image">
+          <%= blog_post_image blog_post, :medium, :class => "img-responsive img-center" %>
+        </div>
+        <div class="bg"></div>
+        <div class="text">
+            <p class="buttons">
+                <%= link_to blog_post_path(:url_path => blog_post.url_path), :class => "btn btn-template-transparent-primary" do %>
+                    <i class="fa fa-link" aria-hidden="true"></i> 
+                    Прочети
+                <% end %>
+            </p>
+        </div>
+    </div>
+    <div class="content">
+        <div class="title">
+            <%= link_to blog_post.title, blog_post_path(:url_path => blog_post.url_path) %>
+        </div>
+        <p class="read-more">
+            <%= link_to blog_post_path(:url_path => blog_post.url_path), :class => "btn btn-xs btn-template-main" do %>
+                Прочети
+            <% end %>
+        </p>
+    </div>
+</div>

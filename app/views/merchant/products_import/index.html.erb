@@ -1,0 +1,131 @@
+<% help_steps "index" %>
+
+<div id="importProducts" class="col-sm-12 clearfix">
+  <div class="box">
+    <p class="lead help-tour-step-1">
+      Можете да импортирате продукти от Excel, Open Ofice, Comma-separated (.csv) или Tab-separated (.tsv) файл. 
+    </p>
+    <p class="help-tour-step-2">
+      Файлът трябва да съдържа строго определени колони. Примерен формат на файла може да свалите от бутона "Свали примерен файл". 
+    </p>
+    <p>
+      Цената, която зададете във файла, ще бъде използвана за всички варианти (по цвят и размер на продукта). 
+      След това можете да я редактирате ако желаете. Колоната за количество също определя наличното количество на всеки вариант на продукта.
+    </p>
+    <%= form_tag merchant_import_products_path, method: :post, multipart: true, id: "importProductsForm" do %>
+        <span class="btn btn-default btn-file btn-browse help-tour-step-4">
+          <i class="fa fa-folder-open"></i><%= file_field_tag :import_file %>
+        </span>
+
+        <span id="fileName"></span>
+
+        <%= submit_tag "Предварителен преглед", :class => "btn btn-template-main btn-import help-tour-step-5" %>
+
+        <%= link_to "/product_import/import_example.xlsx", :class => "btn btn-default btn-download-example help-tour-step-3" do %>
+           <i class="fa fa-file-excel-o"></i>
+           Свали примерен файл
+        <% end %>
+    <% end %>
+
+    <% @products_have_errors = false %>
+
+    <% if @products %>
+      <div id="previewResult">
+          <div id="previewSuccess" style="display: none;">
+            <div class="alert alert-success">
+              <strong>Успех!</strong> Във файла не бяха открити грешки. Прегледайте данните и натиснете бутона Импортирай, за да запазите продуктите.
+            </div>
+            <%= form_tag merchant_import_products_confirm_path, method: :post, id: "submitProductsPreviewForm" do %>
+
+              <% @products.each do |p| %>
+                <%= hidden_field_tag("products[]", p.as_json().merge({
+                    :size_ids => p.size_ids,
+                    :color_ids => p.color_ids,
+                    :occasion_ids => p.occasion_ids,
+                    :imp_price => p.imp_price,
+                    :imp_perc_discount => p.imp_perc_discount,
+                    :imp_price_with_discount => p.imp_price_with_discount,
+                    :imp_qty => p.imp_qty,
+                    :min_available_qty => p.min_available_qty.try(:to_i)
+                  }).to_json) %>
+              <% end %>
+
+              <button type="submit" class="btn btn-template-main">
+                <i class="fa fa-floppy-o"></i> Импортирай
+              </button>
+            <% end %>
+          </div>
+
+          <div id="previewErrors" style="display: none;">
+            <div class="alert alert-danger">
+              <strong>Неуспех!</strong> Моля прегледайте грешките, редактирайте файла и опитайте отново.
+            </div>
+          </div>
+        </div>
+
+        <div id="importPreview" class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Ред</th>
+                <th>Име</th>
+                <th>Колекция</th>
+                <th>Описание</th>
+                <th>Търговска марка</th>
+                <th>Категория</th>
+                <th>Статус</th>
+                <th>Размери</th>
+                <th>Цветове</th>
+                <th>Тип облекло</th>
+                <th>Цена</th>
+                <th>Отстъпка</th>
+                <th>Цена с отстъпка</th>
+                <th>Количество</th>
+                <th>Имейл при мин. к-во</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @products.each_with_index do |p, i| %>
+              <tr>
+                <td><%= i + 2 %></td>
+                <% ["name", "product_collection_id", "description", "trade_mark_id", "product_category_id", 
+                  "status", "size_ids", "color_ids", "occasion_ids", "imp_price", "imp_perc_discount", "imp_price_with_discount", "imp_qty", "min_available_qty"].each do |attr| %>
+                  <td class="<%= 'danger' unless p.errors[attr].blank? %>">
+                    <%= 
+                      case attr
+                      when "product_collection_id" then p.product_collection.try(:name)
+                      when "trade_mark_id" then p.trade_mark.try(:name)
+                      when "product_category_id" then p.product_category.try(:name)
+                      when "status" then p.errors["status"].blank? ? p.status_i18n : ""
+                      when "size_ids" then p.sizes.to_a.sort_by { |x| x.order_index }.collect { |x| x.name }.join(', ')
+                      when "color_ids" then p.colors.to_a.sort_by { |x| x.order_index }.collect { |x| x.name }.join(', ')
+                      when "occasion_ids" then p.occasions.to_a.sort_by { |x| x.order_index }.collect { |x| x.name }.join(', ')
+                      when "imp_price" then p.imp_price
+                      when "imp_perc_discount" then p.imp_perc_discount
+                      when "imp_price_with_discount" then p.imp_price_with_discount
+                      when "imp_qty" then p.imp_qty
+                      when "min_available_qty" then p.min_available_qty.try(:to_i)
+                      else p[attr] end
+                    %>
+                    <% unless p.errors[attr].blank? %>
+                      <% @products_have_errors = true %>
+                      <%= p.errors[attr].join(', ') %>
+                    <% end %>
+                  </td>
+                <% end %>
+              </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+    <% end %>
+  </div>
+</div>
+
+<script language="JavaScript">
+  FashionLime.Common.utils.onPageLoad(function () {
+    FashionLime.Merchant.ProductImport.index.setup();
+    FashionLime.Merchant.ProductImport.index.showPreviewSections(<%= @products && !@products_have_errors ? true : false %>);
+  });
+</script>
+

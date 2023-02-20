@@ -1,0 +1,9 @@
+<% if user.merchant? %>
+  <%= link_to merchant_profile_outfits_path(:url_path => user.merchant.url_path) do %>
+      <%= yield %>
+  <% end %>
+<% else %>
+  <%= link_to user_profile_outfits_path(:url_path => user.url_path) do %>
+      <%= yield %>
+  <% end %>
+<% end %>

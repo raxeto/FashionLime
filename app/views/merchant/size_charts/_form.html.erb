@@ -1,0 +1,128 @@
+<% help_steps "form" %>
+
+<% edit_mode = action == :update %>
+
+<%= bootstrap_form_for(@size_chart, url: { action: action }, html: { id: "size_chart_form" } ) do |f| %>
+  
+  <%= render "merchant/activation/activation_header" %>
+
+  <div class="row">
+     <div class="col-sm-12">
+        <button type="submit" class="btn btn-template-main btn-save help-tour-step-5">
+          <i class="fa fa-floppy-o"></i> Запази
+        </button>
+      </div>
+  </div>
+
+  <div class="row">
+     <div class="col-sm-6">
+      <%= f.text_field :name, :label => "Име", :id => "sizeChartName", :class => "help-tour-step-1" %>
+    </div>
+    <div class="col-sm-6">
+      <%= f.collection_select(:size_category_id, SizeCategory.meaningful.order(:order_index), :id, :name, { :include_blank => true, :label => "Категория размер"}, {:id => "sizeCategoryID", :disabled => edit_mode, :class => "help-tour-step-2"}) %>
+      <%= f.hidden_field :id, :id => "size_chart_id" %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-12">
+      <%= f.text_area :note, :label => "Забележка", :id => "sizeChartNote", :class => "help-tour-step-3" %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-12 help-tour-step-4">
+      <div id="startSelectionPanel" class="alert alert-warning fade in">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <strong>Инструкции</strong> <br/>
+        Попълнете име и изберете категория размер.
+      </div>
+      <div id="instructionsPanel" class="alert alert-warning fade in">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <strong>Инструкции</strong> <br/>
+        Попълнете в САНТИМЕТРИ стойностите за различните параметри, които отговарят на размерите на Вашите артикули. <br/>
+        Ако попълните двете стойности потребителите ще виждат и двете разделени с тире в таблицата за размерите (например 84-88). <br/>
+        Ако попълните само едната стойност, а другата оставите 0, потребителите ще виждат само ненулевата стойност. <br/>
+        Ако Вашата фирма не предлага някой от размерите, можете да го изтриете с бутона в дясно.
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div id="chartHolder" class="col-sm-12">
+      <% if @size_chart.size_chart_descriptors.size > 0 %>
+        <div class="table-responsive">
+          <table id="sizeChartTable" class="table centered">
+            <thead>
+              <tr>
+                <th>Размер</th>
+                <% @size_chart.size_category.size_descriptors.each do |d| %>
+                <th colspan="2">
+                  <%= d.name %>
+                </th>
+                <% end %>
+                <th>Изтриване</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% prev_size = 0 %>
+              <%= f.fields_for :size_chart_descriptors do |d| %>
+                <% new_row = (prev_size != d.object.size_id) %>
+
+                <% if new_row %>
+                  <% if prev_size > 0 %>
+                      <td>
+                        <button type="button" value="Изтрий" class="btn-destroy btn btn-template-main btn-sm">
+                          <i class="fa fa-trash-o"></i>
+                        </button>
+                      </td>
+                    </tr>
+                  <% end %>
+                  <tr>
+                    <td>
+                      <%= d.object.size.name %>
+                    </td>
+                <% end %>
+
+                  <td class="left-cell">
+                    <%= d.text_field :value_from, :hide_label => true, :value => num_with_auto_precision(d.object.value_from), :class => "form-control input-sm numeric-short range" %>
+                  </td>
+                  <td class="right-cell">  
+                    <%= d.text_field :value_to, :hide_label => true, :value => num_with_auto_precision(d.object.value_to), :class => "form-control input-sm numeric-short range" %>
+                    
+                    <%= d.hidden_field :id %>
+                    <%= d.hidden_field :size_id, :class => 'size_id' %>
+                    <%= d.hidden_field :size_descriptor_id %>
+                    <%= d.hidden_field :order_index %>
+                  </td>
+
+                <% prev_size = d.object.size_id %>
+              <% end %>
+               <% if prev_size > 0 %>
+                      <td>
+                        <button type="button" value="Изтрий" class="btn-destroy btn btn-template-main btn-sm">
+                          <i class="fa fa-trash-o"></i>
+                        </button>
+                      </td>
+                    </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+
+      <% end %>
+    </div>
+  </div>
+
+<% end %>
+
+<script language="JavaScript">
+  FashionLime.Common.utils.onPageLoad(function () {
+    <% unless edit_mode %>
+      FashionLime.Merchant.SizeChart.form.setupSizeCategoryChange();
+    <% end %>
+    FashionLime.Merchant.SizeChart.form.setupDestroy();
+    FashionLime.Merchant.SizeChart.form.setupVisiblePanels();
+  });
+</script>
+

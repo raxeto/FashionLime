@@ -1,0 +1,35 @@
+<% 
+  fields[:sumators] = { :title => "Суматори", :fields => sumators }
+  fields[:selected_fields] = { :title => "Избрани полета" }
+  groups = {}
+  controls = {}
+  fields.each do |k, v|
+   groups[k] = v[:title]
+   if !v[:fields].blank?
+     controls[k] = render partial: 'shared/report_fields/fields_item', locals: { :fields => v[:fields]}
+   end
+  end
+
+  controls[:selected_fields] = render partial: 'shared/report_fields/selected_fields'
+%>
+
+<div class="report-fields">
+  <%= render partial: 'shared/expander_items', locals: { 
+      container_id: 'reportFieldsExpander',
+      items_container_id: 'reportFieldsInner',
+      title: 'Полета',
+      items: fields.keys,
+      labels:  groups,
+      items_control: controls,
+      footer_content: "<button type='button' class='close-fields btn btn-sm btn-default'>Затвори</button><button type='button' class='clear-fields btn btn-sm btn-template-main'>Изчисти полета</button>".html_safe,
+      xs_button_content: "<i class='fa fa-list-ul' aria-hidden='true'></i>"
+    } %>
+</div>
+
+
+<script language="JavaScript">
+  FashionLime.Common.utils.onPageLoad(function () {
+    FashionLime.Shared.reportFields.setup('<%= form_id %>');
+  });
+</script>
+

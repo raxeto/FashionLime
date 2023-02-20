@@ -1,0 +1,216 @@
+  <ul class="nav navbar-nav navbar-left">
+  <li class="dropdown <%= active_class_if_section(:home) %> ">
+      <%= link_to root_path, { "class" => "dropdown-toggle"} do %>
+        Начало
+      <% end %>
+  </li>
+
+  <li class="products-menu dropdown <%= active_class_if_section(:products) %> use-yamm yamm-fw">
+      <a href="javascript: void(0)" class="dropdown-toggle" data-toggle="dropdown">Продукти <b class="caret"></b></a>
+      <ul class="dropdown-menu">
+          <li>
+              <div class="yamm-content">
+                  <div class="row">
+                      <div class="col-md-12 col-women-menu">
+                          <%= link_to products_path(:c => 'women') do %>
+                            <h3 class="important-header">Жени</h3>
+                          <% end %>
+                          <div class="row">
+                            <div class="col-sm-4">
+                              <%= link_to products_path(:c => 'women_clothing') do %>
+                                <h6>Дрехи</h6>
+                              <% end %>
+                              <ul>
+                              <% ProductCategory.visible_children_from_key('women_clothing').each do |c| %>
+                                <li>
+                                  <%= link_to(c.name, products_path(:c => c.key)) %>
+                                </li>
+                              <% end %>
+                              </ul>
+                            </div>
+                             <div class="col-sm-4">
+                              <%= link_to products_path(:c => 'women_shoes') do %>
+                                <h6>Обувки</h6>
+                              <% end %>
+                              <ul>
+                              <% ProductCategory.visible_children_from_key('women_shoes').each do |c| %>
+                                <li>
+                                  <%= link_to(c.name, products_path(:c => c.key)) %>
+                                </li>
+                              <% end %>
+                              </ul>
+                            </div>
+                            <div class="col-sm-4">
+                               <%= link_to products_path(:c => 'women_accessories') do %>
+                                <h6>Аксесоари</h6>
+                              <% end %>
+                              <ul>
+                              <% ProductCategory.visible_children_from_key('women_accessories').each do |c| %>
+                                <li>
+                                  <%= link_to(c.name, products_path(:c => c.key)) %>
+                                </li>
+                              <% end %>
+                              </ul>
+                            </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </li>
+      </ul>
+  </li>
+
+   <li class="outfits-menu dropdown <%= active_class_if_section(:outfits) %> use-yamm yamm-fw">
+       <a href="javascript: void(0)" class="dropdown-toggle" data-toggle="dropdown">Визии <b class="caret"></b></a>
+        <div class="dropdown-menu">
+              <div class="yamm-content">
+                  <% occasions = Occasion.order(:order_index) %>
+                  <div class="row">
+                    
+                    <div class="col-sm-4 col-sm-push-8 col-functions">
+                        <div class="functions-container">
+                         <%= link_to new_outfit_path, :class => "btn btn-template-main btn-menu-template btn-create-outfit" do %>
+                              <i class="fa fa-plus"></i> Създай нова визия
+                          <% end %>
+                          <br/>
+                          <%= link_to my_outfits_outfits_path, :class => "my-outfits" do %>
+                             Моите визии
+                          <% end %>
+                        </div>
+                    </div>
+
+                    <% OutfitCategory.order(:order_index).each do |c| %>
+                     <div class="col-sm-4 col-sm-pull-4 <%= c.key == 'women' ? 'col-women-menu' : '' %>">
+                          <%= link_to (c.key == "women" ? outfits_path(:category => c) : "#") , :class => "dropdown-link" do %>
+                            <h3 class="important-header"><%= c.name %></h3>
+                          <% end %>
+                          <% if c.key == 'women' %>
+                            <ul>
+                            <% occasions.each do |o| %>
+                              <li>
+                                <%= link_to(o.name.pluralize(:bg), outfits_path(:category => c, :occasion => o)) %>
+                              </li>
+                           <% end %>
+                            </ul>
+                          <% else %>
+                            <p class="coming-soon">Очаквайте скоро</p>
+                          <% end %>
+                      </div>
+                    <% end %>                 
+
+                  </div>
+              </div>
+        </div>
+  </li>
+</ul>
+
+<!-- *** LEFT END *** -->
+
+<%= render partial: "shared/logo_home_link", locals: { logo_path: logo_path } %>
+
+<!-- *** RIGHT  *** -->
+
+<ul class="nav navbar-nav navbar-right">
+
+<li class="dropdown use-yamm yamm-fw <%= active_class_if_section(:search) %>">
+    <a id="generic-search-toggle" href="#" class="dropdown-toggle" data-toggle="dropdown">
+      <i class="fa fa-search search-icon"></i>
+    </a>
+    <div class="dropdown-menu row">
+      <%= form_tag generic_search_path, method: :get, class: "menu-search-form" do %>
+        <div class="input-group">
+          <input id="generic-search-q" type="text" class="form-control" name="q" autofocus="autofocus"/>
+          <div class="input-group-btn btn-rounded-group">
+            <button id="close-search-btn" type="button" class="btn btn-default" title="Затвори"><i class="fa fa-times"></i></button>
+            <button type="submit" class="btn btn-default" title="Търси"><i class="fa fa-search"></i></button>
+          </div>
+        </div>
+      <% end %>
+    </div>
+</li>
+
+<li class="cart-menu dropdown <%= active_class_if_section(:cart) %>">
+    <%= link_to cart_show_path, { "class" => "dropdown-toggle"} do %>
+      <i class="fa fa-shopping-cart cart-icon"></i>
+      <% if current_cart.cart_details.exists? %>
+        <span class="badge cart-items-count"><%= "#{current_cart.cart_details.size}" %></span>
+      <% end %>
+    <% end %>
+</li>
+
+<li class="dropdown <%= active_class_if_section(:contact) %> ">
+    <%= link_to contact_path, { "class" => "dropdown-toggle"} do %>
+      Контакт
+    <% end %>
+</li>
+
+<li class="my-menu dropdown <%= active_class_if_section(:my_menu) %>">
+    <a href="javascript: void(0)" class="dropdown-toggle" data-toggle="dropdown">
+      <i class="fa fa-align-justify my-menu-icon" aria-hidden="true"></i>
+      <b class="caret"></b>
+    </a>
+    <ul class="dropdown-menu">
+        <li>
+         <%= link_to orders_path do %>
+            Моите поръчки
+         <% end %>
+        </li>
+        <li>
+          <%= link_to my_outfits_outfits_path do %>
+             Моите визии
+          <% end %>
+        </li>
+        <% if user_signed_in? %>
+          <li>
+            <%= link_to favorites_index_path do %>
+              Харесани продукти и визии
+            <% end %>
+          </li>
+        <% end %>
+        <li>
+         <% if user_signed_in? %>
+              <%= link_to edit_user_registration_path do %>
+                 Моят профил
+              <% end %>
+         <% else %>
+              <%= link_to('#', {"data-toggle" => "modal", "data-target" => "#login-modal", :id => 'login-modal-btn'}) do %>
+                 Влез
+              <% end %>
+         <% end %>
+        </li>
+        
+        <% if user_signed_in? %>
+        <li>
+            <%= link_to users_edit_password_path do %>
+                Промяна на парола
+            <% end %>
+        </li>
+        <% end %>
+        
+        <li>
+         <% if user_signed_in? %>
+             <%= link_to destroy_user_session_path, :method => :delete do %>
+                Излез
+             <% end %>
+          <% else %>
+             <%= link_to(new_user_registration_path) do  %>
+                Регистрирай се
+            <% end %>
+          <% end %>
+        </li>
+    </ul>
+</li>
+</ul>
+
+<script type="text/javascript">
+  FashionLime.Common.utils.onPageLoad(function () {
+    $('.dropdown-menu input, .dropdown-menu label').click(function(e) {
+      e.stopPropagation();
+    })
+    $('#close-search-btn').click(function() {
+      $('#generic-search-q').val('');
+      $('#generic-search-toggle').click();
+    })
+  });
+</script>
+

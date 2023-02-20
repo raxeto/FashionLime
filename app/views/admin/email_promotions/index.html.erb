@@ -1,0 +1,63 @@
+<div id="promotions">
+  <h1> Изпрати промо имейл </h1>
+
+  <p><%= @emails.size %> Получатели</p>
+
+  <%= form_tag(admin_email_promotions_send_promotion_path) do %>
+      <div>
+        <%= label_tag(:title, "Заглавие") %> <br/>
+        <%= text_field_tag(:title, @title, :autofocus => true) %>
+      </div>
+
+      <div>
+        <%= label_tag(:test_email, "Тестов имейл") %> <br/>
+        <%= text_field_tag(:test_email, @test_email) %>
+        <span> Ако го оставите празно ще изпрати имейл до всички потребители, иначе само до тестовия имейл. </span>
+      </div>
+
+      <br>
+
+      <div>
+        <%= label_tag(:message_html, "Текст HTML") %> <br/>
+        <%= text_area_tag(:message_html, @message_html, :rows => "7", :cols => "150") %>
+        <span> Текст на имейла за HTML имейла. HTML е позволен. </span>
+      </div>
+
+      <br>
+      
+      <div>
+        <%= label_tag(:message_text, "Текст Text") %> <br/>
+        <%= text_area_tag(:message_text, @message_text, :rows => "7", :cols => "150") %>
+        <span> Текст на имейла за текстовия имейл. Ако е празно в текстовия вариант на имейла ще се сложи Текст HTML полето. </span>
+      </div>
+
+      <div>
+        <%= label_tag(:product_collection_ids, "ID-та на колекции") %> <br/>
+        <%= text_field_tag(:product_collection_ids, @product_collection_ids) %>
+        <span> Списък от ID-та разделен със запетаи </span>
+      </div>
+
+       <div>
+        <%= label_tag(:outfit_ids, "ID-та на визии") %> <br/>
+        <%= text_field_tag(:outfit_ids, @outfit_ids) %>
+        <span> Списък от ID-та разделен със запетаи </span>
+      </div>
+
+      <div>
+        <%= label_tag(:product_ids, "ID-та на продукти") %> <br/>
+        <%= text_field_tag(:product_ids, @product_ids) %>
+        <span> Списък от ID-та разделен със запетаи </span>
+      </div>
+
+      <div>
+        <%= label_tag(:campaign, "Кампания") %> <br/>
+        <%= text_field_tag(:campaign, @campaign) %>
+        <span> utm_campaign query параметър </span>
+      </div>
+
+      <div>
+        <%= submit_tag "Прати" %>
+      </div>
+  <% end %>
+
+</div>

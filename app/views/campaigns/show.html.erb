@@ -1,0 +1,86 @@
+<% title @campaign.title, true %>
+<% description @campaign.description, true %>
+<% allow_search_engine_index %>
+
+<% if @campaign.picture.present? %>
+  <% og_images [{
+      :url    => image_url(@campaign.picture.url(:original)),
+      :type   => @campaign.picture_content_type,
+      :width  => image_width(@campaign.picture,  :original),
+      :height => image_height(@campaign.picture, :original)
+  }]%>
+<% end %>
+
+<div id="campaign-show" class="col-sm-12">
+
+  <% if @campaign.picture.present? %>
+    <div class="row">
+      <div class="col-lg-10 col-lg-offset-1">
+        <%= campaign_image @campaign, :original, :class => "img-responsive img-campaign" %>
+      </div>
+    </div>
+  <% end %>
+
+  <% if @campaign.description.present? %>
+    <p class="description">
+      <%= @campaign.description %>
+    </p>
+  <% end %>
+
+  <% if @products.size > 0 %>
+    <%= render partial: 'shared/filtered_dynamic_item_list', locals: {
+      update_url: false,
+      initial_item_count: Conf.search.initial_item_count,
+      load_more_url: campaign_products_load_more_path(@campaign.id),
+      item_type: 'products',
+      sort_options: [
+          ['Цена - най-ниска', 'price_asc'],
+          ['Цена - най-висока', 'price_desc'],
+          ['Дата на добавяне', 'created_date'],
+          ['Рейтинг', 'rating'],
+          ['Съвпадение', 'relevance']], 
+      filters: [:sizes, :price, :trademarks, :colors, :merchants, :occasions],
+      colors_filter_type: 'combo'  
+    } %>
+
+    <div class="well well-sm">
+        <%= link_to all_products_path, :class => "btn btn-link btn-all-objects" do %>
+          Разгледай всички продукти на сайта<i class="fa fa-chevron-right"></i>
+        <% end %>
+    </div> 
+  <% elsif @outfits.size > 0 %>
+
+    <%= render partial: 'shared/filtered_dynamic_item_list', locals: {
+                initial_item_count: Conf.search.initial_item_count,
+                update_url: false,
+                load_more_url: campaign_outfits_load_more_path(@campaign.id),
+                item_type: 'outfits',
+                sort_options: [ ['Дата на добавяне', 'created_date'], ['Рейтинг', 'rating'], ['Съвпадение', 'relevance']],
+                filters: [:categories, :price, :trademarks, :merchants],
+                filters_info: { :categories => 'Ако филтърът е попълнен, поне един от продуктите във визията ще е от избраните категории.'},
+                bootstrap_item_col_class: "col-xs-6 col-ms-4 col-sm-4"
+            } %>
+
+    <div class="well well-sm">
+        <%= link_to all_outfits_path, :class => "btn btn-link btn-all-objects" do %>
+          Разгледай всички визии на сайта<i class="fa fa-chevron-right"></i>
+        <% end %>
+    </div> 
+  <% end %>
+
+</div>
+
+<script language="JavaScript">
+    FashionLime.Common.utils.onPageLoad(function () {
+        FashionLime.Shared.dynamicFooter.setup();
+
+        FashionLime.Common.utils.onLoadFromCache(function() {
+            FashionLime.Shared.dynamicFooter.setup(); },
+                '.application-layout');
+
+        FashionLime.Common.utils.onPageUnload(function() {
+            FashionLime.Shared.dynamicFooter.clear(); },
+                '.application-layout');
+    });
+
+</script>

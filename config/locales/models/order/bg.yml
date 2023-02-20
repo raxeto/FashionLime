@@ -1,0 +1,6 @@
+bg:
+  activerecord:
+    models:
+      order:
+        one: Поръчка
+        other: Поръчки

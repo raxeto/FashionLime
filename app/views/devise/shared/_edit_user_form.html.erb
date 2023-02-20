@@ -1,0 +1,69 @@
+<!-- , html: { method: :put } -->
+<%= bootstrap_form_for(resource, as: resource_name, url: submit_form_path, data: { no_turbolink: true }, html: { multipart: true, id: "edit-user-form" } ) do |f| %>
+
+  <div class="row">
+    <div class="col-sm-12">
+      <button type="submit" class="btn btn-template-main btn-save btn-save-up">
+        <i class="fa fa-floppy-o"></i> Запази
+      </button>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-4">
+      <div class="row">
+        <div class="col-sm-12">
+          <%= f.text_field :username, autofocus: true, :label => "Потребителско име" %>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-12">
+          <% if email_required %>
+            <%= f.email_field :email, :label => "Имейл" %>
+          <% else %>
+            <%= f.email_field :email_o, :label => "Имейл" %>
+          <% end %>
+
+          <%= f.password_field :current_password_o, autocomplete: "off", label: "Текуща парола", help: '* нужно е да потвърдите текущата си парола, когато променяте потребителското си име или имейла си', wrapper: { class: 'current-password-group' } %>
+
+          <%= f.telephone_field :phone, label: "Телефон" %>
+          <%= f.text_field :first_name, :label => "Име" %>
+          <%= f.text_field :last_name, :label => "Фамилия" %>
+          <%= f.select :gender, [['Жена', 'F'], ['Мъж', 'M']], label: "Пол" %>
+          <%= f.date_field :birth_date, label: "Рождена дата" %>
+          <%= f.check_box :email_promotions, :label => "Желая да получавам бюлетин с новости от света на модата" %>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-8 pick-avatar-col">
+      <%= f.errors_on :current_password %>
+      <div class="centered-avatar-picker">
+        <%= f.errors_on :avatar %>
+        <span class="btn btn-default btn-file">
+          Качи нов аватар <%= f.file_field_without_bootstrap :avatar, :id => "pick-new-avatar" %>
+        </span>
+        <div id="avatar-file-name">
+        </div>
+        <%= user_image resource, :original, :id => "avatar-image", :class => "img-responsive avatar original" %>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-12">
+      <button type="submit" class="btn btn-template-main btn-save">
+        <i class="fa fa-floppy-o"></i> Запази
+      </button>
+    </div>
+  </div>
+
+<% end %>
+
+<script language="JavaScript">
+  FashionLime.Common.utils.onPageLoad(function () {
+    var formJs = new FashionLime.Devise.EditUser('#edit-user-form', ['#user_username', '#user_email_o', '#user_email'], '.current-password-group', <%= @show_password_field %>);
+  });
+
+</script>

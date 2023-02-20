@@ -1,0 +1,83 @@
+<% title "Доставка и начини за плащане", true %>
+<% description "Информация относно начините на доставка и начините на плащане във Fashion Lime.", true %>
+<% allow_search_engine_index %>
+
+<div id="information-delivery-and-payment" class="col-sm-12">
+  <div class="box">
+
+    <div class="box-header">
+       <h4>Радваме се, че сте тук и Ви благодарим за интереса!</h4>
+    </div>
+
+    <div class="heading">
+      <h2>Обща информация</h2>
+    </div>
+
+    <p>
+      FashionLime.bg е платформа, която работи с различни търговци и производители.
+      Дефинираме няколко стандартни типове на доставка и плащане, но
+    </p>
+   
+    <div class="alert alert-warning">
+      <strong>Всеки търговец решава сам кои от начините за доставка и плащане, които предлагаме, да използва.</strong>
+      <br/>
+      В профилната страница на всеки търговец е дадена информация за това с какви точно начини на доставка и плащане работи.
+      <br/>
+      Информацията е достъпна още и в страницата на конкретния продукт. В секциите "Доставка" и "Плащане" под снимката на продукта:
+    </div>
+
+    <p>
+      <%= seo_image "delivery-payment-preview.png", "Снимка с начините на доставка и плащане към конкретен продукт", :class => "img-responsive img-center" %>
+    </p>
+
+    <p>
+      Следва информация за всички начини на плащане и доставка, използвани в платформата.
+    </p>
+
+    <div class="heading">
+      <h2>Начини на плащане</h2>
+    </div>
+
+    <% @payment_types.each do |t| %>
+      <div class="row">
+        <div class="col-sm-6">
+          <strong> 
+            <%= t.name %>
+          </strong>
+        </div>
+        <div class="col-sm-6">
+          <%= payment_type_image t %> 
+        </div>
+        <div class="col-sm-12">
+          <p class="description">
+            <%= t.description %>
+          </p>
+        </div>
+      </div>
+    <% end %>
+
+    <div class="heading">
+      <h2>Начини на доставка</h2>
+    </div>
+
+     <% @shipment_types.each do |t| %>
+      <div class="row">
+        <div class="col-sm-6">
+          <strong> 
+            <%= t.name %>
+          </strong>
+        </div>
+        <div class="col-sm-6">
+          <%= shipment_type_image t %> 
+        </div>
+        <div class="col-sm-12">
+          <p class="description">
+            <%= t.description %>
+          </p>
+        </div>
+      </div>
+    <% end %>
+
+  </div>
+</div>
+

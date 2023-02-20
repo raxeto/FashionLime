@@ -1,0 +1,68 @@
+<% items_info = {} if local_assigns[:items_info].nil? %>
+<% compact = false if local_assigns[:compact].nil? %>
+<% xs_button_content = "<i class='fa fa-filter' aria-hidden='true'></i>" if local_assigns[:xs_button_content].nil? %>
+<% item_control_col_class = "" if local_assigns[:item_control_col_class].nil? %>
+<% expanded_on_load = true if local_assigns[:expanded_on_load].nil? %>
+<% col_span = 12 / items.size %>
+<% col_remainder = 12 % items.size %>
+
+<div id="<%= container_id %>" class="expander-items-container">
+  <span class="label label-default items-label"><%= title %></span>
+  <div class="box">
+
+    <a href="#<%= items_container_id %>" data-toggle="collapse" class="items-header <%= expanded_on_load ? '' : 'collapsed' %> hidden-xs <%= compact ? "compact" : "" %>">
+      <div class="row">
+        <% items.each_with_index do |f, index| %>
+          <div class='col-sm-<%=col_span + ((index == items.size - 1) ? col_remainder : 0) %>'>
+             <%= render partial: 'shared/expander_item_header', locals: {
+                text: labels[f],
+                info:  items_info[f]
+              } %>
+          </div>
+        <% end %>
+      </div>
+    </a>
+
+    <div class="hidden-sm hidden-md hidden-lg">
+      <div class="row">
+        <div class="col-xs-12">
+          <button type="button" class="btn btn-template-main btn-xs-expand-collapse pull-right" data-toggle="collapse" data-target="#<%= items_container_id %>">
+            <span class="sr-only">Отвори панел</span>
+            <%= xs_button_content.html_safe %>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="<%= items_container_id %>" class="collapse <%= expanded_on_load ? 'in' : '' %>">
+      <div class="row items-inner-container">
+        <% items.each_with_index do |f, index| %>
+          <div class="col-sm-<%=col_span + ((index == items.size - 1) ? col_remainder : 0)%> <%= item_control_col_class %>">
+            
+            <div class="items-header items-header-xs hidden-sm hidden-md hidden-lg">
+                <%= render partial: 'shared/expander_item_header', locals: {
+                  text: labels[f],
+                  info:  items_info[f]
+                } %>
+            </div>
+            <%= items_control[f].try(:html_safe) %>
+          </div>
+        <% end %>
+      </div>
+
+      <div class="row items-footer">
+          <div class="col-xs-12">
+            <div class="col-xs-12 items-footer-container">
+              <%= footer_content %>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script language="JavaScript">
+  FashionLime.Common.utils.onPageLoad(function () {
+      $('[data-toggle="popover"]').popover();
+  });
+</script>

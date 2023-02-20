@@ -1,0 +1,37 @@
+<h2>Trade Marks</h2>
+
+<%= link_to('Create New', new_admin_trade_mark_path) %>
+
+<table class="centered">
+  <thead>
+    <tr>
+      <th class="id">ID</th>
+      <th class="name">Name</th>
+      <th class="key">Key</th>
+      <th class="date">Created</th>
+      <th class="date">Updated</th>
+      <th class="file">Logo</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @trade_marks.each do |t| %>
+      <tr>
+        <td class="id"> <%= t.id %> </td>
+        <td class="name"> <%= t.name %> </td>
+        <td class="key"> <%= t.key %> </td>
+        <td class="date"> <%= date_to_s(t.created_at)%> </td>
+        <td class="date"> <%= date_to_s(t.updated_at)%> </td>
+        <td class="file"> 
+        <%= if t.logo? 
+          image_tag t.logo.url(:thumb) 
+          else 
+            "" 
+          end %> 
+        </td>
+        <td class="link"><%= link_to('edit', edit_admin_trade_mark_path(t.id)) %></td>
+        <td class="link"><%= link_to('delete', admin_trade_mark_path(t.id), method: :delete) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

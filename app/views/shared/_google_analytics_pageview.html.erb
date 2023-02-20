@@ -1,0 +1,7 @@
+  <script language="JavaScript">
+   (function() {
+      $(document).on('page:change', function() {
+        FashionLime.GoogleAnalyticsUtils.trackPageview(<%= current_or_guest_user.id %>);
+      });
+    })();
+  </script>

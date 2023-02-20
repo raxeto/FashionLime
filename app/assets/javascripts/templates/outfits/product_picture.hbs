@@ -1,0 +1,18 @@
+<div class="outfit-product-picture">
+    <div class="image">
+        <img class="img-responsive img-center {{ locals.image_class }}" src="{{ picture.image_url.thumb }}">
+        <input type="hidden" name="" id="" value="{{ picture.id }}" class="product_picture_id">
+        <input type="hidden" name="" id="" value="{{ picture.product_id }}" class="product_product_id">
+        <input type="hidden" name="" id="" value="{{ picture.product_name }}" class="product_product_name">
+        <input type="hidden" name="" id="" value="{{ picture.color_id }}" class="product_color_id">
+        <input type="hidden" name="" id="" value="{{ picture.color_name }}" class="product_color_name">
+        <input type="hidden" name="" id="" value="{{ picture.min_price }}" class="product_min_price">
+        <input type="hidden" name="" id="" value="{{ picture.max_price }}" class="product_max_price">
+        <input type="hidden" name="" id="" value="{{ picture.image_url.original }}" class="product_image_url">
+    </div>
+    <div class="functions">
+        <a title="Добави към визията" class="add_product_picture">
+           <i class="fa fa-plus-circle"></i>Добави
+        </a>
+    </div>
+</div>

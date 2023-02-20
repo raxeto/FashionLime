@@ -1,0 +1,95 @@
+ <% help_steps "index", [{:location =>"shared.bootstrap_table"}] %>
+
+ <div id="productsList" class="col-sm-12 clearfix">
+      <div class="box">
+
+      <%= link_to new_merchant_product_path, :class => "btn btn-template-main btn-new-record help-tour-step-1" do %>
+         Създай нов продукт
+      <% end %>
+
+      <%= link_to merchant_import_products_path, :class => "btn btn-default btn-import help-tour-step-3" do %>
+         <i class="fa fa-file-excel-o" aria-hidden="true"></i>
+         Импорт продукти
+      <% end %>
+
+      <%= link_to merchant_new_product_pictures_import_path, :class => "btn btn-default btn-import-pictures help-tour-step-2" do %>
+        <i class="fa fa-file-image-o" aria-hidden="true"></i>
+         Импорт снимки
+      <% end %>
+
+      <div class="table-responsive">
+        <table id="productsTable" class="table help-tour-step-6">
+        </table>
+      </div>
+  </div>
+</div>
+
+<script language="JavaScript">
+function editFormatter(value, row, index) {
+  return ['<a class="btn btn-template-main btn-sm', (index === 0 ? " help-tour-step-4" : ""), '" title="Редактиране" href="/merchant/products/', row.id, '/edit">',
+            '<i class="fa fa-edit"></i>',
+          '</a>'].join('');
+}
+
+function tryToDelete(product_id) {
+  if (confirm('Изтриването на продукт е необратима операция! Сигурни ли сте, че' +
+      ' искате да го направите?')) {
+    FashionLime.Common.webApi.deleteProduct(product_id, function(response) {
+      location.reload();
+    })
+  }
+}
+
+function destroyFormatter(value, row, index) {
+  return ['<div class="btn btn-template-main btn-sm', (index === 0 ? " help-tour-step-5" : ""), '" onclick="tryToDelete(' , row.id , ');" >',
+            '<i class="fa fa-trash-o"></i>',
+          '</div>'].join('');
+}
+
+FashionLime.Common.utils.onPageLoad(function () {
+  FashionLime.Shared.bootstrapTable.create('productsTable',
+      [{
+          id: 'id',
+          name: 'ID',
+          filterType: 'range'
+      }, {
+          id: 'name',
+          name: 'Име'
+      }, {
+          id: 'trademark',
+          name: 'Търговска марка'
+      }, {
+          id: 'description',
+          name: 'Описание'
+      }, {
+          id: 'collection',
+          name: 'Колекция'
+      }, {
+          id: 'general_price_text',
+          name: 'Цена'
+      }, {
+          id: 'status',
+          name: 'Статус'
+      }, {
+          id: 'created_at',
+          name: 'Създадено на',
+          filterType: 'range_date',
+          dataType: 'date'
+      }, {
+          id: 'updated_at',
+          name: 'Последна редакция',
+          filterType: 'range_date',
+          dataType: 'date'
+      }, {
+        formatter: editFormatter
+      }, {
+        formatter: destroyFormatter
+      }],
+      [
+        <% @products.each do |p| %>
+          <%= raw p.client_json %>,
+        <% end %>
+      ]
+    );
+  });
+</script>

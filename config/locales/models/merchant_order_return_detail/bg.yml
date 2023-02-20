@@ -1,0 +1,10 @@
+bg:
+  enums:
+    merchant_order_return_detail:
+      return_type:
+        return: Връщане
+        exchange: Замяна
+      status:
+        not_processed: Необработен
+        waiting_return: Очаква се връщане от клиента
+        returned: Върнат

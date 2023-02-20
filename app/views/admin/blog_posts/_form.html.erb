@@ -1,0 +1,12 @@
+<%= form_for(@post, url: { action: action}, html: { multipart: true } ) do |f| %>
+     Title <%= f.text_area :title, cols: 80 %> <br>
+     Subtitle <%= f.text_area :subtitle, rows: 3, cols: 80 %> <br>
+     Text <%= f.text_area :text, rows: 30, cols: 80 %> <br>
+     Source title <%= f.text_field :source_title %> <br>
+     Source link <%= f.text_field :source_link %> <br>
+     Main Picture <%= f.file_field :main_picture %> <br>
+     Main Picture Width (in pixels) <%= f.number_field :main_picture_width %> <br>
+     Main Picture Height (in pixels) <%= f.number_field :main_picture_height %> <br>
+
+     <%= f.submit(action.to_s.capitalize) %>
+<% end %>

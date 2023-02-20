@@ -1,0 +1,19 @@
+<div class="related-items">
+  <div class="heading">
+    <h3><%= title %></h3>
+  </div>
+
+  <%= render partial: '/shared/slider', locals: { 
+    slider_id: items_control_id,
+    items: items, 
+    item_partial: item_partial, 
+    visible_items: 5,
+    responsive_breakpoints: [
+      {:breakpoint => 992, :items_count => 4},
+      {:breakpoint => 600, :items_count => 3},
+      {:breakpoint => 400, :items_count => 2}
+    ]
+  } %>
+</div>
+
+

@@ -1,0 +1,31 @@
+<%= bootstrap_form_tag url: { action: "edit_order_index"}, html: { method: :post  }  do |f| %>
+
+  <div class="row">
+    <% @decorations.each do |d| %>
+       <%= f.fields_for "decoration", d, index: d.id do |df|%>
+        
+          <div class="decoration-col col-sm-3">
+            <%= image_tag d.picture.url(:original), :class => "img-responsive" %>
+            <button type="button" class="btn btn-sm btn-template-main btn-left"><i class="fa fa-arrow-left" aria-hidden="true"></i></button>
+            <button type="button" class="btn btn-sm btn-template-main btn-right"><i class="fa fa-arrow-right" aria-hidden="true"></i></button>
+            ID: <%= d.id %>
+            <%= df.hidden_field :id, :class => "decoration-id" %>
+            <%= df.hidden_field :order_index, :class => "decoration-order-index" %>
+          </div>
+
+      <% end %>
+    <% end %>
+  </div>
+  <br>
+  <button type="submit" class='btn btn-template-main btn-save'>
+    <i class="fa fa-floppy-o"></i> Запази
+  </button>
+<% end %>
+
+
+<script language="JavaScript">
+  FashionLime.Common.utils.onPageLoad(function() {
+    FashionLime.Admin.OutfitDecoration.editOrderIndex.setup();
+  });
+
+</script>

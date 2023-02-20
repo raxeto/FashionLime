@@ -1,0 +1,21 @@
+admin:
+  id: 1
+  owner_type: User
+  owner_id: 1
+
+merchant:
+  id: 2
+  owner_type: Merchant
+  owner_id: 1
+
+customer:
+  id: 3
+  owner_type: User
+  owner_id: 3
+
+guest:
+  id: 4
+  owner_type: User
+  owner_id: 4
+  
+

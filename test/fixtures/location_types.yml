@@ -1,0 +1,48 @@
+l1:
+  id: 1
+  name: 'Държава'
+  key: 'country'
+
+l2:
+  id: 2
+  name: 'Област'
+  key: 'region'
+
+l3:
+  id: 3
+  name: 'Община'
+  short_name: 'общ.'
+  key: 'municipality'
+
+l4:
+  id: 4
+  name: 'Град'
+  short_name: 'гр.'
+  key: 'city'
+
+l5:
+  id: 5
+  name: 'Село'
+  short_name: 'с.'
+  key: 'village'
+
+
+l6:
+  id: 6
+  name: 'Манастир'
+  key: 'monastery'
+
+l7:
+  id: 7
+  name: 'Квартал'
+  key: 'district'
+
+l8:
+  id: 8
+  name: 'Слищни образувания'
+  key: 'other_village'
+
+l9:
+  id: 9
+  name: 'Предложено от потребител'
+  key: 'user_suggested'

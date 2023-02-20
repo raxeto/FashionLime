@@ -1,0 +1,55 @@
+<% title (@category.nil? ? "Дрехи, обувки и аксесоари" : @category.meta_title), true %>
+<% description @category.nil? ? "Продуктите на любимите Ви български марки представени във Fashion Lime - където можете да ги поръчвате и разглеждате на едно място." : @category.meta_description, true %>
+<% canonical_url products_url(@category.nil? ? {} : { :c => @category.key }) %>
+<% allow_search_engine_index %>
+
+<% og_image @category %>
+
+
+<div class="col-md-2">
+    <%= render partial: 'shared/categories_tree/categories_tree', locals: { selected_category: @category, categories: @categories } %>
+</div>
+
+<div class="col-md-10">
+
+    <%= render partial: 'shared/filtered_dynamic_item_list', locals: {
+        update_url: true,
+        initial_item_count: Conf.search.initial_item_count,
+        item_type: 'products',
+        bootstrap_item_col_class: 'col-xs-6 col-ms-4 col-sm-4',
+        load_more_url: products_by_category_load_more_path(:category_id => @category.try(:id) || 0),
+        sort_options: [
+            ['Цена - най-ниска', 'price_asc'],
+            ['Цена - най-висока', 'price_desc'],
+            ['Дата на добавяне', 'created_date'],
+            ['Рейтинг', 'rating'],
+            ['Съвпадение', 'relevance']],
+        filters: [:sizes, :price, :trademarks, :colors, :merchants, :occasions],
+        colors_filter_type: 'combo',
+        product_category_id: @category.try(:id) || 0
+    } %>
+</div>
+
+
+<script language="JavaScript">
+    FashionLime.Common.utils.onPageLoad(function () {
+        FashionLime.Shared.dynamicFooter.setup();
+
+        FashionLime.Common.utils.onLoadFromCache(function() {
+            FashionLime.Shared.dynamicFooter.setup(); },
+                '.application-layout');
+
+        FashionLime.Common.utils.onPageUnload(function() {
+            FashionLime.Shared.dynamicFooter.clear(); },
+                '.application-layout');
+
+        <% if Rails.env.production? %>
+            <% @track_categories.each do |c| %>
+                FashionLime.FacebookPixelUtils.trackViewProductCategory(
+                  '<%= c %>'
+                );
+            <% end %>
+        <% end %>
+    });
+
+</script>

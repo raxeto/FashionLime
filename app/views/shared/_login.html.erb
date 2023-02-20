@@ -1,0 +1,29 @@
+<div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="Login" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="Login">Вход за потребители</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-warning" id="login-modal-warn">
+                    <strong>Внимание: </strong> <span class='warn-msg'></span>
+                </div>
+                <%= render partial: "devise/shared/new_user_session_form", locals: { form_url: session_path(User) } %>
+
+                <p class="text-muted">
+                    <%= link_to new_user_registration_path do %>
+                        <strong>Нямате регистрация?</strong>
+                    <% end %>
+                    <br/>Регистрирайте се! Лесно е, отнема по-малко от минута и Ви дава достъп до специални функционалности и още много други неща!
+                </p>
+                <p class="text-muted">
+                    <%= link_to new_password_path(User) do %>
+                        <strong>Забравена парола?</strong>
+                    <% end %>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

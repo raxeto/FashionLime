@@ -1,0 +1,22 @@
+За нас:
+FashionLime е стартираща компания, чиято мисия е да свързва създатели и консуматори на мода в единна онлайн платформа.
+
+телефон: <%= Conf.contact.clients_phone %>
+e-mail: <%= Conf.contact.clients_email %>
+Facebook: <%= Conf.contact.facebook_url %>
+Instagram: <%= Conf.contact.instagram_url %>
+Google+: <%= Conf.contact.google_plus_url %>
+Адрес на картата: <%= Conf.contact.address_google_maps %>
+
+Към сайта - <%= mailer_url root_url %>
+Продукти - <%= mailer_url products_url %>
+Визии - <%= mailer_url outfits_url %>
+Създай нова визия - <%= mailer_url new_outfit_url %>
+Контакт -  <%= mailer_url contact_url %>
+Доставка и плащане -  <%= mailer_url information_delivery_payment_url %>
+Връщане на продукт - <%= mailer_url new_return_order_url %>
+
+<% if @unsubscribe_url.present? %>
+Ако вече не желаете да получавате нашия бюлетин, можете да се отпишете от следния линк:
+<%= mailer_url @unsubscribe_url %>
+<% end %>

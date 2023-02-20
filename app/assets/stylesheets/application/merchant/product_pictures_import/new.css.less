@@ -1,0 +1,66 @@
+@import "/template/less/modules/variables-custom.css.less";
+#merchant-product-pictures-import-new {
+
+  .box-header {
+    ul {
+      margin-top: 20px;
+      text-transform: none;
+      letter-spacing: normal;
+    }
+  }
+
+  .color-warning {
+    display: none;
+  }
+
+  .determine-products-error {
+    display: none;
+  }
+
+  .picture-container {
+    margin-top: 15px;
+    .control-label {
+      text-align: left;
+      float: left;
+      margin-top: 5px;
+    }
+
+    .color-row {
+      margin-top:12px;
+
+      .help-block {
+        display: none;
+      }
+
+      .has-error {
+        .help-block {
+          display: block;
+        }
+      }
+    }
+
+    .product-error {
+      display: none;
+      color: @state-danger-text;
+      background-color: @state-danger-bg;
+    }
+  }
+
+  .file-preview-frame {
+    width: 250px;
+    height: 420px;
+
+    .upload-success-message {
+      margin-top: 10px;
+      display: none;
+      color: @state-success-text;
+      background-color: @state-success-bg;
+    }
+  }
+
+  .kv-file-upload {
+    display: none;
+  }
+
+}
+

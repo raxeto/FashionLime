@@ -1,0 +1,12 @@
+<div class="outfit-decorations">
+  <%= render partial: '/shared/slider', locals: { 
+    slider_id: "#{category}-outfit-decorations",
+    init_slider: false,
+    items: OutfitDecoration.from_category(category), 
+    item_partial: "FashionLime.Outfit.decorationPartial", 
+    visible_items: 5,
+    responsive_breakpoints: [
+      {:breakpoint => 560, :items_count => 4}
+    ]
+  } %>
+</div>

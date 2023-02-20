@@ -1,0 +1,28 @@
+<div id="categories-filter">
+  <span class="label label-default">Категории</span>
+  <div class="box">
+
+    <div class="row hidden-md hidden-lg">
+      <div class="col-sm-12">
+          <a href="#categories-panel" data-toggle="collapse">
+            <div class="row">
+              <div class="col-sm-12">
+                <button type="button" title="Разгледай категориите" class="btn btn-template-main pull-right">
+                    <span class="sr-only">Отвори панела на категориите</span>
+                    <i class="fa fa-outdent" aria-hidden="true"></i>
+                </button>
+              </div>
+            </div>
+          </a>
+      </div>
+    </div>
+      
+    <div id="categories-panel" class="panel panel-default sidebar-menu collapse">
+      <div class="panel-body">
+
+        <%= render partial: 'shared/categories_tree/categories', locals: { selected_category: selected_category, categories: categories } %>
+
+      </div>
+    </div>
+  </div>
+</div>

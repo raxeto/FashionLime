@@ -1,0 +1,12 @@
+<div id="returnRequest" class="col-sm-12">
+  <% if @order_return.nil? %>
+    
+    <%= render partial: "orders/select_return_order" %>
+
+  <% else %>
+
+    <%= render partial: "orders/return_order", locals: { order_return: @order_return } %>
+
+  <% end %>
+
+</div>

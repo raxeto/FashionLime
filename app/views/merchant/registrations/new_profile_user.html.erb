@@ -1,0 +1,49 @@
+<% help_steps "new_profile_user" %>
+
+<div id="newProfileUser">
+    <div class="row">
+      <div class="col-sm-9">
+        <div class="box">
+          <%= bootstrap_form_for(@user, url: merchant_profile_users_create_path) do |f| %>
+              <div class="row">
+                <div class="col-sm-6">
+                  <%= f.text_field :username, :label => "Потребителско име", :class => "help-tour-step-1" %>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-sm-6">
+                  <%= f.text_field :first_name, :label => "Име", :class => "help-tour-step-2" %>
+                </div>
+                <div class="col-sm-6">
+                  <%= f.text_field :last_name, :label => "Фамилия", :class => "help-tour-step-3" %>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-sm-6">
+                  <%= f.email_field :email, :label => "Email", :class => "help-tour-step-4" %>
+                </div>
+                <div class="col-sm-6">
+                  <%= f.password_field :password, autocomplete: "off", :label => "Парола", help: "(най-малко #{@minimum_password_length} символа)", :class => "help-tour-step-5" %>
+                </div>
+              </div>
+
+              <%= f.submit "Създай", :class => "btn btn-template-main btn-create help-tour-step-6" %>
+          <% end %>
+        </div>
+    </div>
+    <div class="col-sm-3">
+      <div class="box">
+        <div class="box-header">
+          <h3>Създаване на потребител</h3>
+        </div>
+        <p class="text-muted">
+          Когато създадете нов потребител, той ще бъде автоматично асоцииран към Вашия търговски профил и
+          ще може да редактира почти всички Ваши данни - например продукти, доставки, начини на плащане и поръчки.
+          Изключение са данните за Вашата фирма, които само Вие може да редактирате.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

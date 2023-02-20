@@ -1,0 +1,28 @@
+<div class="col-xs-12">
+
+  <div class="box">
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3 text-centered">
+       
+        <p class="lead">
+          <%= t 'controllers.email_promotions.unsubscribe.success' %>
+        </p>
+        <p class="lead">
+          Съжаляваме! Ако все пак можем да Ви помогнем с нещо, ще бъдем щастливи.
+          <%= link_to "Свържете се с нас.", contact_path %>
+        </p>
+
+        <%= render partial: 'shared/additional_help' %>
+
+      </div>
+    </div>
+
+    <div class="heading trending-outfits-heading">
+      <h3>Актуални визии</h3>
+    </div>
+
+    <%= render partial: 'shared/trending_outfits' %>
+    
+  </div>
+
+</div>

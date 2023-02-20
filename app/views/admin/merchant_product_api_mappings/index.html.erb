@@ -1,0 +1,43 @@
+<h2>Merchant product API mappings</h2>
+
+<%= link_to('Create New', new_admin_merchant_product_api_mapping_path) %>
+
+<br>
+<%= paginate @mappings %>
+
+<table class="table centered">
+  <thead>
+    <tr>
+      <th class="id">ID</th>
+      <th class="id">Merchant ID</th>
+      <th class="key">Merchant Name</th>
+      <th class="key">Input</th>
+      <th class="key">Type</th>
+      <th class="key">Value</th>
+      <th class="date">Created</th>
+      <th class="date">Updated</th>
+      <th class="link">Edit</th>
+      <th class="link">Delete</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @mappings.each do |m| %>
+      <tr>
+        <td class="id"> <%= m.id %> </td>
+        <td class="id"> <%= m.merchant_id %> </td>
+        <td class="key"> <%= m.merchant.name %> </td>
+        <td class="key"> <%= m.input_value %> </td>
+        <td class="key"> <%= m.object_type %> </td>
+        <td class="key"> <%= m.object.name %> </td>
+        <td class="date"> <%= date_to_s(m.created_at)%> </td>
+        <td class="date"> <%= date_to_s(m.updated_at)%> </td>
+        <td class="link"><%= link_to('edit', edit_admin_merchant_product_api_mapping_path(m.id)) %></td>
+        <td class="link"><%= link_to('delete', admin_merchant_product_api_mapping_path(m.id), method: :delete, :data => {:confirm => 'Are you sure?'}) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= paginate @mappings %>
+

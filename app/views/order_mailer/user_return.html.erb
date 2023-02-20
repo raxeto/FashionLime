@@ -1,0 +1,28 @@
+<p>Здравейте <%= "#{@order_return.user_first_name} #{@order_return.user_last_name}" %>,</p>
+
+<div>
+  <p>
+    Съобщаваме Ви, че направихте заявка за <%= @order_return_type %> към поръчка номер <strong><%= @order_return.merchant_order.number %></strong>.
+  </p>
+  <%= render partial: 'order_return_details', locals: { :order_return => @order_return, :return_type => :return } %>
+  <%= render partial: 'order_return_details', locals: { :order_return => @order_return, :return_type => :exchange } %>
+</div>
+
+<% if @merchant.return_instructions.present? %>
+  <h4>Инструкции за връщане и замяна на продукти от <%= @merchant.name %>:</h4>
+  <p>
+    <%= @merchant.return_instructions %>
+  </p>
+<% end %>
+
+<% if @order_return.note_to_merchant.present? %>
+<p>
+  Бележка към търговеца: <%= @order_return.note_to_merchant %>
+</p>
+<% end %>
+
+<p>Ако заявката не е била направена от Вас, моля свържете се с екипа на FashionLime.</p>
+
+
+<%= render partial: '/shared/mailer/user_email_signature' %>
+

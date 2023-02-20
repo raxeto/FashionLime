@@ -1,0 +1,33 @@
+<div class="col-xs-12">
+
+    <%= render partial: 'header', locals: {
+            see_all_url: outfits_path,
+            see_all_text: 'Разгледай всички визии'
+    } %>
+
+    <%= render partial: 'shared/filtered_dynamic_item_list', locals: {
+            update_url: true,
+            load_more_url: outfits_search_page_load_more_path(:search_phrase => @search_phrase),
+            item_type: 'outfits',
+            initial_item_count: Conf.search.initial_item_count,
+            sort_options: [ ['Дата на добавяне', 'created_date'], ['Рейтинг', 'rating'], ['Съвпадение', 'relevance']],
+            filters: [:occasions, :categories, :price, :merchants],
+            filters_info: { :categories => 'Ако филтърът е попълнен, поне един от продуктите във визията ще е от избраните категории.'}
+    } %>
+    
+</div>
+
+<script language="JavaScript">
+    FashionLime.Common.utils.onPageLoad(function () {
+        FashionLime.Shared.dynamicFooter.setup();
+
+        FashionLime.Common.utils.onLoadFromCache(function() {
+            FashionLime.Shared.dynamicFooter.setup(); },
+                '.application-layout');
+
+        FashionLime.Common.utils.onPageUnload(function() {
+            FashionLime.Shared.dynamicFooter.clear(); },
+                '.application-layout');
+    });
+
+</script>

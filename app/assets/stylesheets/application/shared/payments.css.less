@@ -1,0 +1,17 @@
+@import "/template/less/modules/variables-custom.css.less";
+
+.payment-types-list {
+  .payment-type {
+    float: left;
+    padding: 5px 10px;
+    &:not(:first-child) {
+      border-left: solid 1px @gray-lighter;
+    }
+    img {
+      margin: 0 auto;
+    }
+    &.payment-type-compact {
+      padding: 5px;
+    }
+  }
+}

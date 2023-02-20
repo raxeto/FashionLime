@@ -1,0 +1,157 @@
+<div id="contact-new" class="col-sm-12">
+
+    <section>
+
+        <div class="row">
+            <div class="col-md-12">
+                <section>
+                    <div class="heading">
+                        <h2>Ние сме тук, за да Ви помогнем</h2>
+                    </div>
+
+                    <% if is_client_contact %>
+                      <p class="lead">
+                        Искате да зададете въпрос? 
+                        Имате някакъв проблем с продуктите ни? 
+                        Или просто сте любопитен да разберете нещо?
+                      </p>
+                    <% else %>
+                      <%= alert_tag(:warning, 'Скъпи търговци, сайтът поддържа актуални инструкции за работа в него. Ако имате затруднения в конкретна страница от сайта натиснете бутона "Помощ", намиращ се в горния ляв ъгъл. Ще излезе прозорец с инструкции. Използвайте стрелките в него, или стрелките на клавиатурата, за да преминете към следващите стъпки в инструкциите.') %>
+                      <p class="lead">
+                        Ако все още не намирате отговор на въпроса си, или просто сте любопитен да разберете нещо...
+                      </p>
+                    <% end %>
+                    <p>
+                      Свържете се с нас. Нашият обслужващ център работи за Вас <%= Conf.contact.support_working_hours_text %>
+                    </p>
+                </section>
+            </div>
+        </div>
+
+    </section>
+
+    <section>
+
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="box-simple">
+                    <div class="icon">
+                        <i class="fa fa-info" aria-hidden="true"></i>
+                    </div>
+                    <h3><%= Conf.contact.company_name %></h3>
+                    <ul class="list-style-none">
+                        <li>ЕИК: <%= Conf.contact.company_bulstat %></li>
+                        <li>Работно време офис: <%= Conf.contact.office_working_hours_text %> </li>
+                    </ul>
+                </div>
+                <!-- /.box-simple -->
+            </div>
+
+
+            <div class="col-sm-3">
+
+                <div class="box-simple">
+                    <div class="icon">
+                        <i class="fa fa-phone"></i>
+                    </div>
+                    <h3>Телефон</h3>
+                    <p class="text-muted">
+                        Стандартна тарифа за разговор спрямо Вашия абонаментен план.
+                    </p>
+                    <p class="phone-number">
+                        <strong>
+                            <% phone = is_client_contact ? Conf.contact.clients_phone : Conf.contact.merchants_phone %>
+                            <% phone_number = is_client_contact ? Conf.contact.clients_phone_number : Conf.contact.merchants_phone_number %>
+
+                            <%= link_to "tel:#{phone_number}", :title => "Набери", :rel => 'nofollow' do %>
+                                <i class="fa fa-phone-square" aria-hidden="true"></i>
+                            <% end %>
+                            <%= phone %>
+                        </strong>
+                    </p>
+                    
+                </div>
+                <!-- /.box-simple -->
+
+            </div>
+
+            <div class="col-sm-3">
+
+                <div class="box-simple">
+                    <div class="icon">
+                        <i class="fa fa-envelope"></i>
+                    </div>
+                    <h3>E-mail</h3>
+                    <p class="text-muted">Пишете ни имейл, ще Ви отговорим възможно най-скоро.</p>
+                    <strong>
+                    <% email = is_client_contact ? Conf.contact.clients_email : Conf.contact.merchants_email %>
+                    <%= mail_to email, :target => "_blank", :rel => 'nofollow' do %>
+                        <%= email %>
+                    <% end %>
+                    </strong>
+                </div>
+                <!-- /.box-simple -->
+            </div>
+
+             <div class="col-sm-3">
+                <div class="box-simple">
+                    <div class="icon">
+                        <i class="fa fa-map-marker"></i>
+                    </div>
+                    <h3>Адрес</h3>
+                    <p>
+                    <%= Conf.contact.address %>
+                    </p>
+                    <strong>
+                        <%= link_to Conf.contact.address_google_maps, :target => "_blank", :rel => 'nofollow' do %>
+                            <i class="fa fa-map-o" aria-hidden="true"></i>виж на картата
+                        <% end %>
+                    </strong>
+                </div>
+                <!-- /.box-simple -->
+            </div>
+
+        </div>
+
+    </section>
+
+    <section>
+
+        <div class="row">
+
+            <div class="col-md-12">
+                <div class="heading text-center">
+                    <h2>Форма за контакт</h2>
+                </div>
+            </div>
+
+            <div class="col-md-8 col-md-offset-2">
+              <%= bootstrap_form_for(@contact_inquiry, url: { action: :create}, method: :post ) do |f| %>
+                  <div class="row">
+                      <div class="col-sm-6">
+                         <%= f.text_field :name, :label => "Име" %>
+                      </div>
+                      <div class="col-sm-6">
+                         <%= f.email_field :email, :label => "Имейл" %>
+                      </div>
+                      <div class="col-sm-12">
+                         <%= f.text_field :subject, :label => "Относно" %>
+                      </div>
+                      <div class="col-sm-12">
+                         <%= f.text_area :message, :label => "Съобщение" %>
+                      </div>
+                     
+
+                      <div class="col-sm-12 text-center">
+                          <button type="submit" class="btn btn-template-main"><i class="fa fa-envelope-o"></i> Изпрати запитване</button>
+                      </div>
+                  </div>
+                    <!-- /.row -->
+                <% end %>
+            </div>
+        </div>
+        <!-- /.row -->
+      
+    </section>
+
+</div>

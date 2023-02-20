@@ -1,0 +1,48 @@
+<div id="thank-you-step" class="col-md-12">
+
+  <div>
+    <div class="smile-face">
+      <i class="fa fa-smile-o" aria-hidden="true"></i>
+    </div>
+    <div>
+      <p class="success-message lead">
+        Поръчката Ви беше успешно направена.
+      </p>
+    </div>
+    <div>
+      <p class="lead">
+        Ще получите уведомление, когато тя бъде потвърдена. <br>
+      </p>
+      <p class="lead">
+        След <b id="seconds-counter"></b> секунди ще бъдете пренасочени към началната страница.
+      </p>
+    </div>
+  </div>
+
+</div>
+
+<script language="JavaScript">
+  FashionLime.Common.utils.onPageLoad(function() {
+    <% if Rails.env.production? %>
+    FashionLime.FacebookPixelUtils.trackPurchase(
+      <%= Article.where(:id => @order.merchant_order_details.pluck(:article_id)).pluck(:product_id).uniq %>, 
+      <%= @order.total_with_shipment %>
+    );
+    <% end %>
+
+    var seconds = 6.0;
+    $('#seconds-counter').text(seconds);
+
+    function timer() {
+      seconds--;
+      $('#seconds-counter').text(seconds);
+      if (seconds < 1.0) {
+        window.location.href = "/";
+      } else {
+        setTimeout(timer, 1000);
+      }
+    }
+
+    setTimeout(timer, 1000);
+  });
+</script>

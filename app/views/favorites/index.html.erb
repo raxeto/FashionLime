@@ -1,0 +1,13 @@
+<div class="col-md-9">
+  <div class="search-results">
+    <% if @no_results %>
+      <p class="text-muted lead">Няма харесани продукти или визии.</p>
+    <% else %>
+      <%= render partial: "/search/search_section", locals: { items: @outfits, has_more: false, section_name: 'Визии', list_class: "outfits-list", js_partial: "FashionLime.Outfit.listItem", compact: true } %>
+      <%= render partial: "/search/search_section", locals: { items: @products, has_more: false, section_name: 'Продукти', list_class: "products-list", js_partial: "FashionLime.Product.listItem", compact: false } %>
+    <% end %>
+  </div>
+</div>
+<div class="col-md-3">
+  <%= render partial: '/shared/user_profile_menu' %>
+</div>

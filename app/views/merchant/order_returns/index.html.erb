@@ -1,0 +1,61 @@
+<% help_steps "index", [{:location =>"shared.bootstrap_table"}] %>
+
+<div id="orderReturnsList" class="col-sm-12 clearfix">
+    <div class="box">
+        <div class="row form-inline">
+            <div class="form-group well well-sm">
+              <%= label_tag(:filter, "Филтрирай по статус:") %>
+              <%= collection_select(:filter, :status, MerchantOrderReturn.statuses_i18n, :first, :last, {:include_blank => true, :selected => @status_filter}, {:class => "form-control help-tour-step-1"}) %>
+            </div>
+        </div>
+        <div class="row">
+          <div class="table-responsive">
+            <table id="orderReturnsTable" class="table help-tour-step-3">
+            </table>
+          </div>
+        </div>
+    </div>
+</div>
+
+<script language="JavaScript">
+  function detailFormatter(value, row, index) {
+    return ['<a class="btn btn-template-main btn-sm', (index === 0 ? " help-tour-step-2" : ""), '" title="Детайли" href="/merchant/order_returns/', row.number, '">',
+              '<i class="fa fa-search"></i>',
+            '</a>'].join('');
+  }
+
+  FashionLime.Common.utils.onPageLoad(function() {
+    FashionLime.Shared.postBackFilter.setup('filter_status', 'status');
+    FashionLime.Shared.bootstrapTable.create('orderReturnsTable',
+        [{
+            id: 'number',
+            name: 'Номер'
+        }, {
+            id: 'created_at',
+            name: 'Дата на заявката',
+            filterType: 'range_date',
+            dataType: 'date'
+        }, {
+            id: 'user_full_name',
+            name: 'Клиент'
+        }, {
+            id: 'order_number',
+            name: 'Номер поръчка'
+        }, {
+            id: 'note_to_merchant',
+            name: 'Заб. от клиента',
+            filterable: false
+        }, {
+            id: 'status',
+            name: 'Статус'
+        }, {
+          formatter: detailFormatter
+        }], 
+        [
+          <% @order_returns.each do |o| %>
+            <%= raw o %>,
+          <% end %>
+        ]
+      );
+  });
+</script>

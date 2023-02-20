@@ -1,0 +1,49 @@
+<h2>Orders</h2>
+
+<p>
+  <%= link_to admin_stale_returns_path, :class => "btn btn-template-main" do %>
+    Go to returns
+  <% end %>
+</p>
+
+<br>
+<%= paginate @orders %>
+
+<table class="table centered">
+  <thead>
+    <tr>
+      <th>Merchant Order N#</th>
+      <th>Merchant</th>
+      <th>Status</th>
+      <th>Customer Name</th>
+      <th>Delivery from</th>
+      <th>Delivery to</th>
+      <th>Created</th>
+      <th>Stale for</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @orders.each do |o| %>
+      <tr>
+        <td> <%= o.number %> </td>
+        <td> <%= link_to o.merchant.name, merchant_profile_path(o.merchant.url_path) %></td>
+        <td> <%= o.status_i18n %> </td>
+        <td> <%= o.order.user_first_name %> <%= o.order.user_last_name %> </td>
+        <td class="date"> <%= date_to_s(o.aprox_delivery_date_from)%> </td>
+        <td class="date"> <%= date_to_s(o.aprox_delivery_date_to)%> </td>
+        <td class="date"> <%= date_time_to_s(o.created_at)%> </td>
+        <td> <%= o.active? ? time_ago_in_words(o.created_at) : "" %> </td>
+        <td>
+          <%= link_to admin_stale_order_path(o) do %>
+            Детайли
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= paginate @orders %>
+

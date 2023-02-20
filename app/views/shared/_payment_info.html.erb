@@ -1,0 +1,3 @@
+<% show_title = true if local_assigns[:show_title].nil? %>
+
+<%= render partial: "shared/models/#{info.class.name.underscore}", locals: { info: info, payment_code: payment_code, merchant_order_number: merchant_order_number, holder_id: holder_id, show_title: show_title } %>

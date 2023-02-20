@@ -1,0 +1,27 @@
+<%= render partial: 'shared/report', locals: { 
+  form_id: "reportCartsForm",
+  report_path: merchant_reports_generate_carts_path,
+  filters: [ :added_date, :cart_status, :product_name, :product_category, :product_size, :user],
+  filter_labels:  { :added_date => 'Дата', :cart_status => 'Статус запис', :product_name => 'Продукт', :product_category => 'Категория', :product_size => 'Размер', :user => 'Потребител', :location => 'Нас.място'},
+  filters_control: {
+    :added_date => "#{text_field_tag("selected_filters[added_date][date_from]", !params["selected_filters"].nil? && !params["selected_filters"]["added_date"].nil? ? params["selected_filters"]["added_date"]["date_from"] : "", :class => "form-control filter date-filter")} до #{text_field_tag("selected_filters[added_date][date_to]", !params["selected_filters"].nil? && !params["selected_filters"]["added_date"].nil? ? params["selected_filters"]["added_date"]["date_to"] : "", :class => "form-control filter date-filter")}".html_safe,
+    :cart_status => collection_select("selected_filters", :cart_status, [['existing', 'Съществуващ'], ['deleted', 'Изтрит']], :first, :last, {:selected => !params[:selected_filters].nil? ? params[:selected_filters][:cart_status] : ""}, {:multiple => true, :class => "form-control multiselect-combo filter"}),
+    :product_name => text_field_tag("selected_filters[product_name]", !params[:selected_filters].nil? ? params[:selected_filters][:product_name] : "", :class => "form-control filter"),
+    :product_category => select_tag("selected_filters[product_category]", option_groups_from_collection_for_select(ProductCategory.joins(:parent).where(:parents_product_categories => {:key => ['women', 'men']}).order(key: :desc), :children, :name_with_parent, :id, :name, !params[:selected_filters].nil? ? params[:selected_filters][:product_category] : ""), {:multiple => true, :class => "multiselect-combo filter"}),
+    :product_size => select_tag("selected_filters[product_size]", option_groups_from_collection_for_select(SizeCategory.includes(:sizes).order(:order_index), :sizes, :name, :id, :name, !params[:selected_filters].nil? ? params[:selected_filters][:product_size] : ""), {:multiple => true, :class => "multiselect-combo filter"}),
+    :user => text_field_tag("selected_filters[user]", !params[:selected_filters].nil? ? params[:selected_filters][:user] : "", :class => "form-control filter"),
+  },
+  fields: {
+      :cart_fields => { :title => 'Количка', :fields => { :cart_id => 'ID количка', :status => 'Статус', :date => 'Дата на добавяне', :month => 'Месец на добавяне', :quarter => 'Тримесечие на добавяне', :year => 'Година на добавяне', :day => 'Ден на добавяне', :updated_at => 'Дата последно действие'}},
+      :product_fields => { :title => 'Продукт', :fields => { :product_name => 'Име продукт', :product_id => 'ID продукт', :size => 'Размер', :color => 'Цвят', :trade_mark => 'Търговска марка'}},
+      :user_fields => { :title => 'Потребител', :fields => { :username => 'Потребителско име'}}
+  },
+  sumators:  { 
+    :cart_total => 'Сума без отстъпка', :cart_discount => 'Отстъпка в лева', :cart_total_with_discount => 'Сума с отстъпка', :cart_products_count => 'Брой продукти'
+  },
+  field_types: { 
+    :cart_id => :integer, :date => :date, :updated_at => :date,
+    :product_id => :integer, 
+    :cart_total => :float, :cart_discount => :float, :cart_total_with_discount => :float, :cart_products_count => :integer
+  }
+} %>

@@ -1,0 +1,71 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or any plugin's vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any styles
+ * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
+ * file per style scope.
+ *
+ *= bootstrap-sprockets
+ *= require smoothproducts
+ *= require bootstrap_and_overrides
+ *= require rails_bootstrap_forms
+ *= require bootstrap-multiselect
+ *= require template
+ *= require bootstrap-table
+ *= require bootstrap-table-filter
+ *= require typeahead
+ *= require lightslider
+ *= require jquery.minicolors
+ *= require select2
+ *= require select2-bootstrap
+ *= require bootstrap-tour
+ *= require flaticon
+ *= require_tree ./application
+ *= require_self
+ */
+
+div.form-group label.required:after
+{
+  content: " *";
+  color: #940000;
+}
+
+#user-menu
+{
+  text-align: right;
+}
+
+#user-menu li
+{
+  display: inline;
+  list-style-type: none;
+  padding-right: 20px;
+}
+
+.field_with_errors {
+  padding: 0.2px;
+  background-color: red;
+}
+
+/* Used for the glyph icons */
+@font-face {
+  font-family: 'Glyphicons Halflings';
+  src: asset-url('glyphicons-halflings-regular.eot');
+  src: asset-url('glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'),
+  asset-url('glyphicons-halflings-regular.woff') format('woff'),
+  asset-url('glyphicons-halflings-regular.ttf') format('truetype'),
+  asset-url('glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
+}
+
+.label {
+  color: black;
+}
+
+div.btn i.fa {
+  margin: 0 5px;
+}

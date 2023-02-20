@@ -1,0 +1,24 @@
+<div class="row">
+  <div class="col-sm-12">
+    <%= payment_form.text_field :company_name, :value => info.company_name, :label => "Получател", :label_class => "required", :help => "* име на получател в платежното нареждане" %>
+  </div>
+ 
+</div>
+
+<div class="row">
+  <div class="col-sm-6">
+    <%= payment_form.text_field :iban, :value => info.iban, :label => "IBAN", :label_class => "required" %>
+  </div>
+  <div class="col-sm-3">
+    <%= payment_form.text_field :bic_code, :value => info.bic_code , :label => "BIC на банката", :label_class => "required" %>
+  </div>
+  <div class="col-sm-3">
+    <%= payment_form.text_field :currency, :value => info.currency, :label => "Валута", :disabled => true, :label_class => "required" %>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-sm-12">
+    <%= payment_form.text_field :bank_name, :value => info.bank_name, :label => "Име на банката", :label_class => "required" %>
+  </div>
+</div>

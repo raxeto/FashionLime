@@ -1,0 +1,61 @@
+@import "/template/less/modules/variables-custom.css.less";
+@import "/template/less/modules/mixins/grid-framework.css.less";
+
+.products-list {
+  @media (min-width: 580px) and (max-width: (@screen-sm-min - 1)) {
+    .make-grid(ms);
+  }
+}
+
+.outfits-list {
+  @media (min-width: 660px) and (max-width: (@screen-sm-min - 1)) {
+    .make-grid(ms);
+  }
+}
+
+.merchants-list {
+  @media (min-width: 540px) and (max-width: (@screen-sm-min - 1)) {
+    .make-grid(ms);
+  }
+}
+
+.product-pictures-list {
+  @media (min-width: 540px) and (max-width: (@screen-sm-min - 1)) {
+    .make-grid(ms);
+  }
+}
+
+.product-collections-list {
+  .product-collection .name {
+    height: 55%;
+    h3 {
+      text-transform: none;
+    }
+  }
+
+  @media (max-width: (@screen-sm-min - 1)) {
+    .product-collection .name {
+      h3 {
+        font-size: @font-size-h5; 
+      }
+    }
+  }
+
+  @media (min-width: 440px) and (max-width: 480px) {
+    .product-collection .name {
+      height: 60%;
+    }
+  }
+
+  @media (min-width: 481px) and (max-width: (@screen-sm-min - 1)) {
+    .product-collection .name {
+      height: 60%;
+    }
+  }
+
+  @media (min-width: 440px) and (max-width: (@screen-sm-min - 1)) {
+    .make-grid(ms);
+  }
+}
+
+

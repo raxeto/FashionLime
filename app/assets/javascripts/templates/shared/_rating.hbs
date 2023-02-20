@@ -1,0 +1,21 @@
+<div class="rating_container">
+  <span class="rating rating-text">
+    {{ rating }}
+  </span>
+  <span class="user_rating" style="display: none;">
+    {{ user_rating }}
+  </span>
+  <span class="rating-text">
+    рейтинг
+  </span>
+  <div class="btn-group {{ locals.btn_group_size }} btn-rounded-group" role="group" aria-label="...">
+    <button type="button" class="btn btn-default btn-increase {{ locals.like_button_class }}"
+      onclick="FashionLime.Rating.utils.increase(this, {{ id }}, '{{ type }}');">
+      <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+    </button>
+    <button type="button" class="btn btn-default btn-decrease {{ locals.dislike_button_class }}"
+      onclick="FashionLime.Rating.utils.decrease(this, {{ id }}, '{{ type }}');">
+      <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+    </button>
+  </div>
+</div>

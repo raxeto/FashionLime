@@ -1,0 +1,7 @@
+#index.number_of_shards: 1
+#index.number_of_replicas: 0
+
+network.bind_host: localhost
+
+script.inline: false
+script.stored: false

@@ -1,0 +1,48 @@
+<% init_slider  = true if local_assigns[:init_slider].nil? %>
+ 
+<div id="<%= slider_id %>" class="slider row">
+    <div class="col-xs-1 col-arrow-left">
+      <button class="arrow-left center-vertical" type="button">
+        <i class="fa fa-arrow-left" aria-hidden="true"></i>
+      </button>
+    </div>
+    <div class="col-xs-10">
+       <ul class="slider-control">
+        </ul>
+    </div>
+    <div class="col-xs-1 col-arrow-right">
+       <button class="arrow-right center-vertical" type="button">
+          <i class="fa fa-arrow-right" aria-hidden="true"></i>
+        </button>
+    </div>
+</div> 
+
+<script type="text/javascript">
+  FashionLime.Common.utils.onPageLoad(function() {
+    FashionLime.Common.list.setup(
+      "#<%= slider_id %> .slider-control",
+      <%= raw items_array items %>,
+      "<%= item_partial %>",
+      function(itemHtml) {
+        return "<li>" + itemHtml + "</li>"
+      }
+    );
+
+    <% if init_slider %>
+      var slider = new FashionLime.Shared.Slider(
+        "<%= slider_id %>", 
+        <%= visible_items %>,
+        <%= responsive_breakpoints.to_json.html_safe %>
+      );
+      slider.init();
+
+      FashionLime.Common.utils.onLoadFromCache(function() {
+        slider.initFromCache();
+      }, '#<%= slider_id %>');
+
+      FashionLime.Common.utils.onPageUnload(function() {
+        slider.cleanup();
+      }, '#<%= slider_id %>');
+    <% end %>
+  });
+</script>

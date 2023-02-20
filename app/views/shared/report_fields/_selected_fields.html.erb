@@ -1,0 +1,22 @@
+<table class="selected-fields">
+<tr>
+  <td>
+    <%= select_tag(:selected_fields_list, "", { :multiple => true, :class => "selected-fields-list form-control"}) %>
+  </td>
+  <td>
+    <button class="btn-move-up btn btn-xs btn-template-main" type="button" title="Премества нагоре избраното от списъка поле">
+      <i class="fa fa-arrow-circle-up"></i>
+    </button>
+    <br/>  
+    <button class="btn-move-down btn btn-xs btn-template-main" type="button" title="Премества надолу избраното от списъка поле">
+      <i class="fa fa-arrow-circle-down"></i>
+    </button>
+  </td>
+</tr>
+</table>
+
+<script language="JavaScript">
+  FashionLime.Common.utils.onPageLoad(function () {
+    FashionLime.Shared.reportFields.preselectFields([<%= params[:selected_fields_list].blank? ? "" : params[:selected_fields_list].map {|el| "'#{el}'"}.join(",").html_safe %>]);
+  });
+</script>

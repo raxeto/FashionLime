@@ -1,0 +1,24 @@
+bust:
+  id: 1
+  name: Гръдна обиколка
+  order_index: 1
+
+waist:
+  id: 2
+  name: Обиколка на талия
+  order_index: 2
+
+hips:
+  id: 3
+  name: Обиколка на ханш
+  order_index: 3
+
+inner_length:
+  id: 4
+  name: Дължина на крак измерен от вътрешната част
+  order_index: 4
+
+foot_length:
+  id: 5
+  name: Дължина на стъпало
+  order_index: 5

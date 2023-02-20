@@ -1,0 +1,32 @@
+<% if @products.present? %>
+  <%= paginate @products %>
+
+  <div id="pp-form" class="admin-clip-product-pictures">
+    <%= form_tag admin_generate_pp_zip_path do |f| %>
+      <% @products.each do |p| %>
+        <p class="product-picture">
+          <% p.product_pictures.each_with_index do |pp, ind| %>
+            <label>
+              <%= image_tag pp.picture.url(:thumb) %>
+              <% if pp.outfit_compatible == 1 %>
+                <%= check_box_tag "pictures[#{pp.id}]", 1, true, disabled: true %>
+              <% else %>
+                <%= check_box_tag "pictures[#{pp.id}]", 1, (ind == 0 && mark_first_by_default) ? true : false %>
+              <% end %>
+            </label>
+          <% end %>
+        </p>
+      <% end %>
+
+      <p class="text-center">
+        <button type="submit" class="btn btn-template-main">
+          <i class="fa fa-sign-in"></i> Генерирай
+        </button>
+      </p>
+    <% end %>
+  </div>
+
+  <%= paginate @products %>
+<% else %>
+  <h4>Няма продукти за обработка</h4>
+<% end %>

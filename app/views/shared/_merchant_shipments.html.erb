@@ -1,0 +1,42 @@
+<% limit_count = false if local_assigns[:limit_count].nil? %>
+
+<div id="merchant-shipment-types" class="table-responsive">
+    <table class="table table-hover centered">
+      <thead class="centered-header">
+          <tr>
+              <th> &nbsp;</th>
+              <th>Доставка</th>
+              <th>Цена</th>
+              <th>Срок</th>
+              <th>Важи само за тип плащане</th>
+              <th>Минимална стойност на поръчката</th>
+          </tr>
+      </thead>
+      <tbody>
+       <% shipments = limit_count ? merchant.available_shipments.limit(Conf.shipment.visible_count + 1) : merchant.available_shipments %>
+       
+       <% merchant.available_shipments.each_with_index do |shipment, index| %>
+          
+          <% if !limit_count || index < Conf.shipment.visible_count %>
+            <tr>
+              <td class="active"><strong><%= shipment.name %></strong></td>
+              <td class="shipment-type-col"><%= shipment_type_image shipment.shipment_type %></td>
+              <td class="active right-aligned"><strong><%= shipment.price_formatted %></strong></td>
+              <td><%= shipment.period_text %></td>
+              <td>
+                <%= shipment.payment_type.try(:name) || "Всички начини на плащане" %>
+              </td>
+              <td class="right-aligned"><%= shipment.min_order_price >= Conf.math.PRICE_EPSILON ? shipment.min_order_price_formatted : "Важи за всякаква стойност на поръчката." %></td>
+            </tr>
+          <% else %>
+            <td colspan="6">
+                <%= link_to merchant_profile_path(:url_path => merchant.url_path, :anchor => 'shipments') do %>
+                  . . . Виж всички начини за доставка на търговеца
+                <% end %>
+            </td>
+          <% end %>
+
+        <% end %>
+      </tbody>
+    </table>
+</div>

@@ -1,0 +1,29 @@
+potnik:
+  id: 1
+  product_id: 1
+  color_id: 2
+
+potnik2:
+  id: 2
+  product_id: 1
+  color_id: 3
+
+kremvirsh:
+  id: 3
+  product_id: 2
+  color_id: 1
+
+kasetofon:
+  id: 4
+  product_id: 3
+  color_id: 4
+
+kasetofon2:
+  id: 5
+  product_id: 3
+  color_id: 3
+
+chekmedje:
+  id: 6
+  product_id: 4
+  color_id: 1

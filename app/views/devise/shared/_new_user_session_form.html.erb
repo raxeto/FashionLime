@@ -1,0 +1,21 @@
+<%= form_tag form_url do |f| %>
+  <div class="form-group">
+    <%= text_field_tag 'user[username]', '', autofocus: true, placeholder: "Потребителско име", class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= password_field_tag 'user[password]', '', autocomplete: "off", placeholder: "Парола", class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= check_box_tag 'user[remember_me]' %>
+    <%= label_tag 'user[remember_me]', 'Запомни ме' %>
+  </div>
+
+  <p class="text-center">
+    <button type="submit" class="btn btn-template-main">
+      <i class="fa fa-sign-in"></i> Влез
+    </button>
+  </p>
+<% end %>
+

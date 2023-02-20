@@ -1,0 +1,8 @@
+bg:
+  activerecord:
+    models:
+      product_picture: снимка
+    attributes:
+      product_picture:
+        order_index: подредба
+        color_id: цвят

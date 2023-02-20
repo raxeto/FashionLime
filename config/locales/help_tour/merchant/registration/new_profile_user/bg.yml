@@ -1,0 +1,24 @@
+bg:
+  help_tour:
+    merchant:
+      registration:
+        new_profile_user:
+          steps:
+            - title: Потребителско име
+              content: Потребителско име, което ще се използва от потребителя за вход в системата.
+              placement: top
+            - title: Име
+              content: Име на потребителя.
+              placement: top
+            - title: Фамилия
+              content: Фамилия на потребителя.
+              placement: top
+            - title: Email
+              content: Email на потребителя.
+              placement: top
+            - title: Парола
+              content: Въведете парола и след това я кажете на потребителя. Няма да можете да променяте паролата му след това. Само той ще може да я сменя.
+              placement: top
+            - title: Създай
+              content: Натиснете този бутон, след като сте въвели данните, за да създадете потребителя.
+              placement: top

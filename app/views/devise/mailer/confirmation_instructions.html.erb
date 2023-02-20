@@ -1,0 +1,5 @@
+<p>Здравейте <%= @email %>!</p>
+
+<p>Може да потвърдите електронната си поща чрез линка долу:</p>
+
+<p><%= link_to 'Потвърди', confirmation_url(@resource, confirmation_token: @token) %></p>

@@ -1,0 +1,86 @@
+
+<div id="customerOrders" class="col-md-9">
+
+  <% if @merchant_orders.size == 0 %>
+    <p class="text-muted lead">Нямате направени поръчки.</p>
+  <% else %>
+
+    <%= render partial: '/shared/contact_prompting' %>
+
+    <div class="box">
+
+        <div class="table-responsive">
+            <table id="ordersTable" class="table table-hover centered">
+                <thead class="centered-header">
+                    <tr>
+                        <th>Номер</th>
+                        <th>Дата</th>
+                        <th>Търговец</th>
+                        <th>Сума</th>
+                        <th>Статус</th>
+                        <th></th>
+                        <th>Връщане / Замяна</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <% @merchant_orders.each do |o| %>
+                <tr>
+                  <td><strong><%= o.number %></strong></td>
+                  <td><%= date_time_to_s(o.created_at) %></td>
+                  <td>
+                     <%= render partial: '/shared/merchant_profile_link', locals: { merchant: o.merchant } %>
+                  </td>
+                  <td class="right-aligned"><%= o.total_with_shipment_formatted %></td>
+                  <td class="right-aligned">
+                    <% label_class = ""
+                      if o.active? 
+                        label_class = "label-info"
+                      elsif o.waiting_payment?
+                        label_class = "label-warning"
+                      elsif o.confirmed?
+                        label_class = "label-success"
+                      end
+                      %>
+                    <span class="label <%= label_class %>">
+                      <%= o.status_i18n %>
+                    </span>
+                  </td>
+                  <td>
+                   <%= link_to order_path(:number => o.number), { "class" => "btn btn-template-main btn-sm", "title" => "Прегледай"} do %>
+                     Преглед
+                   <% end %>
+                   </td>
+                   <td class="return-col">
+                    <% if o.merchant_order_return.nil? %>
+                      <% if o.return_deadline_passed? %>
+                        Изтекъл срок за връщане
+                      <% else %>
+                        <%= link_to return_order_path(o), { "title" => "Направи заявка за връщане за тази поръчка"} do %>
+                          Направи заявка
+                        <% end %>  
+                      <% end %>  
+                    <% else %>  
+                      Изпратена заявка
+                    <% end %>  
+                  </td>
+                </tr>
+                <% end %>
+                </tbody>
+            </table>
+        </div>
+        <!-- /.table-responsive -->
+
+    </div>
+    <!-- /.box -->
+    <% end %>
+
+</div>
+
+
+<div class="col-md-3">
+   
+   <%= render partial: '/shared/user_profile_menu' %>
+
+</div>
+
+

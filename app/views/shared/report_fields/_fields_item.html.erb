@@ -1,0 +1,10 @@
+<ul class='fields-list'>
+  <% fields.each do |key, value| %>
+    <li class='checkbox'>
+      <label>
+        <input value='<%= key %>' name="report_selected_fields[]" type='checkbox'/> 
+        <span><%= value %></span>
+      </label>
+    </li>
+  <% end %>
+</ul>

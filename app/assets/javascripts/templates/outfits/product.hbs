@@ -1,0 +1,25 @@
+<div class="outfit-product light-tooltip" aria-haspopup="true" data-toggle="tooltip" data-placement="top" title="" 
+  data-original-title="{{ product.name }} от {{ product.merchant_name }}, цена {{ product.price }}">
+  <div class="product-image">
+    <img class="product_image img-responsive thumb" alt="{{ product.image_alt }}" src="{{ product.image_url.thumb }}">
+  </div>
+  <div class="product-meta">
+    <div class="product-action">
+        <input type="hidden" name="" id="" value="{{ product.id }}" class="product_id">
+        <a title="Добави към визията" class="add add_picture_button not_yet_added">
+          <div>
+            <span>
+              <i class="fa fa-plus-circle"></i>Добави
+            </span>
+          </div>
+        </a>
+        <a target="_blank" title="Разгледай продукта" class="link" href="{{ product.link }}">
+            <div>
+              <span>
+                <i class="fa fa-link"></i>
+              </span>
+            </div>
+        </a>
+    </div>
+  </div>
+</div>

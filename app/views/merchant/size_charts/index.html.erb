@@ -1,0 +1,63 @@
+<% help_steps "index" %>
+
+<div id="sizeChartsList" class="col-sm-12 clearfix">
+  <div class="box">
+
+    <div class="row">
+      <div class="col-sm-12">
+        <%= link_to new_merchant_size_chart_path, :class => "btn btn-template-main btn-new-record btn-new-record-shifted help-tour-step-1" do %>
+          Създай нова таблица
+        <% end %>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-12">
+        <% if @size_charts.size == 0 %>
+          <p class="text-muted lead">
+             Няма въведени данни.  
+          </p>
+        <% else %>
+          <div class="table-responsive">
+            <table class="table centered help-tour-step-2">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th class="help-tour-step-3">Име</th>
+                  <th class="help-tour-step-4">Категория размер</th>
+                  <th class="help-tour-step-5">Забележка</th>
+                  <th>Създадена на</th>
+                  <th class="help-tour-step-6"></th>
+                  <th class="help-tour-step-7"></th>
+                </tr>
+              </thead>
+
+              <tbody>
+                 <% @size_charts.each do |c|%>
+                  <tr>
+                     <td> <%= c.id %> </td>
+                     <td> <%= c.name %> </td>
+                     <td> <%= c.size_category.name %> </td>
+                     <td> <%= c.note %> </td>
+                     <td> <%= date_time_to_s(c.created_at) %> </td>
+                     <td> 
+                       <%= link_to edit_merchant_size_chart_path(c), {"class" => "btn btn-template-main btn-sm"} do %>
+                          <i class="fa fa-edit"></i>
+                       <% end %>
+                    </td>
+                    <td>
+                      <%= link_to merchant_size_chart_path(c), method: :delete, :data => { confirm: "Сигурни ли сте, че искате да изтриете таблицата с размерите?" },  :class => "btn btn-template-main btn-sm", :title => "Изтриване" do %>
+                          <i class="fa fa-trash-o"></i>
+                      <% end %>
+                    </td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+

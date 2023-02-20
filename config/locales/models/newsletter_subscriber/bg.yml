@@ -1,0 +1,5 @@
+bg:
+  activerecord:
+    attributes:
+      newsletter_subscriber:
+        email: Имейл за получаване

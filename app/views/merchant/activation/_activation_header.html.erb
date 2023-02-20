@@ -1,0 +1,11 @@
+<% if is_in_activation? %>
+  <div class="activation-header">
+    <h4>
+     Активиране на профила стъпка <%= activation_step %> от  <%= Conf.merchant_activation.steps_count %>
+    </h4>
+    <p>
+      <%= step_description(activation_step) %>
+    </p>
+  </div>
+  <%= hidden_field_tag("activation", "true")%>
+<% end %>

@@ -1,0 +1,26 @@
+<%= form_for(@product_category, url: { action: action}, html: { multipart: true } ) do |f| %>
+     Name <%= f.text_field :name %>
+     <br>
+     Description <%= f.text_area :description %>
+     <br>
+     Key <%= f.text_field :key %>
+     <br>
+     Parent <%= f.collection_select(:parent_id, ProductCategory.all.order("order_index"), :id, :name_with_parent, { :include_blank => true }) %>
+     <br>
+     URL Path <%= f.text_field :url_path %>
+     <br>
+     Meta Title <%= f.text_field :meta_title %>
+     <br>
+     Meta Description <%= f.text_area :meta_description %>
+     <br>
+     Order Index <%= f.number_field :order_index %>
+     <br>
+     OG Image <%= f.file_field :og_image %>
+     <br>
+     OG Image Preview
+        <% if f.object.og_image.present? %>
+          <%= image_tag f.object.og_image.url(:original) %> 
+        <% end %>
+     <br>
+     <%= f.submit(action.to_s.capitalize) %>
+<% end %>

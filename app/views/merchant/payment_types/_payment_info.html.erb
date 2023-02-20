@@ -1,0 +1,15 @@
+<% if payment.info.errors.any? %>
+  <% payment_errors = []  %>
+  <% 
+    payment.info.errors.each do |attribute, error|
+      if attribute == :order_exists
+        payment_errors << error
+      else
+        payment_errors << payment.info.errors.full_message(attribute, error)
+      end
+    end
+  %>
+  <%= alert_tag :danger, payment_errors.join(', ') %>
+<% end %>
+
+<%= render partial: payment.payment_type.info_class_name.underscore, locals: { payment_form: payment_form, info: payment.info, action: action } %>

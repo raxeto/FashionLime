@@ -1,0 +1,15 @@
+<div class="picture-<%= style.to_s %>">
+  <% if !local_assigns[:type].nil? && type == :product %>
+    <%= product_picture_image picture, style %>
+  <% elsif !local_assigns[:outfit].nil? %>
+    <%= outfit_image outfit, style %>
+  <% elsif !local_assigns[:user].nil? %>
+    <%= user_image user, style %>
+  <% elsif !local_assigns[:merchant].nil? %>
+    <%= merchant_image merchant, style %>
+  <% elsif !local_assigns[:product_collection].nil? %>
+    <%= product_collection_image product_collection, style %>
+  <% else %>
+    <%= image_tag picture.url(style) %>
+  <% end %>
+</div>

@@ -1,0 +1,69 @@
+<% curr_id = 1 %>
+
+# Clothing standart size
+<% ProductCategory.children_from_key('women_clothing').each do |c| %>
+  sc<%= curr_id %>:
+    id: <%= curr_id %>
+    size_category_id: 1
+    product_category_id: <%= c.id %>
+    <% curr_id = curr_id + 1 %>
+<% end %>
+
+<% ProductCategory.children_from_key('men_clothing').each do |c| %>
+  sc<%= curr_id %>:
+    id: <%= curr_id %>
+    size_category_id: 1
+    product_category_id: <%= c.id %>
+    <% curr_id = curr_id + 1 %>
+<% end %>
+
+# Clothing no size
+<% ProductCategory.children_from_key('women_clothing').each do |c| %>
+  sc<%= curr_id %>:
+    id: <%= curr_id %>
+    size_category_id: 3
+    product_category_id: <%= c.id %>
+    <% curr_id = curr_id + 1 %>
+<% end %>
+
+<% ProductCategory.children_from_key('men_clothing').each do |c| %>
+  sc<%= curr_id %>:
+    id: <%= curr_id %>
+    size_category_id: 3
+    product_category_id: <%= c.id %>
+    <% curr_id = curr_id + 1 %>
+<% end %>
+
+# Shoes
+<% ProductCategory.children_from_key('women_shoes').each do |c| %>
+  sc<%= curr_id %>:
+    id: <%= curr_id %>
+    size_category_id: 2
+    product_category_id: <%= c.id %>
+    <% curr_id = curr_id + 1 %>
+<% end %>
+
+<% ProductCategory.children_from_key('men_shoes').each do |c| %>
+  sc<%= curr_id %>:
+    id: <%= curr_id %>
+    size_category_id: 2
+    product_category_id: <%= c.id %>
+    <% curr_id = curr_id + 1 %>
+<% end %>
+
+# Accessories
+<% ProductCategory.children_from_key('women_accessories').each do |c| %>
+  sc<%= curr_id %>:
+    id: <%= curr_id %>
+    size_category_id: 3
+    product_category_id: <%= c.id %>
+    <% curr_id = curr_id + 1 %>
+<% end %>
+
+<% ProductCategory.children_from_key('men_accessories').each do |c| %>
+  sc<%= curr_id %>:
+    id: <%= curr_id %>
+    size_category_id: 3
+    product_category_id: <%= c.id %>
+    <% curr_id = curr_id + 1 %>
+<% end %>

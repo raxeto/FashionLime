@@ -1,0 +1,52 @@
+<% path = path || nil %>
+<% html_partial = html_partial || nil %>
+<% js_partial = js_partial || nil %>
+
+<% if items.present? %>
+  <div class="search-section">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="heading">
+          <h3><%= section_name %></h3>
+        </div>
+      </div>
+    </div>
+    <div class="row <%= list_class %>">
+      <% if html_partial.present? %>
+        <% items.each do |r| %>
+          <% unless r.nil? %>
+            <div class="<%= compact ? "col-xs-6 col-ms-4 col-sm-4" : "col-xs-6 col-ms-4 col-sm-4 col-md-3" %>">
+              <%= render partial: html_partial, locals: {item: r} %>
+            </div>
+          <% end %>
+        <% end %>
+      <% end %>
+    </div>
+    <% if has_more && path.present? %>
+      <div class="row">
+        <div class="col-md-12">
+          <%= link_to path, :class => "btn btn-template-main" do %>
+            Виж още...
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% end %>
+
+
+<% if js_partial.present? %>
+<script type="text/javascript">
+  FashionLime.Common.utils.onPageLoad(function() {
+     FashionLime.Common.list.setup(
+      ".<%= list_class %>",
+      <%= raw items_array items %>,
+      "<%= js_partial %>",
+      function(itemHtml) {
+        return "<div class='<%= compact ? 'col-xs-6 col-ms-4 col-sm-4' : 'col-xs-6 col-ms-4 col-sm-4 col-md-3' %>'>" + itemHtml + "</div>";
+      }
+    );
+  });
+</script>
+<% end %>
+

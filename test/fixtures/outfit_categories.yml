@@ -1,0 +1,13 @@
+c1:
+  id: 1
+  name: 'Жени'
+  url_path: 'jeni'
+  key: 'women'
+  order_index: 1
+
+c2:
+  id: 2
+  name: 'Мъже'
+  url_path: 'maje'
+  key: 'men'
+  order_index: 2

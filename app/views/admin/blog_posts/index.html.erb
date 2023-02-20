@@ -1,0 +1,35 @@
+<h2>Blog posts</h2>
+
+<%= link_to('Create New', new_admin_blog_post_path) %>
+
+<table class="centered">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Title</th>
+      <th>Subtitle</th>
+      <th>Source Title</th>
+      <th>Source Link</th>
+      <th>User</th>
+      <th>Created</th>
+      <th>Updated</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @posts.each do |p| %>
+      <tr>
+        <td> <%= p.id %> </td>
+        <td> <%= p.title %> </td>
+        <td> <%= p.subtitle %> </td>
+        <td> <%= p.source_title %> </td>
+        <td> <%= p.source_link %> </td>
+        <td> <%= p.user.username %> </td>
+        <td> <%= date_to_s(p.created_at) %> </td>
+        <td> <%= date_to_s(p.updated_at) %> </td>
+        <td><%= link_to('edit', edit_admin_blog_post_path(p.id)) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

@@ -1,0 +1,166 @@
+<%= bootstrap_form_for(order_return, url: { action: :create_return }, html: { id: "createReturnForm" } ) do |f| %>
+
+
+    <div class="row">
+      <div class="col-md-9 clearfix">
+        <%= render partial: '/orders/return_sorry_message' %>
+        <p class="lead text-muted sorry-section">
+          Моля, прочетете и изпълнете инструкциите, дефинирани от търговеца и направете заявка за връщане и замяна.
+        </p>
+        <p>
+          <% if order_return.merchant_order.merchant.return_instructions.present? %>
+            <h4>Инструкции за връщане и замяна</h4>
+            <%= order_return.merchant_order.merchant.return_instructions %>
+          <% else %>
+            <h4>Условия за връщане и замяна</h4>
+            <%= order_return.merchant_order.merchant.return_policy %>
+          <% end %>
+        </p>
+
+        <div class="box">
+            <ul class="nav nav-pills nav-justified">
+                <li class="active"><a><i class="fa fa-info-circle"></i>&nbsp;Информация за Вас</a>
+                </li>
+            </ul>
+
+            <div class="content">
+              <div class="well well-xs">
+                  * Във формата има попълнени данни от Вашата поръчка. Ако желаете можете да ги промените.
+              </div>
+
+              <div class="row">
+                  <div class="col-sm-6">
+                      <%= f.text_field :user_first_name, :label => "Име" %>
+                  </div>
+                  <div class="col-sm-6">
+                      <%= f.text_field :user_last_name, :label => "Фамилия"  %>
+                  </div>
+              </div>
+
+              <div class="row">
+                  <div class="col-sm-6">
+                      <%= f.text_field :user_phone, :label => 'Телефон' %>
+                  </div>
+                  <div class="col-sm-6">
+                      <%= f.email_field :user_email, :label => 'Имейл' %>
+                  </div>
+              </div>
+            </div>
+
+            <%= hidden_field_tag(:return_code, @return_code) %>
+            <%= hidden_field_tag(:confirm_email, @confirm_email) %>
+
+            <%= f.hidden_field :merchant_order_number, :value => order_return.merchant_order.number %>
+
+            <ul class="nav nav-pills nav-justified">
+                <li class="active"><a href="#"><i class="fa fa-list-alt"></i>&nbsp;Продукти за връщане или замяна</a>
+                </li>
+            </ul>
+
+             <div class="row">
+                <div class="col-sm-12">
+                    <% instruction = 'В колоната "Тип заявка" трябва да изберете дали искате да направите връщане или замяна. ' %>
+
+                    <% if order_return.merchant_order_return_details.length > 1 %>
+                      <% instruction << 'Ако желаете да върнете или замените само част от продуктите, може да попълните количество нула в колоната "Количество за връщане/замяна" при продуктите, които не желаете да връщате.' %>
+                    <% end %>
+
+                    <%= alert_tag(:warning, instruction, 'Инструкции:') %>
+
+                    <div class="table-responsive">
+                      <table id="returnOrderTable" class="table">
+                        <thead class="centered-header">
+                          <tr>
+                              <th colspan="2">Артикул</th>
+                              <th>Поръчано количество</th>
+                              <th>Ед. цена</th>
+                              <th>Стойност</th>
+                              <th>Количество за връщане/замяна</th>
+                              <th>Тип заявка</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                        <%= f.fields_for :merchant_order_return_details do |d|%>
+                         <tr>
+                            <td>
+                              <%= render partial: '/shared/picture', locals: { picture: d.object.merchant_order_detail.article.product.main_product_picture(color_id: d.object.merchant_order_detail.article.color_id), style: :thumb, type: :product } %>
+                            </td>
+                            <td>
+                                <%= link_to product_path(d.object.merchant_order_detail.article.product) do %>
+                                  <%= d.object.merchant_order_detail.article.product.name %>
+                                <% end %>
+                              <br>
+                              Цвят: <%= d.object.merchant_order_detail.article.color.name %> Размер: <%= d.object.merchant_order_detail.article.size.name %>
+                            </td>
+                            <td class="right-aligned qty-col">
+                              <%= d.object.merchant_order_detail.qty.to_i %>
+                            </td>
+                            <td class="right-aligned">
+                              <%= d.object.merchant_order_detail.price_with_discount_formatted %>
+                            </td>
+                            <td class="right-aligned">
+                              <%= d.object.merchant_order_detail.total_with_discount_formatted %>
+                            </td>
+                            <td class="right-aligned return-qty-col">
+                                <%= d.number_field :return_qty, value: d.object.return_qty.to_i, :hide_label => true, min: 0, max: d.object.merchant_order_detail.qty, class: 'numeric form-control' %>
+                            </td>
+                            <td class="return-type-col">
+                              <%= d.collection_select(:return_type, MerchantOrderReturnDetail.return_types_i18n, :first, :last, { :hide_label => true }) %>
+                            </td>
+                            <%= d.hidden_field :article_id, :value => d.object.merchant_order_detail.article_id %>
+                          </tr>
+                        <% end %>
+                        </tbody>
+                      </table>
+                    </div>
+                </div>
+            </div>
+
+            <ul class="nav nav-pills nav-justified">
+                <li class="active"><a href="#"><i class="fa fa-pencil-square-o"></i>&nbsp;Съобщение към търговеца</a>
+                </li>
+            </ul>
+
+
+            <div class="content">
+              <div class="row">
+                  <div class="col-sm-12">
+                    <%= f.text_area :note_to_merchant, :hide_label => true, :help => "* Ако желаете да направите замяна, може тук да опишете с кой продукт искате да замените, като ни изпратите линк към него и желания от Вас цвят и размер. Можете да заменяте само с продукти на същия търговец." %>
+                  </div>
+              </div>
+            </div>
+
+
+            <div class="box-footer">
+              <div class="row">
+                <div class="col-sm-6">
+                  <%= link_to root_path, :class => "btn btn-default left-content" do %>
+                    <i class="fa fa-chevron-left"></i>Отмени заявката
+                  <% end %>
+                </div>
+                <div class="col-sm-6">
+                    <button type="submit" class="btn btn-template-main right-content">Направи заявка<i class="fa fa-chevron-right"></i>
+                    </button>
+                </div>
+              </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="col-md-3">
+
+      <div class="box">
+          <div class="box-header">
+              <h3>Връщане/Замяна на поръчка <strong><%= order_return.merchant_order.number %></strong></h3>
+          </div>
+          <p class="text-muted">
+            Моля, прочетете условията за връщане или замяна на
+            <%= render partial: '/shared/merchant_profile_link', locals: { merchant: order_return.merchant_order.merchant } %>
+          </p>
+      </div>
+  </div>
+
+</div>
+
+<% end %>

@@ -1,0 +1,87 @@
+<% help_steps "edit_articles" %>
+
+<div class="tabs product-tabs">
+
+  <%= render partial: 'edit_product_menu' %>
+
+  <div class="tab-content">
+    <div class="edit-product-content" id="edit-articles">
+      <%= bootstrap_form_for(@product, url: { action: "update_articles"}, html: { id: "product_articles_form" } ) do |f| %>
+
+      <div class="row">
+       <div class="col-sm-12">
+          <button type="submit" class="btn btn-template-main btn-save">
+            <i class="fa fa-floppy-o"></i> Запази
+          </button>
+        </div>
+      </div>
+
+     <div class="row">
+       <div class="col-sm-12">
+        <div class="table-responsive">
+          <table class="table centered help-tour-step-1">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Цвят</th>
+                <th>Размер</th>
+                <th>SKU</th>
+                <th class="help-tour-step-2">Цена</th>
+                <th>Отстъпка</th>
+                <th>Цена с отстъпка</th>
+                <th class="help-tour-step-3">Налично количество</th>
+                <th>Създадено на</th>
+                <th>Последна редакция</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <%= f.fields_for :articles, @product.articles do |a|%>
+                <tr>
+                  <td> <%= a.object.id %> </td>
+                  <td> <%= a.object.color.name %> </td>
+                  <td> <%= a.object.size.name%> </td>
+                  <td>
+                    <div class="input-group medium-group">
+                      <%= a.text_field :sku, { :hide_label => true, :value => a.object.sku} %>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="input-group medium-group">
+                     <%= a.text_field :price, { :hide_label => true, :value => a.object.price_formatted_without_unit, :class => 'price'} %>
+                      <span class="input-group-addon"><%= currency_unit %></span>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="input-group medium-group">
+                      <%= a.text_field :perc_discount, { :hide_label => true, :class => 'perc_discount' } %>
+                      <span class="input-group-addon">%</span>
+                    </div>
+                  </td>
+                  <td>
+                      <%= a.text_field_without_bootstrap :price_with_discount, { :value => a.object.price_with_discount_formatted, :readonly => true, :class => "price_with_discount disabled-hidden", :tabindex => Conf.html_constants.max_tab_index  } %>
+                  </td>
+                  <td> <%= a.object.available_qty.to_i %> </td>
+                  <td> <%= date_time_to_s(a.object.created_at) %> </td>
+                  <td> <%= date_time_to_s(a.object.updated_at) %> </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+       </div>
+     </div>
+
+     <% end %>
+
+    </div>
+  </div>
+
+</div>
+
+<script language="JavaScript">
+  FashionLime.Common.utils.onPageLoad(function () {
+   FashionLime.Merchant.Product.editArticles.setupCalcPriceWithDiscount();
+  });
+</script>
+

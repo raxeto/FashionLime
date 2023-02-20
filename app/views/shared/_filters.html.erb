@@ -1,0 +1,28 @@
+<% filters_info = {} if local_assigns[:filters_info].nil? %>
+<% compact = false if local_assigns[:compact].nil? %>
+<% setup_multiselects = true if local_assigns[:setup_multiselects].nil? %>
+<% expanded_on_load = true if local_assigns[:expanded_on_load].nil? %>
+
+<%= render partial: 'shared/expander_items', locals: { 
+    container_id: 'filtersExpander',
+    items_container_id: 'filtersInner',
+    compact: compact,
+    title: 'Филтри',
+    items: filters,
+    labels:  labels,
+    items_control: filters_control,
+    item_control_col_class: 'col-filter',
+    items_info: filters_info,
+    expanded_on_load: expanded_on_load,
+    footer_content: "<button type='button' class='close-filters btn #{compact ? 'btn-xs' : 'btn-sm'} btn-default'>Затвори</button><button type='button' class='clear-filters btn #{compact ? 'btn-xs' : 'btn-sm'} btn-template-main'>Изчисти филтри</button>".html_safe
+  } %>
+
+
+<script language="JavaScript">
+  FashionLime.Common.utils.onPageLoad(function () {
+    <% if setup_multiselects %>
+      FashionLime.Shared.comboMultiselect.setupAll('filter', '{}');
+    <% end %>
+    FashionLime.Shared.filter.setup();
+  });
+</script>

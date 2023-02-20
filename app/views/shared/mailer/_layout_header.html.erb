@@ -1,0 +1,31 @@
+<table class="menu-table full-width centered v-centered">
+  <tbody>
+    <tr>
+      <td>
+        <%= mailer_link_to products_url do %>
+          Продукти
+        <% end %>
+      </td>
+      <td>
+        <%= mailer_link_to outfits_url do %>
+          Визии
+        <% end %>
+      </td>
+      <td>
+        <%= mailer_link_to root_url do %>
+          <%= image_tag "/mailer/fashionlime-logo-emails-menu.jpg", :width => 170, :height => 48, :alt => "FashionLime", :class => "img-styled-alt-large" %>
+        <% end %>
+      </td>
+      <td>
+        <%= mailer_link_to generic_search_url do %>
+          Търсене
+        <% end %>
+      </td>
+      <td>
+        <%= mailer_link_to contact_url do %>
+          Контакт
+        <% end %>
+      </td>
+    </tr>
+  </tbody>
+</table>

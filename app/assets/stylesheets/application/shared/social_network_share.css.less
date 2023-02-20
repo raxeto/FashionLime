@@ -1,0 +1,25 @@
+@import "/template/less/modules/variables-custom.css.less";
+@import "/template/less/modules/mixins/buttons.css.less";
+
+.social-share {
+  text-align: center;
+
+  .btn-group-facebook-share {
+    button {
+      border-color: @facebook-color;
+    }
+    
+    .facebook {
+      border-bottom-left-radius: 15px;
+      border-top-left-radius: 15px;
+      .button-variant(#fff; @facebook-color; @facebook-color);
+    }
+    .share-message {
+      .button-variant(@facebook-color; #fff; @facebook-color);
+      text-transform: none;
+      font-weight: 500;
+      border-bottom-right-radius: 15px;
+      border-top-right-radius: 15px;
+    }
+  }
+}

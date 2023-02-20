@@ -1,0 +1,2 @@
+<%= select_tag id, options_for_select(Color.order(:order_index).map{ |c| [c.name, c.id, {'data-background-image'=> c.picture.exists? ? "#{c.picture.url(:original)}" : "", 'data-color' => c.code}] }, 
+    selected_key = preselected_color_ids), {:multiple => multiple, :class => "multiselect-combo multiselect-combo-colors #{classes_list}"} %>

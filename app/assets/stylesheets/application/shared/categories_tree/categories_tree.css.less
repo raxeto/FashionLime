@@ -1,0 +1,40 @@
+@import "/template/less/modules/variables-custom.css.less";
+
+#categories-filter {
+
+  .label {
+    color: white;
+    background: @expander-item-color;
+    border-radius: 0px;
+  }
+
+  .box {
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+  #categories-panel {
+    @media (min-width: @screen-md-min)
+    {
+        display: block;
+    }
+
+    .nav-pills {
+      li {
+        a {
+          color: rgb(85, 85, 85);
+          @media (min-width: @screen-md-min) and (max-width: @screen-md-max) { 
+            padding-left: 20px;
+          }
+        }
+
+        &.active {
+          > a {
+            color: #FFFFFF;
+            background-color: @brand-primary;
+          }
+        }
+      }
+    }
+  }
+}

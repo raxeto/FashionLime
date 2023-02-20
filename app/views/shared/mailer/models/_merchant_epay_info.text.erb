@@ -1,0 +1,7 @@
+<% if merchant_order.payment_code != Conf.payments.epay_failed_code %>
+Код за плащане: <%= merchant_order.payment_code %>
+
+<%= render partial: "shared/epay_how_to" %>
+<% else %>
+Ще получите втори имейл, веднага щом генерираме успешно кода.
+<% end %>

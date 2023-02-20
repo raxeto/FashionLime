@@ -1,0 +1,22 @@
+payment_type_1:
+  id: 1
+  name: 'Наложен платеж'
+  description: 'Плащате стойността на поръчката при получаване на стоката.'
+  order_index: 1
+  requires_action: 0
+
+payment_type_2:
+  id: 2
+  name: 'Банков превод'
+  description: 'Ще получите данни за банкова сметка, към която трябва да преведете сумата на поръчката си.'
+  order_index: 2
+  requires_action: 1
+  info_class_name: 'MerchantBankTransferInfo'
+
+payment_type_3:
+  id: 3
+  name: 'EasyPay'
+  description: 'Плащате на каса на EasyPay, чрез банкомат с услугата B-pay или онлайн на epay.bg.'
+  order_index: 3
+  requires_action: 1
+  info_class_name: 'MerchantEpayInfo'

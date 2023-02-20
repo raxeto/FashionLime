@@ -1,0 +1,39 @@
+<h2>Home page Links</h2>
+
+<%= link_to('Create New', new_admin_home_page_link_path) %>
+
+<table class="table centered">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Title</th>
+      <th>Subtitle</th>
+      <th>Link</th>
+      <th>Position</th>
+      <th>Picture</th>
+      <th>Created</th>
+      <th>Updated</th>
+      <th>Edit</th>
+      <th>Delete</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @links.each do |l| %>
+      <tr>
+        <td> <%= l.id %> </td>
+        <td> <%= l.title %> </td>
+        <td> <%= l.subtitle %> </td>
+        <td> <%= link_to("link", l.url_path) %> </td>
+        <td> <%= l.position_i18n %> </td>
+        <td>
+          <%= image_tag l.picture.url(:medium), :width => 100  %>
+        </td>
+        <td class="date"> <%= date_to_s(l.created_at)%> </td>
+        <td class="date"> <%= date_to_s(l.updated_at)%> </td>
+        <td class="link"><%= link_to('edit', edit_admin_home_page_link_path(l.id)) %></td>
+        <td class="link"><%= link_to('delete', admin_home_page_link_path(l.id), method: :delete, data: { confirm: "Are you sure?" }) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

@@ -1,0 +1,8 @@
+<%= render partial: '/shared/mailer/box', locals: { 
+  :link => product_collection_url(product_collection),
+  :image_url => product_collection.picture.url(:medium),
+  :title => "#{product_collection.full_name} от #{product_collection.merchant.name}",
+  :same_row_link => true,
+  :image_width => image_width(product_collection.picture, :medium),
+  :image_height => image_height(product_collection.picture, :medium)
+} if product_collection.present?  %>

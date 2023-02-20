@@ -1,0 +1,25 @@
+bg:
+  activerecord:
+    errors:
+      models:
+        merchant_shipment:
+          attributes:
+            base:
+              restrict_dependent_destroy:
+                many: "Не можете да изтриете доставката, защото вече се използва в направени към Вас поръчки."
+        product_collection:
+          attributes:
+            base:
+              restrict_dependent_destroy:
+                many: "Не можете да изтриете колекцията, защото има добавени продукти към нея."
+        user:
+          attributes:
+            password_confirmation:
+              confirmation: "не съответства на новата парола"
+        outfit:
+          attributes:
+            occasion_ids: "максимум %{max_count} типа облекло могат да бъдат избрани"
+        order:
+          attributes:
+            agree_terms_of_use: 
+              accepted: "Трябва да се съгласите с общите условия, за да направите поръчка."

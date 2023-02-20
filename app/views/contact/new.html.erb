@@ -1,0 +1,5 @@
+<% title "Контакт", true %>
+<% description "Имате някакъв проблем с продуктите ни? Искате да питате нещо? Моля, свържете се с нас.", true %>
+<% allow_search_engine_index %>
+
+<%= render partial: '/contact/shared/new', locals: { :is_client_contact => true }%>

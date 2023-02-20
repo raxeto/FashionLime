@@ -1,0 +1,30 @@
+ <div id="newReturnOrder">
+
+    <%= render partial: '/orders/return_sorry_message' %>
+    <%= render partial: '/shared/contact_prompting' %>
+
+    <div class="well return-steps-section">
+        <p>
+            Можете да върнете или замените продукти съгласно условията за връщане или замяна на търговеца,
+            към когото сте направил поръчката. Следвайте следните стъпки:
+        </p>
+        <ul>
+            <li>
+                <span class="badge">1</span>
+                Отворете линка за връщане или замяна към поръчката. Може да го откриете в имейла, 
+                който Fashion Lime е изпратил до Вас, след като сте направил поръчката, или в 
+                <%= link_to "списъка си с поръчки", orders_path %> в колоната "Връщане / Замяна".
+            </li>
+            <li>
+                <span class="badge">2</span>
+                Попълнете заявката за връщане или замяна.
+            </li>
+        </ul>
+
+    </div> 
+
+    <%= link_to orders_path, :class => "btn btn-template-main btn-bottom-shifted", :title => "Намерете линка за връщане или замяна в списъка си с поръчки" do %>
+        Списък с поръчки<i class="fa fa-chevron-right"></i>
+    <% end %>
+    
+</div>

@@ -1,0 +1,19 @@
+<div class="row">
+  <div class="col-sm-6">
+  <%= payment_form.text_field :min_code, :label => "КИН", :label_class => "required", :help => "* клиентски номер от регистрацията Ви в ePay.bg",
+    :value => info.min_code %>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-sm-6">
+  <%= payment_form.text_field :secret, :label => "Тайна", :label_class => "required", :help => "* код с дължина 64 символа от регистрацията Ви в ePay.bg #{action == :update ? ". Въведете стойност в това поле само ако искате да промените тайната." : ""}",
+    :value => nil %>
+  </div>
+  <div class="col-sm-6">
+  <% if action == :update %>
+    <%= payment_form.text_field :old_secret, :label => "Стара стойност на тайна", :help => "* от съображения за сигурност е показана само част от тайната - скритите от нея символи са заместени с *", :disabled => true,
+     :value => info.old_secret %>
+  <% end %>
+  </div>
+</div>

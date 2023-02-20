@@ -1,0 +1,31 @@
+<h3>
+  Продукти които нямат нито една картинка подходяща за визия
+</h3>
+
+<div id="flash-notifications" class="row">
+</div>
+
+<p>
+Тук са изложени (по 1 на ред) всички продукти, които нямат нито една картинка,
+подходяща за визия.
+</p>
+
+<p>
+  <%= link_to admin_clip_pp_with_outfit_pic_path do %>
+    <div class="label">Отиди на продукти с поне една снимка за визия</div>
+  <% end %>
+</p>
+
+<p>
+  <%= form_tag admin_upload_zip_path, method: :post, multipart: true do |f| %>
+    <label for="file">Качи обработени снимки</label> <%= file_field_tag "file" %><br>
+    <label for="refresh_es">Refresh Elastic Search</label> <%= check_box_tag "refresh_es", 1, false %>
+    <p class="text-center">
+      <button type="submit" class="btn btn-template-main">
+        <i class="fa fa-sign-in"></i> Качи снимки
+      </button>
+    </p>
+  <% end %>
+</p>
+
+<%= render partial: "form", locals: { mark_first_by_default: true } %>

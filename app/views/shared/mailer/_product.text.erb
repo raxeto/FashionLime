@@ -1,0 +1,11 @@
+<% if product.present? %>
+<% picture = product.main_product_picture.picture %>
+<%= render partial: '/shared/mailer/box', locals: { 
+  :link => product_url(product),
+  :image_url => picture.url(:medium),
+  :title => "#{product.name} от #{product.merchant.name}",
+  :same_row_link => false,
+  :image_width => image_width(picture, :medium),
+  :image_height => image_height(picture, :medium)
+} %>
+<% end %>

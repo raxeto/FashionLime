@@ -1,0 +1,48 @@
+<% product_collection = nil if local_assigns[:product_collection].nil? %>
+
+<div class="panel panel-default sidebar-menu">
+
+  <div class="panel-heading">
+    <h1 class="panel-title"><%= merchant.name %></h1>
+  </div>
+
+  <div class="panel-body">
+     <ul class="nav nav-pills nav-stacked">
+        <li class="<%= active_class_if_section(:profile) %>">
+          <%= link_to merchant_profile_path(:url_path => merchant.url_path) do %>
+            <i class="fa fa-user"></i> Разгледай профил
+          <% end %>
+        </li>
+        <% if merchant.product_collections.size > 0 %>
+         <li class="<%= active_class_if_section(:profile_collections) %>">
+          <%= link_to merchant_profile_product_collections_path(:url_path => merchant.url_path) do %>
+            <%= product_collection_icon %>
+            Разгледай колекции
+          <% end %>
+          <% unless product_collection.nil? %>
+             <ul class="nav nav-pills nav-stacked">
+              <li class="<%= active_class_if_section(:profile_collection) %>">
+                <%= link_to product_collection_path(product_collection) do %>
+                  <%= product_collection_icon %> 
+                  <%= product_collection.name %>
+                <% end %>
+              </li>
+            </ul>
+          <% end %>
+        </li>
+        <% end %>
+        <li class="<%= active_class_if_section(:profile_products) %>">
+          <%= link_to merchant_profile_products_path(:url_path => merchant.url_path) do %>
+              <%= product_icon %>
+              Разгледай продукти
+          <% end %>
+        </li>
+        <li class="<%= active_class_if_section(:profile_outfits) %>">
+          <%= link_to merchant_profile_outfits_path(:url_path => merchant.url_path) do %>
+              <%= outfit_icon %>
+              Разгледай визии
+          <% end %>
+        </li>
+      </ul>
+    </div>
+</div>

@@ -1,0 +1,25 @@
+<% show_owner  = false if local_assigns[:show_owner].nil? %>
+
+<div class="box-image product-collection" aria-haspopup="true" onclick="">
+  <div class="image">
+    <%= product_collection_image product_collection, :medium, :class => "img-responsive" %>
+  </div>
+  <div class="bg"></div>
+  <div class="name">
+    <h3>
+      <%= link_to product_collection_path(product_collection) do %>
+        <%= Modules::StringLib.unicode_upcase(product_collection.name) + (show_owner ? " от " + Modules::StringLib.unicode_upcase(product_collection.merchant.name) : "") %>
+      <% end %>
+    </h3> 
+  </div>
+  <div class="text">
+      <p>
+        <%= "#{product_collection.season.name} #{product_collection.year}" %>
+      </p>
+      <p class="buttons">
+        <%= link_to product_collection_path(product_collection), :class => "btn btn-template-transparent-primary" do %>
+          Разгледай
+        <% end %>
+      </p>
+  </div>
+</div>

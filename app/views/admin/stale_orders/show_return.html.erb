@@ -1,0 +1,54 @@
+<h2>Заявка за връщане</h2>
+
+<h4>Обща информация</h4>
+<ul>
+  <li>Merchant Order N#: <%= @return.merchant_order.number %></li>
+  <li>Merchant Order ID: <%= @return.merchant_order.id %></li>
+  <li>Търговец:
+    <%= link_to @return.merchant_order.merchant.name, merchant_profile_path(@return.merchant_order.merchant.url_path) %>
+  </li>
+  <li>Бележка към търговеца: <%= @return.note_to_merchant %></li>
+  <li>Поръчката е направена на: <%= date_time_to_s(@return.merchant_order.created_at)%> </li>
+  <li>Линк към <%= link_to 'поръчката', admin_stale_order_path(@return.merchant_order) %> </li>
+  <li>Заявката е подадена на: <%= date_time_to_s(@return.created_at)%></li>
+  <li>Заявката чака от: <%= time_ago_in_words(@return.created_at) %></li>
+</ul>
+
+<h4>Данни за клиента</h4>
+<ul>
+  <li>Имена: <%= @return.merchant_order.order.user_first_name %> <%= @return.merchant_order.order.user_last_name %></li>
+  <li>email: <%= @return.merchant_order.order.user_email %></li>
+  <li>телефон: <%= @return.merchant_order.order.user_phone %></li>
+  <li>адрес: <%= @return.merchant_order.order.address.text %></li>
+</ul>
+
+<h4>Детайли</h4>
+<table class="table centered">
+  <thead>
+    <tr>
+      <th>Тип</th>
+      <th>Количество за връщане</th>
+      <th>Поръчано количество</th>
+      <th>Статус</th>
+      <th>Продукт</th>
+      <th>Обща цена с отстъпка</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @return.merchant_order_return_details.each do |detail| %>
+      <tr>
+        <td> <%= detail.return_type_i18n %> </td>
+        <td> <%= detail.return_qty %> </td>
+        <td> <%= detail.merchant_order_detail.qty %> </td>
+        <td> <%= detail.status_i18n %> </td>
+        <td> <%= link_to detail.merchant_order_detail.article.product.name, product_path(detail.merchant_order_detail.article.product) %> </td>
+        <td> <%= detail.merchant_order_detail.total_with_discount %> </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+
+
+

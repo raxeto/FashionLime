@@ -1,0 +1,20 @@
+<% pic_style = :thumb if local_assigns[:pic_style].nil? %>
+
+<div class="merchant">
+  <div class="image">
+    <%= link_to merchant_profile_path(merchant.url_path) do %>
+      <%= merchant_image merchant, pic_style, :class =>"img-responsive merchant_image #{pic_style}" %>
+    <% end %>
+  </div>
+  <div class="text">
+      <p class="title">
+        <%= render partial: '/shared/merchant_profile_link', locals: { merchant: merchant } %>
+      </p>
+      <p class="info">
+        <%= "#{merchant.products.size}" %> <%= Article.model_name.human(count: merchant.products.size) %>
+      </p>
+      <p class="info">
+        <%= "#{merchant.outfits.size}" %> <%= Outfit.model_name.human(count: merchant.outfits.size) %>
+      </p>
+  </div>
+</div>

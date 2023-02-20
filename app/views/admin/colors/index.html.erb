@@ -1,0 +1,39 @@
+<h2>Colors</h2>
+
+<%= link_to('Create New', new_admin_color_path) %>
+
+<table class="centered">
+  <thead>
+    <tr>
+      <th class="id">ID</th>
+      <th class="name">Name</th>
+      <th class="name">Color Code</th>
+      <th class="name">Key</th>
+      <th class="int">Order Index</th>
+      <th class="date">Created</th>
+      <th class="date">Updated</th>
+      <th class="file">Picture</th>
+      <th class="actions">Actions</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @colors.each do |c| %>
+      <tr>
+        <td class="id"> <%= c.id %> </td>
+        <td class="name"> <%= c.name %> </td>
+        <td class="name"> <%= c.code %> </td>
+        <td class="name"> <%= c.key %> </td>
+        <td class="int"> <%= c.order_index %> </td>
+        <td class="date"> <%= date_to_s(c.created_at) %> </td>
+        <td class="date"> <%= date_to_s(c.updated_at) %> </td>
+        <td class="file"> 
+          <% if c.picture.exists? %>
+            <%= image_tag c.picture.url(:large) %> 
+          <%end%>
+        </td>
+        <td class="link"><%= link_to('edit', edit_admin_color_path(c.id)) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

@@ -1,0 +1,49 @@
+<p>
+Здравейте <%= "#{@order.user_first_name} #{@order.user_last_name}" %>,
+</p>
+<% one_order = (@order.merchant_orders.length == 1) %>
+<p>
+С радост Ви съобщаваме, че направихте успешно<%= one_order ? '' : ' поръчки' %>:
+</p>
+
+<% @order.merchant_orders.each do |mo| %>
+  <div>
+    <p>
+      Поръчка номер <strong><%= mo.number %></strong> към <strong><%= mo.merchant.name %></strong>, състояща се от продукти:
+    </p>
+    <p>
+      <%= render partial: 'order_details', locals: { :merchant_order => mo } %>
+    </p>
+    <p>
+      <% if mo.aprox_delivery_date_from == mo.aprox_delivery_date_to %>
+          Поръчката се очаква се да бъде доставена на
+      <% else %>
+          Поръчката се очаква да бъде доставена в периода
+      <% end %>
+      <%= mo.aprox_delivery %>.
+    </p>
+    
+    <%= render partial: "payment_info", locals: { merchant_order: mo } %>
+
+    <p>
+      Линк за връщане:
+      <%= link_to return_order_url(mo), return_order_url(mo), :target => '_blank' %>
+    </p>
+    <hr>
+  </div>
+<% end %>
+
+<p>
+<% if @order.has_additional_payment? %>
+Трябва да осъществите плащане с информацията, дадена по-горе.
+Когато го направите, ще получите <%= one_order ? "имейл с потвърждение на поръчката от търговеца." : "имейли с потвърждение на поръчките от търговците."%>
+<% else %>
+Ще получите <%= one_order ? 'имейл, когато търговеца потвърди поръчката.': 'имейли, когато търговците потвърдят поръчките.' %>
+<% end %>
+</p>
+
+<p>
+Ако не сте удовлетворени от продуктите, можете да ги върнете или замените, като направите заявка чрез линка за връщане даден по-горе.
+</p>
+
+<%= render partial: '/shared/mailer/user_email_signature' %>

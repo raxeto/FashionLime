@@ -1,0 +1,11 @@
+<div class="col-md-9">
+  
+  <div class="box">
+    <%= render partial: '/devise/shared/edit_user_form', locals: { submit_form_path: users_update_profile_path, email_required: current_user.merchant? } %>
+  </div>
+  
+</div>
+
+<div class="col-md-3">
+  <%= render partial: '/shared/user_profile_menu' %>
+</div>

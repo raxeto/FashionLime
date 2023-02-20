@@ -1,0 +1,9 @@
+<% help_steps "edit" %>
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="box help-tour-step-1">
+      <%= render partial: '/devise/shared/edit_user_form', locals: { submit_form_path: merchant_update_profile_path, email_required: true } %>
+    </div>
+  </div>
+</div>

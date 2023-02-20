@@ -1,0 +1,29 @@
+spring_summer:
+  id: 1
+  name: Пролет-Лято
+  order_index: 1
+
+spring:
+  id: 2
+  name: Пролет
+  order_index: 2
+
+summer:
+  id: 3
+  name: Лято
+  order_index: 3
+
+fall_winter:
+  id: 4
+  name: Есен-Зима
+  order_index: 4
+  
+fall:
+  id: 5
+  name: Есен
+  order_index: 5
+
+winter:
+  id: 6
+  name: Зима
+  order_index: 6

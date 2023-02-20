@@ -1,0 +1,48 @@
+<h2>Returns</h2>
+
+<p>
+  <%= link_to admin_stale_orders_path, :class => "btn btn-template-main" do %>
+    Go to orders
+  <% end %>
+</p>
+
+<%= paginate @returns %>
+
+<table class="table centered">
+  <thead>
+    <tr>
+      <th>Merchant Order N#</th>
+      <th>Merchant</th>
+      <th>Status</th>
+      <th>Customer Name</th>
+      <th>Reason</th>
+      <th>Order made on</th>
+      <th>Return made on</th>
+      <th>Stale for</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @returns.each do |r| %>
+      <tr>
+        <td> <%= r.merchant_order.number %> </td>
+        <td> <%= link_to r.merchant_order.merchant.name, merchant_profile_path(r.merchant_order.merchant.url_path) %></td>
+        <td> <%= r.status_i18n %> </td>
+        <td> <%= r.merchant_order.order.user_first_name %> <%= r.merchant_order.order.user_last_name %> </td>
+        <td> <%= r.reasons_str %> </td>
+        <td class="date"> <%= date_time_to_s(r.merchant_order.created_at)%> </td>
+        <td class="date"> <%= date_time_to_s(r.created_at)%> </td>
+        <td> <%= r.active? ? time_ago_in_words(r.created_at) : "" %> </td>
+        <td>
+          <%= link_to admin_stale_return_path(r) do %>
+            Детайли
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= paginate @returns %>
+

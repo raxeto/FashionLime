@@ -1,0 +1,39 @@
+merchant_payment_type_2:
+  id: 2
+  merchant_id: 2
+  payment_type_id: 2
+  info_id: 1
+  info_type: MerchantBankTransferInfo
+  active: 1
+
+merchant_payment_type_4:
+  id: 4
+  merchant_id: 2
+  payment_type_id: 2
+  info_id: 2
+  info_type: MerchantBankTransferInfo
+  active: 0
+
+merchant_payment_type_5:
+  id: 5
+  merchant_id: 1
+  payment_type_id: 1
+  active: 1
+
+merchant_payment_type_6:
+  id: 6
+  merchant_id: 2
+  payment_type_id: 1
+  active: 1
+
+merchant_payment_type_7:
+  id: 7
+  merchant_id: 3
+  payment_type_id: 1
+  active: 1
+
+merchant_payment_type_8:
+  id: 8
+  merchant_id: 4
+  payment_type_id: 1
+  active: 1

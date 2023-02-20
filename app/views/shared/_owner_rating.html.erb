@@ -1,0 +1,4 @@
+<span class="owner-rating">
+  <%= add_parentheses ? "(" : "" %><i class="fa fa-star star-icon <%= owner.rating.to_i >= 0 ? 'positive' : 'negative' %>" aria-hidden="true"></i>
+  <%= owner.rating.to_i %><%= add_parentheses ? ")" : "" %> <%= add_rating_word ? "рейтинг" : "" %>
+</span>

@@ -1,0 +1,32 @@
+<ul id="edit-products-bar" class="nav nav-tabs">
+    <li>
+      <%= link_to edit_merchant_product_path do %>
+        <span class="edit">Основна Информация</span>
+      <% end %>
+    </li>
+    <li>
+      <%= link_to edit_pictures_merchant_product_path do %>
+        <span class="edit_pictures">Снимки</span>
+      <% end %>
+    </li>
+    <li>
+      <%= link_to edit_articles_merchant_product_path do %>
+        <span class="edit_articles">Варианти и Цени</span>
+      <% end %>
+    </li>
+    <li>
+      <%= link_to edit_article_quantities_merchant_product_path do %>
+        <span class="edit_article_quantities">Количества</span>
+      <% end %>
+    </li>
+</ul>
+
+<script type="text/javascript">
+  FashionLime.Common.utils.onPageLoad(function() {
+    var actionName = '<%= action_name %>'
+    if (actionName.indexOf('update') > -1) {
+      actionName = actionName.replace('update', 'edit');
+    }
+    $('#edit-products-bar').find('.' + actionName).closest('li').addClass('active');
+  });
+</script>

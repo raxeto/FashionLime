@@ -1,0 +1,9 @@
+<%= form_for(@tag, url: { action: action}, html: { multipart: true } ) do |f| %>
+     Page Link <%= f.text_field :page_link  %> <br/> 
+     Title <%= f.text_field :title  %> <br/> 
+     Description <%= f.text_field :description  %> <br/> 
+     Picture Width <%= f.text_field :picture_width  %> <br/> 
+     Picture Height <%= f.text_field :picture_height  %> <br/> 
+     Picture <%= f.file_field :picture %> <br/>
+     <%= f.submit(action.to_s.capitalize) %>
+<% end %>

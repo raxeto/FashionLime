@@ -1,0 +1,29 @@
+@import "/template/less/modules/variables-custom.css.less";
+
+#content {
+  .box {
+    .box-footer {
+      @media (max-width: @screen-sm-max) {
+        .btn {
+          // Overwrite template box buttons margin
+          margin-bottom: 0;
+        }
+      }
+
+      @media (min-width: @screen-sm-min) {
+        .left-content {
+          float: left;
+        }
+        .right-content {
+          float: right;
+        }
+      }
+      @media (max-width: @screen-xs-max) {
+        .left-content {
+          margin-bottom: 20px;
+        }
+      }
+    }
+  }
+}
+

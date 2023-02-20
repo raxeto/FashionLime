@@ -1,0 +1,139 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <style type="text/css">
+      body {
+        font-family: "Roboto", Helvetica, Arial, sans-serif;
+        font-size: 14px;
+        color: #555555;
+      }
+
+      .uppercase {
+        text-transform: uppercase;
+      }
+      .font-large {
+        font-size: 18px;
+      }
+
+      table.full-width {
+        width: 100%;
+      }
+
+      table.menu-table {
+        border-bottom: solid 5px #004d3a;
+        margin-bottom: 10px;
+      }
+      table.footer {
+        border-top: solid 1px #999999;
+      }
+      table.centered td, td.centered {
+        text-align: center;
+      }
+      table.v-centered td, td.v-centered {
+        vertical-align: middle;
+      }
+      td.right {
+        text-align: right;
+      }
+      td.left {
+        text-align: left;
+      }
+      td.padded {
+        padding: 12px 12px 12px 12px;
+      }
+      td.right-bordered {
+        border-right: solid 1px #999999;
+      }
+      td.title-cell a {
+        color: #555555;
+      }
+      table.useful-links td {
+        font-size: 11px;
+        padding: 4px 4px 4px 4px;
+      }
+
+      table.social-links td {
+        padding: 4px 4px 4px 4px;
+      }
+
+      table.main-table {
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        background-color: #ffffff;
+      }
+      table.content-table {
+        width: 600px;
+        margin: 0 auto 0 auto;
+      }
+      table.menu-table a {
+        text-transform: uppercase;
+        color: #555555;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-decoration: none;
+      }
+      table.title {
+        border-bottom: 1px solid #999999;
+        padding: 6px 12px 6px 12px;
+      }
+      table.title td {
+        text-transform: uppercase;
+        color: #00b386;
+      }
+
+      a {
+          color: #00b386;
+          text-decoration: none;
+      }
+      a.btn-template {
+        font-size: 13px;
+        color: #ffffff;
+        background-color: #00b386;
+        border-color: #00b386;
+        text-decoration: none;
+        text-transform: uppercase;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        padding: 6px 12px 6px 12px;
+      }
+
+      .img-centered {
+        vertical-align: middle;
+      }
+      .img-styled-alt-large {
+        font-size: 16px;
+      }
+      .img-styled-alt {
+        font-size: 11px;
+      }
+      .margin-top-small {
+        margin-top: 5px;
+      }
+      .margin-top-large {
+        margin-top: 20px;
+      }
+      .padding-top-large {
+        padding-top: 20px;
+      }
+      .padding-right-large {
+        padding-right: 20px;
+      }
+    </style>
+</head>
+<body>
+  <table class="main-table" width="100%" align="center">
+    <tr>
+      <td>
+        <table class="content-table" align="center" width="600">
+          <tr>
+            <td>
+                <%= yield %>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<h2>Outfit Decorations</h2>
+
+Change order of decorations of type:
+
+<% OutfitDecoration.categories.each do |k, v| %>
+  <%= link_to(k, edit_order_index_admin_outfit_decorations_path(:category => v)) %> ||
+<% end %>
+
+<br>
+<br>
+
+<%= link_to('Create New', new_admin_outfit_decoration_path) %>
+
+<table class="table centered">
+  <thead>
+    <tr>
+      <th class="id">ID</th>
+      <th class="name">Category</th>
+      <th class="key">Order Index</th>
+      <th class="date">Created</th>
+      <th class="date">Updated</th>
+      <th class="file">Picture</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @decorations.each do |d| %>
+      <tr>
+        <td class="id"> <%= d.id %> </td>
+        <td class="name"> <%= d.category %> </td>
+        <td class="key"> <%= d.order_index %> </td>
+        <td class="date"> <%= date_to_s(d.created_at)%> </td>
+        <td class="date"> <%= date_to_s(d.updated_at)%> </td>
+        <td class="file"> 
+        <%= if d.picture? 
+          image_tag d.picture.url(:thumb) 
+          else 
+            "" 
+          end %> 
+        </td>
+        <td class="link"><%= link_to('edit', edit_admin_outfit_decoration_path(d.id)) %></td>
+        <td class="link"><%= link_to('delete', admin_outfit_decoration_path(d.id), method: :delete) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

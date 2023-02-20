@@ -1,0 +1,6 @@
+<p>
+  Начин на плащане: <%= merchant_order.merchant_payment_type.payment_type.name %>
+</p>
+<% if merchant_order.has_additional_payment? %>
+  <%= render partial: "shared/mailer/models/#{merchant_order.merchant_payment_type.info.class.name.underscore}", locals: { merchant_order: merchant_order } %>
+<% end %>

@@ -1,0 +1,13 @@
+<p class='alert'>
+  <% if @mapping.errors.present? %>
+    <%= @mapping.errors.full_messages.join(", ") %>
+  <% end %>
+</p>
+
+<%= form_for(@mapping, url: { action: action}) do |f| %>
+     Merchant ID <%= f.text_field :merchant_id %> <br/>
+     Type <%= f.select :object_type, options_for_select([['Цвят', 'Color'], ['Размер', 'Size'], ["Категория", "ProductCategory"], ["Търговска марка", "TradeMark"], ["Повод", "Occasion"], ["Колекция продукти", "ProductCollection"]], @mapping.object_type) %><br/>
+     Input <%= f.text_field :input_value  %><br/>
+     Output Value <%= f.text_field :object_id %><br/>
+     <%= f.submit(action.to_s.capitalize) %>
+<% end %>

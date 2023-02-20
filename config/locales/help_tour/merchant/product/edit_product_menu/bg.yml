@@ -1,0 +1,22 @@
+bg:
+  help_tour:
+    merchant:
+      product:
+        edit_product_menu:
+          steps:
+            - title: Основна информация
+              content: Основна информация за продукта
+              class_name: edit
+              placement: top
+            - title: Снимки
+              content: Качване на снимки за продукта
+              class_name: edit_pictures
+              placement: top
+            - title: Варианти и цени
+              content: Варианти (за всеки цвят и размер) на продукта и задаване на цена и отстъпка за всеки от тях
+              class_name: edit_articles
+              placement: top
+            - title: Количества
+              content: Задаване на налично количество за всеки от вариантите (по цвят и размер) на продукта. Задължително трябва да зададете количества, за да можете да продавате продукта.
+              class_name: edit_article_quantities
+              placement: top

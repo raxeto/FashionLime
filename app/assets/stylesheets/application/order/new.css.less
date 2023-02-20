@@ -1,0 +1,149 @@
+@import "/template/less/modules/variables-custom.css.less";
+ 
+#order-form {
+  #checkout {
+    .nav {
+      margin-bottom: 20px; 
+      border-bottom: solid 1px @brand-primary;
+    
+      li {
+        height: 100%;
+        a {
+          display: block; 
+          height: 100%; 
+          width: 250px;
+        }
+      }
+    }
+
+    .location-container {
+      margin-bottom: 20px;
+    }
+
+    .merchant-profile { 
+      text-transform: uppercase; 
+      font-weight: 300; 
+      font-size: @font-size-large;
+      margin-bottom: 20px;
+    }
+
+    .col-merchant-shipment, .col-merchant-payment {
+      .form-group {
+        margin-bottom: 0;
+        .order-option-container.disabled {
+          label {
+            background-color: #e1e1e1;
+          }
+        }
+
+        &.has-error {
+          .order-option-table {
+            border: 1px solid @state-danger-text;
+            .order-option-col {
+              background-color: @state-danger-text;
+            }
+          }
+        }
+
+        .order-option-table {
+          border: 1px solid #ccc;
+          td {
+            padding-left: 2px;
+          }
+          .order-option-image-col {
+            padding: 6px;
+          }
+          .order-option-name-col {
+            padding: 2px 2px 2px 20px;
+            border-bottom: 1px solid #ccc;
+          }
+          .order-option-col {
+            padding: 6px 12px;
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 1;
+            color: #555;
+            text-align: center;
+            background-color: #eee;
+          }
+          .min-order-remain-price-message {
+            color: @state-danger-text;
+          }
+        }
+        .aprox-delivery-col {
+          font-size: 12px;
+        }
+      }
+
+      .shipment-info {
+        color: @brand-primary;
+      }
+
+      .one-payment-available-warning {
+        display: none;
+        margin: 5px 0 0 0;
+        border-color: @state-warning-border;
+        background-color: @state-warning-bg;
+        color: @state-warning-text;
+      }
+    }
+
+    .col-merchant-payment {
+      margin-top: 20px;
+      margin-bottom: 20px;
+    }
+
+    hr.merchant-order-devider { 
+      margin-top: 0px; 
+      margin-bottom: 15px;
+    }
+
+    .issue-invoice-container {
+      margin-bottom: 20px;
+      .issue-invoice {
+        font-size: @font-size-base;
+      }
+
+      .issue-invoice-messages {
+        display: none;
+        .more-than-one-order-message {
+          font-size: @font-size-base;
+          color: @brand-warning;
+        }
+      }
+    }
+
+    .only-business-days-container {
+      margin-bottom: 20px;
+    }
+  }
+
+  #order-summary {
+    input {
+      width: 100%;
+    }
+    table {
+      margin-top: 20px;
+      td {
+        color: @gray-light;
+      }
+      tr.total {
+         td, th {
+          font-size: @font-size-large; 
+          color: @gray; 
+          font-weight: 700;
+        }
+      }
+    }
+  }
+
+  #order-summary.affixed-summary {
+    width: 300px;
+    top: 70px;
+    @media (max-width: @screen-md-max) {
+      width: 100%;
+      position: static;
+    }
+  }
+}
+ 

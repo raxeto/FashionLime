@@ -1,0 +1,42 @@
+<% border = "border: 1px solid #eee;" %>
+
+<table style="border-collapse: collapse;">
+  <thead>
+    <tr style="background-color: #eee;">
+      <th style="width: 40%">Продукт</th>
+      <th style="width: 12%">SKU</th>
+      <th style="width: 12%">Цена</th>
+      <th style="width: 12%">Цена с отстъпка</th>
+      <th style="width: 12%">Количество</th>
+      <th style="width: 12%">Общо</th>
+    </tr>
+  </thead>
+
+  <tbody>
+  <% merchant_order.merchant_order_details.each do |d| %>
+  <tr>
+    <td style="width: 40%; <%= border %>"><%= d.article.full_name %></td>
+    <td style="width: 12%; <%= border %>"><%= d.article.sku %></td>
+    <td style="width: 12%; text-align: right; <%= border %> "><%= d.price_formatted %></td>
+    <td style="width: 12%; text-align: right; <%= border %>"><%= d.price_with_discount_formatted %></td>
+    <td style="width: 12%; text-align: center; <%= border %> "><%= d.qty.to_i %></td>
+    <td style="width: 12%; text-align: right; <%= border %> "><%= d.total_with_discount_formatted %></td>
+  </tr>
+  <% end %>
+  </tbody>
+
+  <tfoot style="text-align: right;">
+    <tr>
+      <td colspan="4" style="<%= border %>">Сума</td>
+      <td style="<%= border %>"><%= merchant_order.total_with_discount_formatted %></td>
+    </tr>
+    <tr>
+      <td colspan="4" style="<%= border %>">Доставка</td>
+      <td style="<%= border %>"><%= merchant_order.shipment_price_formatted %></td>
+    </tr>
+    <tr>
+      <th style="<%= border %>" colspan="4">Общо</th>
+      <th style="<%= border %>"><%= merchant_order.total_with_shipment_formatted %></th>
+    </tr>
+  </tfoot>
+</table>

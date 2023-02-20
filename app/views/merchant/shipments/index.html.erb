@@ -1,0 +1,179 @@
+<% help_steps "index" %>
+
+<%= bootstrap_form_for(@merchant, url: { action: "update_shipments"} ) do |f| %>
+
+   <%= render "merchant/activation/activation_header" %>
+
+   <div id="shipmensList" class="col-sm-12 clearfix">
+      <div class="box">
+
+         <div class="row">
+          <div class="col-sm-12">
+            <button type="button" class="btn btn-template-main btn-new-record help-tour-step-1">
+              Добави нова доставка
+            </button>
+            <div class="box new-record-wrapper">
+              <table id="table_new_shipment" class="centered">
+                <%= fields_for "new_shipment", @new_shipment do |d|%>
+                  <tr>
+                    <td>
+                      <div class="form-group">
+                          <%= d.label :name, "Наименование" %>
+                          <%= d.text_field :name, :class => "form-control" %>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="form-group">
+                        <%= d.label :description, "Описание" %>
+                        <%= d.text_field :description, :class => "form-control"  %>
+                      </div>
+                    </td>
+                    <td>
+                     <div class="form-group">
+                        <%= d.label :price, "Цена" %>
+                        <div class="input-group">
+                           <%= d.text_field :price, :class => "form-control numeric"  %>
+                           <span class="input-group-addon"><%= currency_unit %></span>
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="form-group">
+                        <%= d.label :period_from, "Срок на доставка" %>
+                        <div class="form-inline">
+                          <%= d.text_field :period_from, :class => "form-control numeric-short" %>
+                          до
+                          <%= d.text_field :period_to, :class => "form-control numeric-short" %>
+                          <%= d.collection_select(:period_type, MerchantShipment.period_types_i18n, :first, :last, {}, { :class => "form-control"} ) %>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="col-buttons" rowspan="2">
+                       <button class="btn btn-template-main btn-sm btn-add"  title="Добави" type="button"
+                          onclick="FashionLime.Merchant.Shipment.index.addShipment();">
+                          <i class="fa fa-check "></i>
+                        </button>
+                        <button class="btn btn-template-main btn-sm btn-cancel"  title="Отказ" type="button"
+                          onclick="FashionLime.Merchant.Shipment.index.cancelAddShipment();">
+                          <i class="fa fa-times"></i>
+                        </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div class="form-group">
+                        <%= d.label :payment_type_id, "Начин на плащане" %>
+                        <%= d.collection_select(:payment_type_id, PaymentType.all.order(:order_index), :id, :name, { :include_blank => "Важи за всички" }, { :class => "form-control" }) %>
+                      </div>
+                    </td>
+                    <td>
+                     <div class="form-group">
+                        <%= d.label :shipment_type_id, "Начин на доставка" %>
+                        <%= d.collection_select(:shipment_type_id, ShipmentType.all.order(:order_index), :id, :name, { :include_blank => true }, { :class => "form-control" }) %>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="form-group">
+                        <%= d.label :min_order_price, "Мин.стойност на поръчката" %>
+                        <div class="input-group">
+                            <%= d.text_field :min_order_price, :class => "form-control numeric"  %>
+                            <span class="input-group-addon"><%= currency_unit %></span>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                <% end %>
+               </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="table-responsive">
+                <table id="table_shipments" class="table help-tour-step-2">
+                  <thead>
+                    <tr>
+                      <th class="id">ID</th>
+                      <th class="small_text help-tour-step-3">Наименование</th>
+                      <th class="large_text help-tour-step-4">Описание</th>
+                      <th class="small_text help-tour-step-5">Начин на доставка</th>
+                      <th class="number_text help-tour-step-6">Срок на доставка от</th>
+                      <th class="number_text">Срок на доставка до</th>
+                      <th class="small_text">Тип</th>
+                      <th class="small_text help-tour-step-7">Начин на плащане</th>
+                      <th class="number_text help-tour-step-8">Цена</th>
+                      <th class="small_text help-tour-step-9">Мин.стойност на поръчката</th>
+                      <th class="bool help-tour-step-10">Активна</th>
+                      <th class="help-tour-step-11"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <%= f.fields_for :merchant_shipments do |d|%>
+                        <% if d.object.errors.any? && d.object.errors[:base] %>
+                            <% d.object.errors[:base].each do |msg| %>
+                              <tr>
+                                  <td class="danger" colspan="13">
+                                    <%= msg %>
+                                  </td>
+                                </tr>
+                           <% end %>
+                        <% end %>
+                        <tr style="display: <%= d.object.id == -1 ? "none" : "visible"%> ">
+                          <td class="id"> <%= d.object.id %> </td>
+                          <td><%= d.text_field :name, :hide_label => true %></td>
+                          <td><%= d.text_field :description, :hide_label => true %></td>
+                          <td><%= d.collection_select(:shipment_type_id, ShipmentType.all.order(:order_index), :id, :name, { :include_blank => true, :hide_label => true }) %> </td>
+                          <td><%= d.text_field :period_from, :hide_label => true, :class => "numeric-short" %></td>
+                          <td><%= d.text_field :period_to, :hide_label => true, :class => "numeric-short" %></td>
+                          <td><%= d.collection_select(:period_type, MerchantShipment.period_types_i18n, :first, :last, { :hide_label => true }) %></td>
+                          <td><%= d.collection_select(:payment_type_id, PaymentType.all.order(:order_index), :id, :name, { :include_blank => "Важи за всички",  :hide_label => true }) %> </td>
+                          <td>
+                             <div class="input-group short-group">
+                                <%= d.text_field :price, :hide_label => true, :value => d.object.price_formatted_without_unit %>
+                                <span class="input-group-addon"><%= currency_unit %></span>
+                            </div>
+                          </td>
+                          <td>
+                           <div class="input-group short-group">
+                                <%= d.text_field :min_order_price, :hide_label => true, :value => d.object.min_order_price_formatted_without_unit %>
+                                <span class="input-group-addon"><%= currency_unit %></span>
+                            </div>
+                          </td>
+                          <td><%= d.check_box_without_bootstrap :active, :value => d.object.active %></td>
+                          <td>
+                            <button type="button" class="btn btn-template-main btn-sm" title="Изтрий" onclick="FashionLime.Merchant.Shipment.index.deleteShipment(this, <%= d.object.id %>, <%= d.options[:child_index] %>);">
+                              <i class="fa fa-trash-o"></i>
+                            </button>
+                          </td>
+                          <% if d.object.id == -1 %>
+                            <%= hidden_field_tag("template_row_index", d.options[:child_index]) %>
+                          <% end %>
+                        </tr>
+                         <% if d.object.id == -1 %>
+                            <%= hidden_field_tag("_newly_added_rows", 0) %>
+                            <%= hidden_field_tag("_existing_rows", @merchant.merchant_shipments.size - 1) %>
+                        <% end %>
+
+                        <%= d.hidden_field(:id) %>
+                    <% end %>
+
+                   </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-template-main btn-save help-tour-step-12">
+            <i class="fa fa-floppy-o"></i> Запази
+          </button>
+
+    </div>
+  </div>
+<% end %>
+
+<script language="JavaScript">
+  FashionLime.Common.utils.onPageLoad(function() {
+    FashionLime.Shared.newRecord.setup();
+  });
+</script>

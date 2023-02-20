@@ -1,0 +1,38 @@
+<% help_steps "index" %>
+
+<div class="col-sm-12">
+
+  <%= link_to new_merchant_payment_type_path, :class => "btn btn-template-main btn-bottom-shifted help-tour-step-1" do %>
+    Нов начин на плащане
+  <% end %>
+
+   <div class="table-responsive centered help-tour-step-2">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th class="help-tour-step-3">Начин на плащане</th>
+              <th class="help-tour-step-4">Информация за плащане</th>
+              <th class="help-tour-step-5">Активен</th>
+              <th class="help-tour-step-6"></th>
+            </tr>
+          </thead>
+          <tbody>
+          <% @payments.each_with_index do |p, index| %>
+            <tr>
+              <td><%= p.id %></td>
+              <td><%= p.payment_type.name %></td>
+              <td><%= p.info_text %></td>
+              <td><%= check_box_tag("active_#{index}", 0, p.active == 1, :disabled => true) %></td>
+              <td>
+                <%= link_to edit_merchant_payment_type_path(p.id), :class => "btn btn-template-main btn-sm", :title => "Редактиране" do %>
+                    <i class="fa fa-edit"></i>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+          </tbody>
+        </table>
+    </div>
+              
+</div>

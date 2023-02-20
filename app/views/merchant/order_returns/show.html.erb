@@ -1,0 +1,282 @@
+<% help_steps "show" %>
+ 
+ <div id="orderReturnDetail" class="col-sm-12 clearfix">
+    <div class="box">
+
+      <div class="row">
+        <div class="col-sm-6">
+          <h4>Заявка</h4>
+
+          <div class="table-responsive">
+            <table class="table">
+              <tr class="help-tour-step-1">
+                <td>Номер заявка</td>
+                <td><%= @order_return.number %></td>
+              </tr>
+              <tr class="help-tour-step-2">
+                <td>Дата заявка</td>
+                <td><%= date_time_to_s(@order_return.created_at) %></td>
+              </tr>
+              <tr class="help-tour-step-3">
+                <td>Статус заявка</td>
+                <td><%= label_for_return_status(@order_return) %> </td>
+              </tr>
+            </table>
+          </div>
+
+          <h4 class="help-tour-step-4">Заявка към поръчка</h4>
+
+          <div class="table-responsive">
+            <table class="table">
+              <tr>
+                <td>Номер поръчка</td>
+                <td><%= @order_return.merchant_order.number %></td>
+              </tr>
+              <tr>
+                <td>Дата поръчка</td>
+                <td><%= date_time_to_s(@order_return.merchant_order.created_at) %></td>
+              </tr>
+              <tr>
+                <td>Дата на доставка на поръчката</td>
+                <td><%= date_to_s(@order_return.merchant_order.acknowledged_date) %> </td>
+              </tr>
+              <tr>
+                <td>Цена на доставка</td>
+                <td> <%= @order_return.merchant_order.shipment_price_formatted %> </td>
+              </tr>
+              <tr>
+                <td>Сума поръчка</td>
+                <td><%= @order_return.merchant_order.total_with_discount_formatted %></td>
+              </tr>
+              <tr>
+                <td>Общо</td>
+                <td><b><%= @order_return.merchant_order.total_with_shipment_formatted %></b></td>
+              </tr>
+              <tr>
+                <td>Статус поръчка</td>
+                <td><b><%= label_for_order_status(@order_return.merchant_order) %></b></td>
+              </tr>
+              <tr>
+                <td colspan="2">
+                  <%= link_to merchant_edit_order_path(:number => @order_return.merchant_order.number), :title => "Отиди към поръчката" do %>
+                   <i class="fa fa-link" aria-hidden="true"></i> Линк към поръчка
+                  <% end %>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+
+        <div class="col-sm-6">
+          <h4 class="help-tour-step-5">Клиент</h4>
+          <div class="table-responsive">
+            <table class="table" valign="top">
+              <tr>
+                <td>Име</td>
+                <td><%= @order_return.user_full_name %></td>
+              </tr>
+              <tr>
+                <td>Телефон</td>
+                <td><%= @order_return.user_phone %></td>
+              </tr>
+              <tr>
+                <td>Имейл</td>
+                <td><%= mail_to @order_return.user_email %></td>
+              </tr>
+              <tr>
+                <td>Бележка от клиента</td>
+                <td><%= @order_return.note_to_merchant %></td>
+              </tr>
+            </table>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-12">
+          <h4>Артикули за връщане</h4>
+          <div>
+            <% if @return_details.length > 0 %>
+              <%= render partial: 'change_status_link', locals: {
+                  return_type: @return_details[0].return_type,
+                  status: @return_details[0].status,
+                  order_return: @order_return
+                } %>
+              <div class="table-responsive">
+                <table class="table table-hover centered help-tour-step-6">
+                  <thead>
+                    <tr>
+                      <th>ID артикул</th>
+                      <th class="help-tour-step-7">Артикул</th>
+                      <th class="help-tour-step-8">Количество поръчка</th>
+                      <th>Ед.цена с отстъпка</th>
+                      <th class="help-tour-step-9">Количество за връщане</th>
+                      <th class="help-tour-step-10">Сума за връщане</th>
+                      <th class="help-tour-step-11">Статус</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% @return_details.each do |d|%>
+                      <tr>
+                        <td>
+                          <%= d.merchant_order_detail.article_id %>
+                        </td>
+                        <td>
+                          <%= d.merchant_order_detail.article.full_name %>
+                        </td>
+                        <td>
+                          <%= d.merchant_order_detail.qty.to_i %>
+                        </td>
+                        <td>
+                          <%= d.merchant_order_detail.price_with_discount_formatted %>
+                        </td>
+                        <td>
+                          <%= d.return_qty.to_i %>
+                        </td>
+                        <td>
+                          <%= d.return_total_formatted %>
+                        </td>
+                        <td>
+                          <%= label_for_return_detail_status(d) %>
+                        </td>
+                      </tr>
+                    <% end %>
+                   </tbody>
+                </table>
+              </div>
+            <% else %>
+              Няма артикули за връщане.
+            <% end %>
+          </div>
+
+          <h4 class="articles-exchange-header">Артикули за замяна</h4>
+          <div>
+            <% if @exchange_details.length > 0 %>
+              <%= render partial: 'change_status_link', locals: {
+                    return_type: @exchange_details[0].return_type,
+                    status: @exchange_details[0].status,
+                    order_return: @order_return 
+                  } %>
+              <div class="table-responsive">
+                <table class="table table-hover centered help-tour-step-14">
+                  <thead>
+                    <tr>
+                      <th>ID артикул</th>
+                      <th class="help-tour-step-15">Артикул</th>
+                      <th class="help-tour-step-16">Количество поръчка</th>
+                      <th>Ед.цена с отстъпка</th>
+                      <th class="help-tour-step-17">Количество за замяна</th>
+                      <th class="help-tour-step-18">Статус</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% @exchange_details.each do |d|%>
+                      <tr>
+                        <td>
+                          <%= d.merchant_order_detail.article_id %>
+                        </td>
+                        <td>
+                          <%= d.merchant_order_detail.article.full_name %>
+                        </td>
+                        <td>
+                          <%= d.merchant_order_detail.qty.to_i %>
+                        </td>
+                        <td>
+                          <%= d.merchant_order_detail.price_with_discount_formatted %>
+                        </td>
+                        <td>
+                          <%= d.return_qty.to_i %>
+                        </td>
+                        <td>
+                          <%= label_for_return_detail_status(d) %>
+                        </td>
+                      </tr>
+                    <% end %>
+                   </tbody>
+                </table>
+              </div>
+            <% else %>
+              Няма артикули за замяна.
+            <% end %>
+          </div>
+
+        </div>
+       </div>
+   </div>
+</div>
+
+<div class="modal fade" id="exchangeArticlesModal" tabindex="-1" role="dialog" aria-labelledby="exchangeArticles" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h5 class="modal-title" id="exchangeArticles">Продукти за замяна</h5>
+            </div>
+            <div class="modal-body">
+              <div class="alert alert-warning">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>Инструкции:</strong> 
+                Намерете новите продукти, които клиентът иска, като ги изберете един по един от списъка с предложения и ги добавете с "+" бутона.
+                За да се появи списъкът с предложения, започнете да изписвате името на търсения продукт.
+                Когато сте избрали всички продукти натиснете бутона "Запази".
+              </div>
+                  <%= bootstrap_form_for(@order_return, url: { action: :process_exchanges}, html: { method: :post, id: "exchangeArticlesForm" } ) do |f| %>
+                      <div class="row new-article-container">
+                        <div class="col-xs-11">
+                          <div class="scrollable-typeahead-container">
+                            <%= text_field_tag :newArticle, '', :class => 'form-control', :placeholder => "Започнете да пишете име на продукт..." %>
+                          </div>
+                        </div>
+                        <div class="col-xs-1">
+                         <button type="button" class="btn btn-template-main btn-add-exchange-article pull-left">
+                          <i class="fa fa-plus" aria-hidden="true"></i>
+                        </button>
+                        </div>
+                      </div>
+                      <%= hidden_field_tag "new-article-value" %>
+                      <%= hidden_field_tag :new_articles %>
+                  <% end %>
+                  
+                  <div class="table-responsive">
+                    <table id="newArticlesTable" class="table table-hover">
+
+                    </table>
+                  </div>
+                  <button type="button" class="btn btn-template-main btn-save-exchange">
+                    <i class="fa fa-floppy-o"></i> Запази
+                  </button>
+            </div>
+        </div>
+    </div>
+</div> 
+
+
+<script language="JavaScript">
+  FashionLime.Common.utils.onPageLoad(function() {
+    var returnShowJs = new FashionLime.Merchant.OrderReturn.Show();
+    FashionLime.Shared.typeahead.setup('#newArticle', [
+        <% @merchant.active_articles.map { |a| { :name => a.product.name, :full_name => a.full_name, :id => a.id, :price => a.price_formatted, :perc_discount => a.perc_discount, :price_with_discount => a.price_with_discount_formatted } }.each do |a| %>
+          <%= a.to_json.html_safe %>,
+        <% end %>
+      ], 
+      "full_name", 
+      "id",
+      "#new-article-value",
+      2,
+      function(context) {
+        return FashionLime.Common.utils.format(
+          "<div>{0} | Цена: {1} | Цена с отстъпка: {2}</div>",
+          context.full_name, context.price, context.price_with_discount
+        );
+      },
+      null,
+      true,
+      returnShowJs.setExchangeArticle.bind(returnShowJs)
+    );
+    returnShowJs.init();
+  });
+</script>
+
+

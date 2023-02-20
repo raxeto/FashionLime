@@ -1,0 +1,110 @@
+@import "/template/less/modules/variables-custom.css.less";
+@import "/application/shared/align.css.less";
+
+#navbar {
+
+    // Replace the default max-height 340px which cause problems when the last item of the menu is expanded
+    // on mobile devices the max height should be enough to show all main items + additional space to expand the subitems
+    .navbar-collapse {
+        max-height: 590px;
+    }
+
+    .logo-link {
+        position: absolute;
+        @media (max-width: @screen-md-max) {
+            left:  40%;
+        }
+        @media (min-width: @screen-lg-min) {
+            left:  37%;
+        }
+        margin: -25px auto 0 0;
+        background: transparent;
+    }
+
+    ul {
+        li.cart-menu {
+            border-left: solid 1px @navbar-separator-color;
+            border-right: solid 1px @navbar-separator-color;
+            a {
+                text-decoration: none;
+            }
+            
+            .cart-items-count {
+                background-color: @brand-primary;
+            }
+        }
+
+        li.my-menu {
+            border-left: solid 1px @navbar-separator-color;
+            font-size: 18px;
+            a {
+                text-decoration: none;
+            }
+        }
+
+        li {
+            .cart-icon, .search-icon {
+                font-size: 20px;
+                margin-left: 5px;
+            }
+        }
+    }
+
+    .products-menu {
+        @media (min-width: @screen-md-min) { 
+            .col-women-menu {
+              //border-right: dotted 1px @gray;
+            }
+        }
+
+        @media (max-width: @screen-sm-max) { 
+            .col-women-menu {
+                margin-bottom: 25px;
+            }
+        }
+    }
+
+    .outfits-menu {
+        .col-functions {
+            text-align: center;
+            a {
+                margin-bottom: 10px;
+                text-transform: uppercase;
+            }
+        }
+
+        @media (min-width: @screen-sm-min) { 
+            .col-women-menu {
+              border-right: dotted 1px @gray;
+            }
+            .col-functions {
+                height: 211px;
+                .functions-container {
+                    .center-horizontal();
+                    .center-vertical();
+                    margin-top: -31px;
+                    margin-left: -109px;
+                }
+            }
+        }
+
+        @media (max-width: @screen-xs-max) { 
+            .col-women-menu {
+                margin-bottom: 25px;
+            }
+        }
+    }
+
+    .products-menu, .outfits-menu {
+        .coming-soon {
+            text-transform: uppercase;
+            font-size: 12px;
+        }
+    }
+
+    .outfits-menu {
+        .coming-soon {
+            margin-bottom: 20px;
+        }
+    }
+}

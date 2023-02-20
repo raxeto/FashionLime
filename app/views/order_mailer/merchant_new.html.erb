@@ -1,0 +1,39 @@
+<p>Здравейте <%= @merchant_order.merchant.name %>,</p>
+
+<div>
+  <p>С радост Ви пишем, че бе направена поръчка с номер <strong><%= @merchant_order.number %></strong> на следните продукти, които предлагате:</p>
+  <%= render partial: 'order_details', locals: { :merchant_order => @merchant_order } %>
+</div>
+
+<div>
+  <p>Поръчката е направена от потребител <%= @merchant_order.order.user_full_name %> с данни за връзка:</p>
+  <ul>
+    <li>адрес: <%= @merchant_order.order.address.text %></li>
+    <li>email: <%= @merchant_order.order.user_email %></li>
+    <li>телефон: <%= @merchant_order.order.user_phone || '-' %></li>
+  </ul>
+  <p>Потребителят:</p>
+  <ul>
+    <li>желае фактура: <%= @merchant_order.order.issue_invoice == 1 ? "ДА" : "НЕ" %></li>
+    <li>желае доставка само в работни дни: <%= @merchant_order.order.only_business_days == 1 ? "ДА" : "НЕ" %></li>
+  </ul>  
+</div>
+
+<p>Избран тип доставка: "<%= @merchant_order.merchant_shipment.name %>".</p>
+
+<p>Избран начин на плащане: "<%= @merchant_order.merchant_payment_type.payment_type.name %>".</p>
+
+<% if @merchant_order.has_additional_payment? %>
+<p>Код за плащане: <%= @merchant_order.payment_code_human_readable %></p>
+<p>Информация за плащане: <%= @merchant_order.merchant_payment_type.info_text %> </p>
+<% end %>
+
+<% if @merchant_order.order.note_to_merchants.present? %>
+<p>
+  Бележка от клиента: <%= @merchant_order.order.note_to_merchants %>
+</p>
+<% end %>
+
+<p>Моля влезте в търговската секция на FashionLime, за да видите повече детайли и да обработите поръчката.</p>
+
+<%= render partial: '/shared/mailer/merchant_email_signature' %>

@@ -1,0 +1,393 @@
+<div class="col-sm-12">
+
+  <%= bootstrap_form_for(@order, url: { action: :create}, html: { id: 'order-form' }, method: :post ) do |f| %>
+
+    <div class="row">
+     <div class="col-md-9 clearfix" id="checkout">
+
+      <div class="box">
+      <% if @has_user_error %>
+      <%= alert_tag :danger, "Поръчката Ви не беше направена заради грешки при въвеждането на информацията. Моля, прегледайте и коригирайте грешките означени в червено по-долу и опитайте отново.", "Грешка!" %>
+      <% end %>
+      <% if @cart_prices_are_changed %>
+      <div class="alert alert-warning">
+          Цените на някои от продуктите вече са променени. В поръчката Ви са взети новите цени.
+      </div>
+      <% end %>
+              <ul class="nav nav-pills nav-justified">
+                  <li class="active"><a><i class="fa fa-info-circle"></i>&nbsp;Информация за Вас</a>
+                  </li>
+              </ul>
+
+
+              <div class="content">
+              <% if @has_profile_copied_info %>
+                 <div class="well well-xs">
+                    * Във формата има попълнени данни от Вашия потребителски профил. Можете да ги промените.
+                </div>
+              <% end %>
+
+                <div class="row">
+                    <div class="col-sm-6">
+                          <%= f.text_field :user_first_name, :label => "Име" %>
+                    </div>
+                    <div class="col-sm-6">
+                        <%= f.text_field :user_last_name, :label => "Фамилия"  %>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <%= f.text_field :user_phone, :label => 'Телефон' %>
+                    </div>
+                    <div class="col-sm-6">
+                        <%= f.email_field :user_email, :label => 'Имейл' %>
+                    </div>
+                </div>
+
+                <%= f.fields_for :address do |a|%>
+                <div class="row">
+                    <div class="col-sm-6 col-sm-push-6">
+                      <% if @order.user.addresses.exists? %>
+                            <%= f.select :user_address_id, options_for_select(@user_addresses.map{ |a| [a.text, a.id, {'data-location-id'=>a.location_id, 'data-settlement-name' => a.location.settlement_name, 'data-description' => a.description}] },
+                                selected_key = f.object.user_address_id), {:include_blank => true, :label => 'Избери от своите адреси'} %>
+                      <% end %>
+                    </div>
+                    <div class="col-sm-6 col-sm-pull-6 location-container">
+                        <div class="scrollable-typeahead-container">
+                            <%= a.text_field :location_suggestion, :label => "Град/село" %>
+                        </div>
+                        <%= a.hidden_field :location_id %>
+                    </div>
+                     
+                </div>
+                <div class="row">
+                  <div class="col-sm-12">
+                      <%= a.text_area :description, :label => 'Адрес' %>
+                  </div>
+                </div>
+                <% end %>
+
+
+                <div class="row only-business-days-container">
+                    <div class="col-sm-12">
+                        <%= f.check_box :only_business_days, :label => "Доставка само в работни дни" %>
+                    </div>
+                </div>
+
+              </div>
+
+              <!-- END USER INFO -->
+
+
+              <ul class="nav nav-pills nav-justified">
+                  <li class="active"><a href="#"><i class="fa fa-list-alt"></i>&nbsp;Поръчка</a>
+                  </li>
+              </ul>
+
+
+              <%= f.fields_for :merchant_orders do |o|%>
+              <div class="content" name="merchant_order_container">
+                  <div class="row">
+                      <div class="col-sm-12 merchant-profile">
+                        <%= render partial: '/shared/merchant_profile_link', locals: { merchant: o.object.merchant } %>
+                      </div>
+                  </div>
+                  <div class="row">
+                      <div class="col-sm-12 col-merchant-shipment">
+                          <%= o.form_group :merchant_shipment_id, label: { text: "Избор на доставка" } do %>
+                            <% o.object.merchant.available_shipments.each do |s| %>
+                              <div class="order-option-container">
+                                <%= o.label "merchant_shipment_id_#{s.id}" do %>
+                                  <table class="order-option-table">
+                                    <tbody>
+                                      <tr>
+                                        <td rowspan="4" class="order-option-col">
+                                           <%= o.radio_button_without_bootstrap :merchant_shipment_id, s.id, 
+                                            :checked => s.id == o.object.merchant_shipment_id,
+                                            :class => "merchant-shipment-radio",
+                                            'data-price' => s.price, 
+                                            'data-payment-type-id' => s.payment_type_id || 0, 
+                                            'data-payment-type-name' => s.payment_type.try(:name) || "",
+                                            'data-min-order-price' => s.min_order_price,
+                                            'data-aprox-delivery' => s.aprox_delivery %>
+                                        </td>
+                                        <td rowspan="4" class="order-option-image-col">
+                                          <%= shipment_type_image s.shipment_type %>
+                                        </td>
+                                        <td class="order-option-name-col">
+                                          <strong><%= s.name %></strong> <%= s.price_formatted %>
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td>
+                                          <% if s.min_order_price >= Conf.math.PRICE_EPSILON %>
+                                            Важи за поръчки равни или над: <strong><%= s.min_order_price_formatted %></strong>
+                                            <div class="min-order-remain-price-message"></div>
+                                          <% end %>
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td>
+                                          <% if s.payment_type.present? %>
+                                            Важи само за плащане: <%= s.payment_type.name %>
+                                          <% end %>
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td class="aprox-delivery-col">
+                                          * очаквана доставка <%= s.aprox_delivery %>
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                <% end %>
+                              </div>
+                            <% end %>
+                          <% end %>
+                      </div>
+                  </div>
+
+                  <div class="row">
+                      <div class="col-sm-12 col-merchant-payment">
+                          <%= o.form_group :merchant_payment_type_id, label: { text: "Избор на начин на плащане" } do %>
+                            <% o.object.merchant.available_merchant_payment_types.each do |p| %>
+                              <div class="order-option-container">
+                                <%= o.label "merchant_payment_type_id_#{p.id}" do %>
+                                  <table class="order-option-table">
+                                    <tbody>
+                                      <tr>
+                                        <td class="order-option-col">
+                                           <%= o.radio_button_without_bootstrap :merchant_payment_type_id, p.id, 
+                                              :checked => p.id == o.object.merchant_payment_type_id,
+                                              :class => "merchant-payment-radio",
+                                              'data-payment-type-id' => p.payment_type_id %>
+                                        </td>
+                                        <td class="order-option-image-col">
+                                          <%= payment_type_image p.payment_type %>
+                                        </td>
+                                      </tr>
+                                      
+                                    </tbody>
+                                  </table>
+                                <% end %>
+                              </div>  
+
+
+                            <% end %>
+                        <% end %>
+
+                        <div class="well well-xs one-payment-available-warning">
+                        </div>
+                      </div>
+                  </div>
+
+                  <% if o.object.errors.any? %>
+                    <% o.object.errors.each do |attr, msg| %>
+                      <% if attr == :changed_shipment_price %>
+                          <div class="row">
+                             <div class="col-sm-12 alert alert-danger">
+                                <%= msg %>
+                              </div>
+                          </div>
+                      <% end %>
+                    <% end %>
+                  <% end %>
+
+
+                  <div class="row">
+                      <div class="col-sm-12">
+                          <div class="table-responsive">
+                            <table class="table">
+                              <thead class="centered-header">
+                                  <tr>
+                                      <th colspan="2">Артикул</th>
+                                      <th>Количество</th>
+                                      <th>Ед. цена</th>
+                                      <th colspan="2">Стойност</th>
+                                  </tr>
+                              </thead>
+                              <tbody>
+                             <%= o.fields_for :merchant_order_details do |d| %>
+                                <% if d.object.errors.any? %>
+                                  <% d.object.errors.each do |attr, msg| %>
+                                    <% if attr == :changed_prices || attr == :available_qty %>
+                                    <tr colspan="6">
+                                      <td class="danger" colspan="6">
+                                        <%= msg %>
+                                      </td>
+                                    </tr>
+                                    <% end %>
+                                  <% end %>
+                                <% end %>
+                               <tr>
+                                <td>
+                                  <%= render partial: '/shared/picture', locals: { picture: d.object.article.product.main_product_picture(color_id: d.object.article.color_id), style: :thumb, type: :product } %>
+                                </td>
+                                <td>
+                                    <%= link_to product_path(d.object.article.product) do %>
+                                      <%= d.object.article.product.name %>
+                                    <% end %>
+                                  <br>
+                                  Цвят: <%= d.object.article.color.name %> Размер: <%= d.object.article.size.name %>
+                                </td>
+                                <td class="right-aligned">
+                                    <%= d.number_field_without_bootstrap :qty, value: d.object.qty.to_i, min: 1, class: 'detail_qty numeric form-control' %>
+                                </td>
+                                <td class="right-aligned">
+                                  <%= d.text_field_without_bootstrap :price_with_discount, { :value => d.object.price_with_discount_formatted, :readonly => true, :class => "detail_price_with_discount disabled-hidden"} %>
+                                </td>
+                                <td class="right-aligned">
+                                  <%= d.text_field_without_bootstrap :total_with_discount, { :value => d.object.total_with_discount_formatted, :readonly => true, :class => "detail_total_with_discount disabled-hidden" } %>
+                                </td>
+                                <td>
+                                  <a class="delete_detail_button" type="button">
+                                    <i class="fa fa-trash-o"></i>
+                                  </a>
+                                </td>
+                                <%= d.hidden_field(:article_id) %>
+                                <%= d.hidden_field(:price) %>
+                                <%= d.hidden_field(:perc_discount) %>
+                              </tr>
+                              <% end %>
+                              <tr>
+                                <td colspan="4">Доставка</td>
+                                <th class="right-aligned">
+                                  <%= o.text_field_without_bootstrap :shipment_price, { :value => o.object.shipment_price_formatted, :readonly => true, :class => "shipment_price disabled-hidden" }%>
+                                  <%= o.hidden_field :total_with_discount, :class => 'header_total_with_discount' %>
+                                </th>
+                                <th>&nbsp;</th>
+                              </tr>
+                              <tr class="total">
+                                <th colspan="4">Общо</th>
+                                <th class="right-aligned">
+                                  <%= o.text_field_without_bootstrap :total_with_shipment, { :value => o.object.total_with_shipment_formatted, :disabled => true, :class => "header_total_with_shipment disabled-hidden" } %></b>
+                                  <%= o.hidden_field(:merchant_id) %>
+                                </th>
+                                <th>&nbsp;</th>
+                              </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                      </div>
+                  </div>
+
+              </div>
+
+              <hr class="colorful merchant-order-devider">
+              <% end %>
+
+
+              <div class="issue-invoice-container">
+                <div class="well well-xs">
+                  <div class="issue-invoice">
+                    <%= f.check_box :issue_invoice, :label => "Желая да ми бъде издадена фактура" %>
+                  </div>
+                  <div class="issue-invoice-messages">
+                    <div class="more-than-one-order-message">
+                      Правите поръчка към няколко търговеца. Всеки от тях ще Ви издаде отделна фактура за продуктите, които поръчвате от него.
+                    </div>
+                    Можете да въведете информацията за фактурата в забележката към поръчката.
+                  </div>
+                </div>
+              </div>
+
+
+              <!-- END ORDER -->
+
+              <ul class="nav nav-pills nav-justified">
+                  <li class="active"><a href="#"><i class="fa fa-pencil-square-o"></i>&nbsp;Допълнителна информация</a>
+                  </li>
+              </ul>
+
+
+              <div class="content">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <%= f.text_area :note_to_merchants, :label => 'Забележка към поръчката' %>
+                    </div>
+                    <div class="col-sm-12">
+                      <%= f.form_group :agree_terms_of_use do %>
+                        <%= f.check_box :agree_terms_of_use, :label => "Запознат съм с направената поръчка и с #{link_to 'Общите условия', terms_of_use_path, :target => '_blank'}, съгласен съм с тях и се задължавам да ги спазвам.".html_safe %>
+                      <% end %>
+                    </div>
+                </div>
+              </div>
+
+               <!-- END ADDITIONAL INFO -->
+
+              <div class="box-footer">
+                <div class="row">
+                  <div class="col-sm-6">
+                    <%= link_to cart_show_path, :class => "btn btn-default left-content" do %>
+                      <i class="fa fa-chevron-left"></i>Назад към количка
+                    <% end %>
+                  </div>
+                  <div class="col-sm-6">
+                      <button type="submit" class="btn btn-template-main right-content">Направи поръчка<i class="fa fa-chevron-right"></i>
+                      </button>
+                  </div>
+                </div>
+              </div>
+      </div>
+      <!-- /.box -->
+
+
+    </div>
+    <!-- /.col-md-9 -->
+
+    <div class="col-md-3">
+
+      <div class="box affixed-summary" id="order-summary">
+          <div class="box-header">
+              <h3>Поръчка</h3>
+          </div>
+          <p class="text-muted">Ако натиснете бутона "Направи поръчка", поръчката Ви ще бъде изпратена и няма да можете да я отмените.</p>
+
+          <div class="table-responsive">
+              <table class="table">
+                  <tbody>
+                      <tr>
+                        <td>Продукти</td>
+                        <th class="right-aligned"><%= f.text_field_without_bootstrap :total_with_discount, { :value => f.object.total_with_discount_formatted, :disabled => true, :class => "disabled-hidden" } %></th>
+                      </tr>
+                      <tr>
+                        <td>Доставка</td>
+                        <th class="right-aligned"><%= f.text_field_without_bootstrap :total_shipment, { :value => f.object.total_shipment_formatted, :disabled => true, :class => "disabled-hidden" } %></th>
+                      </tr>
+                      <tr class="total">
+                          <td>Общо</td>
+                          <th class="right-aligned"><%= f.text_field_without_bootstrap :total_with_shipment, { :value => f.object.total_with_shipment_formatted, :disabled => true, :class => "disabled-hidden" } %></th>
+                      </tr>
+                  </tbody>
+              </table>
+          </div>
+
+      </div>
+
+    </div>
+    <!-- /.col-md-3 -->
+  </div>
+  <!-- /.row -->
+
+  <% end %>
+</div>
+
+<script language="JavaScript">
+  FashionLime.Common.utils.onPageLoad(function() {
+    FashionLime.Order.new.setup();
+    $('#order-summary').affix({offset: {top: 143} });
+    $('[data-toggle="popover"]').popover();
+    FashionLime.Shared.typeahead.setup('#order_address_attributes_location_suggestion', [
+        <% Modules::LocationJsonBuilder.json_data.each do |l| %>
+          <%= l.html_safe %>,
+        <% end %>
+      ],
+      "name",
+      "id",
+      "#order_address_attributes_location_id",
+      2
+    );
+  });
+</script>
+

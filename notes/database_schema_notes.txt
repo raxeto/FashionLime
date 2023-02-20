@@ -1,0 +1,413 @@
+Users
+(UserID, UserName, Email, Password) Registraciq - Potr.ime, Parola, Email - ne e zadyljitelen
+
+Customer
+(
+	CustomerID,
+	UserID,
+	FirstName,
+	LastName,
+	Avatar,
+	Raiting,
+	
+	FirstName,
+	LastName,
+	BirthDate,
+	Gender
+)
+
+Merchant
+(
+	MerchantID,
+	MerchantName,
+	LogoPicture,
+	Raiting
+)
+
+MerchantUsers
+(
+	MerchantID,
+	UserID
+)
+
+TradeMark
+(
+	TradeMarkID,
+	TradeMarkName,
+	LogoPicture
+)
+
+Addresses
+(
+	AddressID,
+	LocationID
+	Address
+)
+
+CustomerAddreses
+(
+	CustomerAddressID,
+	CustomerID,
+	AddressID
+)
+
+MerchantAddreses
+(
+	MerchantID,
+	AddressID
+)
+
+Cart
+(
+	ID,
+	UserID,
+	Total,
+	CreateDate
+)
+
+CartDetails
+(
+	ID,
+	CartID,
+	ArticleID,
+	Price,
+	PricePercDiscount,
+	PriceWithDiscount, -- tezi trite se kopirat ot tekushtiq produkt
+	Total - PriceWithDiscount * Qty,
+	Qty,
+	CreateDate
+)
+
+
+- Potrebitelq shte vijda samo edna shipping cena s range ot do kato natisne na kolichkata
+- i ako iska da vidi detaili da cykne i da vidi cenite po proizvoditeli
+- kato vkarame logikata i DressMe da dostavq togava moje da izlizat 2 ceni - cena chrez DressMe & cena chrez proizvoditelite
+- Ako se dobavi vtori artikul e se dobavq nov zapis, a samo se update-vat cenite
+CartDeliveries
+(
+	ID,
+	CartID,
+	MerchantID, - ako ne e popylneno, to togava moje DressMe da go dostavi
+	PriceFrom, - ako tyrgoveca e zadal razlichni ceni za razlichni nachini na dostavka, razlichni gradove ili nachini na plashtane
+	PriceTo - to togava shte se izchisli posle cenata (kato se izbere nachin na dostavka, nachin na plashtane i grad za dostavka). Ako priceFrom = priceTo to cenata e qsna
+)
+
+CartShipments
+(
+	ID,
+	CartID,
+	MerchantID, - ako ne e popylneno, to togava moje DressMe da go dostavi
+	PeriodFrom, - ako tyrgoveca e zadal razlichni ceni za razlichni nachini na dostavka, razlichni gradove ili nachini na plashtane
+	PeriodTo
+)
+
+
+
+Cart
+
+Orders
+(
+	ID,
+	UserID,
+	CustomerAddressID, - tova trqbva da e kopie ot adresa na potrebitelq
+										-- zashtoto posle ako potrebitelq si go iztrie da ne se iztrie ot vsichki
+										porychki napraveni s nego
+	OnlyBusinessDays, - dali porychkata da se dostavi samo prez rabotno vreme
+	CreateDate,
+	NoteToAllMerchants, - belejka ot customer-a za merchantite-a
+
+	Total, - sbor ot vsichki MerchantOrder.Total
+	TotalShipment, - sbor ot vsichki MerchantOrder.ShipmentPrice  
+	AproxDeliveryDateFrom, - MIN(AproxDeliveryDateFrom) - ot poziciite 
+	AproxDeliveryDateTo, - MAX(AproxDeliveryDateTo)
+	AcknowledgedDate - koga shte byde dostaven MAX(AcknowledgedDate) v poziciite
+	Status - stava true, kogato vsichki sa true i togava se izprashta email, koito dava datite na dostavka eventualni
+	-- + syobshtenieto ot Merchant-a ako e dobavil takova (NoteToCustomer)
+)
+
+sled tova kogato potrebitelq preglejda porychkata ako tq e bila potvyrdena ilizat samo AcknowledgedDate
+inache ilizat AproxDleivery - tam kydeto tq e popylnena
+
+Prashta se email, kogato vsichki potvyrdqt porychkata i emaila sydyrja :
+1. Vsichki artikuli + broiki i ceni
+2. Dostavki - vsicki ShipmentPrice, koito imat popylnena AcknowledgedDate - ako DressMe dostavq, samo toi shte ima 
+-- AcknowledgedDate i samo tam shte ima Price i samo tq shte izlezne. AcknowledgedDate syshto da se prashta
+
+
+-- tuk sa veche izchislenite ceni sled kato e zadaden grada (v shapkata ot adresa) i nachina na plashtane
+-- adresa na porychkata shte e edin, za vseki tyrgovec shte moje da se zadava razlichen method na dostavka
+-- i plashtane i shte se opredelq cenata na shipping-a
+-- v interfeisa da ima nachin byrzo da se zadade da kajem nalojen platej na vsichki dostavchici- da ne cykat edin po edin
+MerchantOrder -- moje bi shte e dobre tuk da ne se zadava MerchantShipmentID-to, a samo kato cena da go ima
+(
+	ID,
+	MerchantID, - vseki merchant ot porychkata si ima po edin zapis v MerchantOrder
+	OrderID,
+	NoteToMerchant, - specifichna zabelejka za konkretniq tyrgovec
+	PaymentTypeID,
+	MerchantShipmentID,
+	Total,
+	ShipmentPrice,
+	AproxDeliveryDateFrom, - izchislqva se ot sistemata - v zavisimost ot vkaranite v tablicata MerchantShipmentDeliveryTime danni
+	AproxDeliveryDateTo, - izchislqva se ot sistemata - v zavisimost ot vkaranite v tablicata MerchantShipmentDeliveryTime danni
+	AcknowledgedDate - popylva se na ryka - koga klienta da ochakva da byde dostaveno
+	AcceptedDate - koga proizvoditelq e potvyrdil porychkata
+	NoteToCustomer, tyrgoveca prashta dopylnitelno syobshtenie na klienta
+	Status - prieta, neprieta, ochakva plashtane
+)
+-- tablica koga se e promenil statusa na ordera
+MerchantOrderStatusDates
+(
+  FromStatus, 
+  ToStatus,
+  Date
+)
+
+-- Ako v nqkoi ot MerchantOrder.ShipmentID se zadade DressMe to togava 
+-- se dobavq MerchantOrder zapis s Merchant = DressMe. Tozi Merchant order nqma da ima pozicii 
+-- a samo ShipmentPrice i Aprox datite, AcceptedDate - koga nash predstavitel e priel i taka.
+-- I taka MerchantOrder-ite, koito imat DressMe ShipmentID Stoinostta na dostavkata im e = 0
+-- Dostavkata s DressMe shte si ima algoritym, koito shte se izchislqva cenata kolko shte e 
+-- i shte si ima paymentType syshto - zashtoto i tq trqbva da se plati. Za algorityma moje da se izpolzvat syshtite
+-- tablici na merchantShipmentPrices kato shte se vzimat v predvid i porychkite ot/za syshtite regioni
+-- Ako v merchantOrder-a e zadadeno ShipmentID = DressMe AproxDeliveryDate ne se popylva i AcknowledgedDate
+
+
+MerchantOrderDetails
+(
+	ID,
+  MerchantOrderID,
+	ArticleID,
+	Price,
+	PricePercDiscount,
+	PriceWithDiscount, -- tezi trite se kopirat ot tekushtiq produkt, a ako ima razlika s cenite ot kolichkata da dava
+										 --preduprejdenie da potrebitelq
+	Qty,
+	Total - PriceWithDiscount * Qty
+)
+
+OrderDetailQuantities - tazi tablica update-va ArticleQuantities.QtySell 
+-- i da se pishe v neq avtomatichno, kogato potrebitelq napravi porychkata
+(
+		ID,
+		OrderDetailID,
+		ArticleQuantityID,
+		Qty
+)
+
+
+ShipmentTypes
+(
+		ID,
+		Name - s izbran kurier (ako tyrgoveca ne iska da utochni s koi) ,s kurier Speedy, s kurier Ekont, 
+		- do ofis na Ekont, po poshtata i t.n. - specialna opciq moje da e - kurier na DressMe - i veche tam da spodelqme razhodite za dostavka
+)
+
+PaymentTypes
+(
+	ID,
+	Name - s karta, nalojen platej i t.n.
+)
+
+-- Tezi dolu dvete shte se izbirat kato mnojestven izbor (kakto cvetove i razmeri) v profila na Merchant-a
+MerchantShipment
+(
+	ID,
+	MerchantID,
+	Name,
+	Description,
+	ShipmentID,
+	PaymentTypeID,
+	PeriodFrom,
+	PeriodTo,
+	Price,
+	MinOrderPrice => ako e 0 to e vinagi tazi cenata, ako e chislo, to do tova chislo e tazi dostavkata
+)
+
+-- Tezi dolu dvete shte se izbirat kato mnojestven izbor (kakto cvetove i razmeri) v profila na Merchant-a
+MerchantShipmentOptions
+(
+	ID,
+	MerchantID,
+	ShipmentID,
+	NumBusinessDaysFrom,
+	NumBusinessDaysTo,
+	NumDaysFrom,
+	NumDaysTo
+)
+
+MerchantShipmentOptionLocation
+(
+	MerchantShipmentID,
+	LocationID
+)
+
+MerchantPaymentType
+(
+	ID,
+	MerchantID,
+	PaymentTypeID
+)
+
+-- kato se pokazva edin produkt cenata na dostavkata se pokazva s range i se opredelq kato:
+-- vzimat se vsichki zapisi ot tablicata, koito sa aktualni (ValidFrom, ValidTo)
+-- ako iska potrebitelq moje da opredeli tochno cenata kato vyvede grad, payment type & shipping
+-- i se pokazvat cenite s razlichnite metodi na dostavka, razlichnote payment type-ove, razlichnite gradove
+MerchantDeliveryPrices
+(
+	ID,
+	MerchantID,
+	ShipmentID, - moje i da e prazno, ako e prazno vaji za vsichki
+	PaymentTypeID, - moje i da e prazno, ako e prazno vaji za vsichki
+	Price,
+	MinOrderPrice => ako e 0 to e vinagi tazi cenata, ako e chislo, to do tova chislo e tazi dostavkata
+	ValidFrom - date
+	ValidTo - date
+)
+
+MerchantDeliveryPriceLocations
+(	
+	ID,
+	MerchantShipmentPriceID,
+	LocationID
+)
+
+Merchant - novi poleta
+(
+	Description, - Misiq i viziq
+	ReturnPolicy,
+	Active - ako ne e active da ne se vijdat artikulite mu - tova e za da moje byrzo da deaktivirame nqkoi
+
+)
+
+- tuk shte sa Dyrjavi - Oblasti - Gradovete - Kvartalite v ierarhichna struktura
+Locations
+(
+	ID,
+	Name,
+	ParentLocationID
+)
+
+
+
+Product
+(
+	ID,
+	ProductName,
+	MerchantID,
+	TradeMarkID,
+	Description,
+	Status,
+	MetaData
+)
+
+-- Podseshtanka - trqbva da ima tablica s log na promenqnite ceni
+-- Zasega tezi tuk shte se generirat avtomatichno v zavisimost ot ProductColors & ProductSizes
+-- AvailableQty da se vzema v predvid kato se zarejda produkta. Ot tazi tablica se vzimat vsichki
+-- cvetove i razmeri koito sa nalichni i se pokazvat. Posle kato potrebitelq izbere cvqt
+-- v komboto za razmeri se filtrirat tezi, koito gi nqma (nqmat nalichnost) za tozi cvqt se disable-vat 
+-- ili da ne se pokazvat.
+-- tuk e predvideno da ima vyzmojnost za razshirqvane - kym Product shte moje da ima svyrzani nomenklaturi
+-- naprimer Dyljina na rykava (s izbor Kys rykav i Dylyg rykav) i tova pole da uchastva v Articles i da izliza kato combo
+-- v produkta kogato izliza za porychka
+-- v/u tazi tablica posle da se napravi tyrseneto
+-- ako v tyrseneto ima razmeri i cvetove - da se dobavi index po tezi koloni
+-- v tyrseneto shte se vzimat i poleta ot Product - TM, ime, kategoriq (koqto shte e dyrvo, no oshte q nqma)
+Article
+(
+		ID,
+		ProductID,
+		SizeID,
+		ColorID,
+		Price,
+		PercDiscount,
+		PriceWithDiscount
+		AvailableQty
+)
+
+ArticleQuantities
+(
+		ID,
+		ArticleID,
+		Part, (string)
+		Note,
+		Qty,
+		QtySell -- AvailableQty = Qty - QtySell
+		Active - checkbox - dali e pusnato v prodajba ili ne - moje da iskat da deaktivirat
+		   -- nqkoq partida  za izvestno vreme i posle pak da si q vyrnat na aktivna - naprimer ako pusnat promocionalna partida
+		   -- i spirat starata dokato promocionalnata se prodade i smenqt cenata
+		   -- От тук да се ъпдейтва Article.AvailableQty kato se promeni Qty, QtySell ili Active
+)
+
+
+
+
+ProductColors
+(
+	ProductID,
+	ColorID,
+)
+
+ProductSizes
+(
+	ProductID,
+	SizeID
+)
+
+ProductPictures
+(
+	PictureID,
+	ProductID,
+	Picture,
+	ColorID (moje i null)
+)
+
+
+
+Sizes
+(
+	SizeID,
+	SizeName
+)
+
+SizeSets
+(
+	SizeSetID,
+	SizeSetName
+)
+
+SizeSetsItems
+(
+	SizeSetID,
+	SizeID
+)
+
+Colors
+(
+	ColorID,
+	ColorName,
+	ColorCode
+)
+
+
+Rating
+(
+	ModelID (ProductID, OutfitID, MerchantID)
+	UserID,
+	Rating - +1 / -1 for now
+)
+
+Profiles
+(
+	ID,
+	OwnerID,
+	OwnerType, 'Merchant', 'User'
+)
+
+Users
+(
+	ProfileID
+
+)
+
+

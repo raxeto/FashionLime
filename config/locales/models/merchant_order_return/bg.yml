@@ -1,0 +1,7 @@
+bg:
+  enums:
+    merchant_order_return:
+      status:
+        active: Активна
+        waiting_return: Очаква връщане от клиента
+        closed: Приключена

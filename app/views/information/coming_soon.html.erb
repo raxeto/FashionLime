@@ -1,0 +1,85 @@
+<% title "Fashion Lime - нещо свежо стартира скоро", true %>
+<% description "Обичаш модата? И ние! Позволи ни да те уведомим, когато сме готови, като ни оставиш имейла си.", true %>
+<% og_images [{
+    :url => image_url('clothes-shop-and-logo.jpg'),
+    :type => 'image/jpeg',
+    :width => 1200,
+    :height => 630
+}]%>
+
+<% allow_search_engine_index %>
+
+<!DOCTYPE html>
+<html>
+<head>
+  <%= render "shared/general_header_content" %>
+</head>
+<body id="information-coming-soon">
+
+  <div id="all">
+
+    <div class="container">
+        <div class="row">
+            <div id="flash-notifications" class="col-sm-12">
+            </div>
+        </div>
+
+        <div class="row">
+          <div id="coming-soon-content" class="col-xs-12 col-sm-6">
+
+            <div class="text-center">
+              <%= image_tag "fashionlime-logo.png", :alt => "Fashion Lime лого", :class => "logo-fashion-lime logo-large hidden-xs" %>
+              <%= image_tag "fashionlime-logo-square.png", :alt => "Fashion Lime лого", :class => "logo-fashion-lime logo-small hidden-sm hidden-md hidden-lg" %>
+
+              <p class="lead">
+                Свежи и различими. Знаем, че сте такива. Ние също. 
+                И ще ви предложим нещо страхотно съвсем скоро!
+              </p>
+
+              <form id="newsletter-subscribe">
+                <div class="form-group">
+                  <label for="newsletter-email">Уведоми ме, когато е готово</label>
+                  <div class="input-group newsletter-input-group">
+                      <input id="newsletter-email" type="email" placeholder="Имейл" class="form-control">
+                      <span class="input-group-btn">
+                          <button class="btn btn-default" type="submit">
+                              <i class="fa fa-send" aria-hidden="true"></i>
+                          </button>
+                      </span>
+                  </div>
+                </div>
+              </form>
+
+               <p class="contact-links">
+                  <%= link_to Conf.contact.facebook_url, :class => "btn-contact facebook", :title => "Намери ни във Facebook", :target => "_blank", :rel => 'nofollow', "data-animate-hover" => "pulse" do %>
+                      <i class="fa fa-facebook" aria-hidden="true"></i>
+                  <% end %>
+                  <%= link_to Conf.contact.instagram_url, :class => "btn-contact instagram", :title => "Намери ни в Instagram", :target => "_blank", :rel => 'nofollow', "data-animate-hover" => "pulse" do %>
+                      <i class="fa fa-instagram" aria-hidden="true"></i>
+                  <% end %>
+                  <%= mail_to Conf.contact.clients_email, :class => "btn-contact email", :title => "Напиши ни e-mail", :target => "_blank", :rel => 'nofollow', "data-animate-hover" => "pulse" do %>
+                      <i class="fa fa-envelope" aria-hidden="true"></i>
+                  <% end %>
+                  <%= link_to Conf.contact.address_google_maps, :class => "btn-contact maps", :title => "Адрес в Google Maps", :target => "_blank", :rel => 'nofollow', "data-animate-hover" => "pulse" do %>
+                      <i class="fa fa-map-marker" aria-hidden="true"></i>
+                  <% end %>
+              </p>
+
+            </div>
+
+          </div>
+          
+        </div>
+    </div>
+
+    </div>
+  </div>
+
+</body>
+</html>
+
+<script language="JavaScript">
+    FashionLime.Common.utils.onPageLoad(function () {
+      FashionLime.Newsletter.subscribe.setup();
+    });
+</script>

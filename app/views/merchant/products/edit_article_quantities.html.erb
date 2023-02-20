@@ -1,0 +1,144 @@
+<% help_steps "edit_article_quantities" %>
+
+<div class="tabs product-tabs">
+
+  <%= render partial: 'edit_product_menu' %>
+
+  <div class="tab-content">
+
+    <div class="edit-product-content" id="edit-article-quantities">
+
+    <%= bootstrap_form_for(@product, url: { action: "update_article_quantities"}, html: { id: "article_quantities_form" } ) do |f| %>
+      <div class="row">
+       <div class="col-sm-12">
+          <button type="submit" class="btn btn-template-main btn-save">
+            <i class="fa fa-floppy-o"></i> Запази
+          </button>
+          <button type="button" class="btn btn-template-main btn-new-record">
+            <i class="fa fa-plus"></i>Нов запис
+          </button>
+        </div>
+      </div>
+
+      <div class="row">
+       <div class="col-sm-12">
+
+         <div class="box new-record-wrapper">
+          <table id="table_new_quantity">
+            <tr>
+              <%= fields_for "new_art_qty", @new_art_qty do |a|%>
+                  <td>
+                   <div class="form-group">
+                        <%= a.label :article_id, "Артикул" %>
+                        <%= a.select(:article_id, articles_collection, { :include_blank => true }, { :class => "form-control" }) %>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="form-group">
+                      <%= a.label :qty, "Количество" %>
+                      <%= a.number_field :qty, :value => a.object.qty.to_i, :class => "form-control" %>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="form-group">
+                      <%= a.label :part, "Партида" %>
+                      <%= a.text_field :part, :class => "form-control" %>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="form-group">
+                      <%= a.label :note, "Забележка" %>
+                      <%= a.text_field :note, :class => "form-control" %>
+                    </div>
+                  </td>
+                  <td class="col-buttons">
+                     <button class="btn btn-template-main btn-sm btn-add"  title="Добави" type="button">
+                        <i class="fa fa-check "></i>
+                      </button>
+                      <button class="btn btn-template-main btn-sm btn-cancel"  title="Отказ" type="button">
+                        <i class="fa fa-times"></i>
+                      </button>
+                  </td>
+              <% end %>
+             </tr>
+           </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="table-responsive">
+            <table id="table_quantities" class="table centered help-tour-step-1">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Артикул</th>
+                  <th class="help-tour-step-2">Количество</th>
+                  <th class="help-tour-step-3">Продадено Количество</th>
+                  <th class="help-tour-step-4">Партида</th>
+                  <th class="help-tour-step-5">Забележка</th>
+                  <th class="help-tour-step-6">Активно</th>
+                  <th>Създадено на</th>
+                  <th>Последна редакция</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                 <%= f.fields_for :articles do |a|%>
+                  <%= a.fields_for :article_quantities do |q| %>
+                    <tr style="display: <%= q.object.id == -1 ? "none" : "visible"%> ">
+                      <td> <%= q.object.id %> </td>
+                      <td> <%= q.object.article.nil? ? '' : q.object.article.full_name %> </td>
+                      <td> <%= q.number_field :qty, :value => q.object.qty.to_i, :hide_label => true, :class => "numeric-long" %> </td>
+                      <td> <%= q.object.qty_sold.to_i %> </td>
+                      <td> <%= q.text_field :part, :hide_label => true %> </td>
+                      <td> <%= q.text_field :note, :hide_label => true %> </td>
+                      <td> <%= q.check_box_without_bootstrap :active %> </td>
+                      <td> <%= date_time_to_s(q.object.created_at) %> </td>
+                      <td> <%= date_time_to_s(q.object.updated_at) %> </td>
+                      <td>
+                        <button type="button" value="Изтрий" class="btn btn-template-main btn-sm"
+                          onclick="FashionLime.Merchant.Product.EditArticleQuantities.deleteQuantity(this, <%= @product.id %>, <%= q.object.id %>,<%= a.options[:child_index] %>, <%= q.options[:child_index] %>);">
+                            <i class="fa fa-trash-o"></i>
+                        </button>
+                      </td>
+                      <td> <%= q.hidden_field(:article_id) %> </td>
+                      <% if q.object.id == -1 %>
+                        <%= hidden_field_tag("template_art_id_#{a.object.id}_row_index", q.options[:child_index]) %>
+                      <% end %>
+                    </tr>
+                     <% if q.object.id == -1 %>
+                        <%= hidden_field_tag("art_id_#{a.object.id}_newly_added_rows", 0) %>
+                        <%= hidden_field_tag("art_id_#{a.object.id}_existing_rows", a.object.article_quantities.size - 1) %>
+                    <% end %>
+
+                    <%= q.hidden_field(:id) %>
+                  <% end %>
+                  <%= hidden_field_tag("hidden_art_index_#{a.object.id}", a.options[:child_index]) %>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <% end %>
+
+    </div>
+
+  </div>
+</div>
+
+<script language="JavaScript">
+   FashionLime.Common.utils.onPageLoad(function () {
+      var jsCode = new FashionLime.Merchant.Product.EditArticleQuantities();
+      <% @product.articles.each do |a| %>
+        <% a.article_quantities.each do |q| %>
+          <% if q.errors.any? && q.errors[:price_not_set] %>
+             FashionLime.Common.notifications.alert('<%= q.errors[:price_not_set].first %>');
+          <% end %>
+        <% end %>
+      <% end %>
+  });
+</script>

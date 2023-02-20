@@ -1,0 +1,17 @@
+<%= bootstrap_form_for(@sign_in_user || User.new, as: resource_name, url: form_url, data: { no_turbolink: true }) do |f| %>
+
+  <%= f.text_field :username, autofocus: autofocus, label: 'Потребителско име' %>
+
+  <%= f.password_field :password, autocomplete: "off", label: 'Парола' %>
+
+  <% if devise_mapping.rememberable? -%>
+    <%= f.check_box :remember_me, label: 'Запомни ме' %>
+  <% end -%>
+
+  <div class="form-group">
+    <button type="submit" class="btn btn-template-main">
+      <i class="fa fa-sign-in"></i> Влез
+    </button>
+  </div>
+<% end %>
+

@@ -1,0 +1,64 @@
+l1:
+  id: 1
+  name: 'България'
+  location_type_id: 1
+
+l2:
+  id: 2
+  name: 'Област София'
+  parent_id: 1
+  location_type_id: 2
+
+l3:
+  id: 3
+  name: 'Област София град'
+  parent_id: 1
+  location_type_id: 2
+
+
+l4:
+  id: 4
+  name: 'гр. София'
+  parent_id: 3
+  location_type_id: 4
+
+
+l5:
+  id: 5
+  name: 'Община Годеч'
+  parent_id: 2
+  location_type_id: 3
+
+
+l6:
+  id: 6
+  name: 'Община Своге'
+  parent_id: 2
+  location_type_id: 3
+
+
+l7:
+  id: 7
+  name: 'Община Божурище'
+  parent_id: 2
+  location_type_id: 3
+
+l8:
+  id: 8
+  name: 'гр. Годеч'
+  parent_id: 5
+  location_type_id: 4
+
+
+l9:
+  id: 9
+  name: 'гр. Своге'
+  parent_id: 6
+  location_type_id: 4
+
+
+l10:
+  id: 10
+  name: 'гр. Божурище'
+  parent_id: 7
+  location_type_id: 4

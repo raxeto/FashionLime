@@ -1,0 +1,18 @@
+bg:
+  help_tour:
+    merchant:
+      payment_type:
+        form:
+          steps:
+            - title: Активен
+              content: Определя дали начинът на плащане е активен или не. Ако не е активен, потребителят няма да го вижда и няма да може да го избира в списъка с начините на плащане в поръчката.
+              class_name: payment-type-active
+              placement: top
+            - title: Информация
+              content: Допълнителни данни, специфични за начина на плащане, които трябва да попълните.
+              class_name: payment-type-info
+              placement: top
+            - title: Запази
+              content: Натиснете този бутон, за да запаметите промените.
+              class_name: payment-type-save
+              placement: top

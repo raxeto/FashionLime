@@ -1,0 +1,24 @@
+<div class="additional-help">
+  <p>
+    Можете да отидете на нашата
+  </p>
+  <p>
+    <%= link_to root_path, :class => "btn btn-template-main" do %>
+      <i class="fa fa-home" aria-hidden="true"></i>Начална страница
+    <% end %>
+  </p>
+  <p class="lead or-text">
+    - ИЛИ -
+  </p>
+  <p>
+    Да потърсите продукт, визия или търговец с нашето търсене
+     <%= form_tag generic_search_path, method: :get do %>
+      <div class="input-group">
+        <input type="text" class="form-control" name="q"/>
+        <div class="input-group-btn btn-rounded-group">
+          <button type="submit" class="btn btn-default" title="Търси"><i class="fa fa-search"></i></button>
+        </div>
+      </div>
+    <% end %>
+  </p>
+</div>

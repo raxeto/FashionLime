@@ -1,0 +1,8 @@
+<%= render partial: '/shared/mailer/box', locals: { 
+  :link => outfit_url(outfit),
+  :image_url => outfit.picture.url(:medium),
+  :title => "#{outfit.name} от #{outfit.profile.name}",
+  :same_row_link => false,
+  :image_width => image_width(outfit.picture, :medium),
+  :image_height => image_height(outfit.picture, :medium)
+} if outfit.present?  %>

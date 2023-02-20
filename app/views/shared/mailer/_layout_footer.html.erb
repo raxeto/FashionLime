@@ -1,0 +1,86 @@
+<table class="full-width footer">
+  <tbody>
+    <tr>
+      <td class="left padding-right-large" width="400">
+        <h4 class="uppercase">За нас</h4>
+        FashionLime е стартираща компания, чиято мисия е да свързва създатели и консуматори на мода в единна онлайн платформа.
+      </td>
+      <td class="v-centered">
+        <%= image_tag "/mailer/phone_gray.jpg", :width => 22, :height => 22, :alt => "телефон", :class => "img-centered img-styled-alt" %>
+        <span class="font-large"><%= Conf.contact.clients_phone %></span>
+        <br>
+        <%= image_tag "/mailer/mail_gray.jpg", :width => 22, :height => 22, :alt => "email", :class => "img-centered margin-top-small img-styled-alt" %>
+        <span class="margin-top-small"><%= Conf.contact.clients_email %></span>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="social-links">
+  <tbody>
+    <tr>
+      <td class="v-centered">
+        <%= link_to Conf.contact.facebook_url, :target => "_blank" do %>
+            <%= image_tag "/mailer/facebook_gray.jpg", :width => 28, :height => 28, :alt => "Facebook", :class => "img-styled-alt" %>
+        <% end %>
+      </td>
+      <td class="v-centered">
+        <%= link_to Conf.contact.instagram_url, :target => "_blank" do %>
+          <%= image_tag "/mailer/instagram_gray.jpg", :width => 28, :height => 28, :alt => "Instagram", :class => "img-styled-alt" %>
+        <% end %>
+      </td>
+      <td class="v-centered">
+        <%= link_to Conf.contact.google_plus_url, :target => "_blank" do %>
+          <%= image_tag "/mailer/google_plus_gray.jpg", :width => 28, :height => 28, :alt => "G+", :class => "img-styled-alt" %>
+        <% end %>
+      </td>
+      <td class="v-centered">
+        <%= link_to Conf.contact.address_google_maps, :target => "_blank" do %>
+          <%= image_tag "/mailer/location_gray.jpg", :width => 28, :height => 28, :alt => "Адрес", :class => "img-styled-alt" %>
+        <% end %>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="full-width useful-links centered">
+  <tbody>
+    <tr>
+      <td class="right-bordered">
+        <%= mailer_link_to "Към сайта", root_url %>
+      </td>
+      <td class="right-bordered">
+        <%= mailer_link_to "Продукти", products_url %>
+      </td>
+      <td class="right-bordered">
+        <%= mailer_link_to "Визии", outfits_url %>
+      </td>
+      <td class="right-bordered">
+        <%= mailer_link_to "Създай нова визия", new_outfit_url %>
+      </td>
+      <td class="right-bordered">
+        <%= mailer_link_to "Контакт", contact_url %>
+      </td>
+      <td class="right-bordered">
+        <%= mailer_link_to "Доставка и плащане", information_delivery_payment_url %>
+      </td>
+      <td>
+        <%= mailer_link_to "Връщане на продукт", new_return_order_url %>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+<% if @unsubscribe_url.present? %>
+    <table class="full-width centered">
+      <tbody>
+        <tr>
+          <td class="padding-top-large">
+              Ако вече не желаете да получавате нашия бюлетин, можете да се отпишете от следния линк:
+              <%= mailer_link_to('отпиши ме', @unsubscribe_url) %>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+<% end %>

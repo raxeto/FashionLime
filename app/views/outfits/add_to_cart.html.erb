@@ -1,0 +1,173 @@
+<div id="outfit-add-to-cart" class="col-sm-12">
+
+  <div class="row">
+  
+    <div class="col-md-3 col-md-push-9">
+        <div class="box">
+            <div class="box-header text-center">
+                <h1>Покупка на визия</h1>
+            </div>
+            <p class="text-muted">
+              Изберете цвят и размер за всеки артикул. 
+              Ако не искате да закупите част от артикулите, може да изтриете нежеланите с бутона в края на всеки ред.
+            </p>
+        </div>
+    </div>
+
+    <div class="col-md-9 col-md-pull-3">
+      <div class="box">
+        <%= form_for(@cart, url: insert_to_cart_outfit_path, html: { method: :post }) do |f| %>
+       
+        <div class="table-responsive">
+          <%= f.hidden_field :outfit_id, { :value => @outfit.id} %>
+            <table class="table">
+            <thead class="centered-header">
+              <tr>
+                <th colspan="2">Артикул</th>
+                <th>Цвят</th>
+                <th>Размер</th>
+                <th>Ед.цена</th>
+                <th>Количество</th>
+                <th colspan="2">Общо</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <%= f.fields_for :cart_details do |fd| %>
+                <% product = fd.object.article.product %>
+                <% colors = product.colors_sort_by_pictures %>
+                <% sizes = product.active_sizes %>
+                <% not_available = !product.available? %>
+                <% is_active_product = product.is_visible? %>
+                <% if fd.object.errors.any? %>
+                  <% fd.object.errors.each do |attr, msg| %>
+                    <% if !not_available && is_active_product && !product.not_active? %>
+                      <tr>
+                        <td class="<%= attr == :outfit_product_different_color ? 'warning' : 'danger' %>" colspan="8">
+                          <%= msg %>
+                        </td>
+                      </tr>
+                    <% end %>
+                  <% end %>
+                <% end %>
+               
+                <tr class="product_container">
+                  <td>
+                    <%= link_to product_path(product), :target => '_blank' do %>
+                      <%= render partial: '/shared/picture', locals: { picture: product.main_product_picture(color_id: fd.object.article.color_id), style: :thumb, type: :product } %>
+                    <% end %>
+                  </td>
+                  <td>
+                    <%= link_to product_path(product), :target => '_blank' do %>
+                        <b><%= product.name %></b>
+                    <% end %>
+                    <br/>от 
+                    <%= link_to merchant_profile_path(:url_path => product.merchant.url_path) do %>
+                      <%= product.merchant.name %>
+                    <% end %>
+                  </td>
+                  <% if !is_active_product %>
+                    <td colspan="5">
+                      Продуктът е недостъпен.
+                    </td>
+                  <% elsif not_available %>
+                    <td colspan="5">
+                      Продуктът не е наличен.
+                    </td>
+                  <% elsif product.not_active? %>
+                     <td colspan="5">
+                      Продуктът не е пуснат в продажба.
+                    </td>
+                  <% else %>
+                    <%= fd.fields_for :article do |fa| %>
+                      <td>
+                        <%= fa.select(:color_id, options_from_collection_for_select(product.colors_sort_by_pictures, :id, :name, fa.object.color_id), {}, :class => 'color_id combo  form-control required-field') %>
+                      </td>
+                      <td>
+                       <%= fa.select(:size_id, options_from_collection_for_select(product.active_sizes, :id, :name, fa.object.size_id), {:include_blank => true}, {:class => 'size_id combo form-control required-field'} ) %>
+                      </td>
+                      <%= fa.hidden_field :product_id, { :value => product.id, :class => 'product_id'} %>
+                     <% end %>
+                    <td class="prices_container price-col right-aligned">
+                      <span class="general_price">
+                      Цена <%= product.general_price_text(active: true) %>
+                      <% if product.has_price_range? %>
+                         <br/>
+                         <span class="text-small">* Изберете цвят и размер за точна цена</span>
+                      <% end %>
+                      </span>
+                      <span class="article_price">
+                        <s class="price"></s> 
+                        <b class="price_with_discount"></b>
+                      </span>
+                    </td>
+                    <td class="right-aligned"> <%= fd.number_field :qty, min: 1, :class => 'qty  numeric form-control required-field' %> </td>
+                    <td class="total_with_discount right-aligned"></td>
+                  <% end %>
+                  <td>
+                     <a class="delete_product_button" type="button">
+                        <i class="fa fa-trash-o"></i>
+                     </a>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th colspan="6">Общо</th>
+                    <th class="right-aligned">
+                      <span id="all_products_total"></span>
+                    </th>
+                    <th>&nbsp;</th>
+                </tr>
+            </tfoot>
+          </table>
+
+          </div>
+          <!-- /.table-responsive -->
+
+          <div class="box-footer">
+            <div class="row">
+              <div class="col-sm-6">
+                <%= link_to outfit_path(@outfit), :class => "btn btn-default left-content" do %>
+                  <i class="fa fa-chevron-left"></i> Обратно във визията
+                <% end %>
+              </div>
+              <div class="col-sm-6">
+                <button type="submit" class="btn btn-template-main right-content">
+                    Добави в количката<i class="fa fa-chevron-right"></i> 
+                </button>
+              </div>
+            </div>
+          </div>
+
+        <% end %>
+
+      </div>
+      <!-- /.box -->
+
+    </div>
+    <!-- /.col-md-9 -->
+  </div>
+
+</div>
+
+ <script language="JavaScript">
+ FashionLime.Common.utils.onPageLoad(function() {
+   $('.product_container').each(function() {
+      var productIDContainer = $(this).find('.product_id');
+      if (productIDContainer.length !== 0) {
+        productID = parseInt(productIDContainer.val());
+        FashionLime.Product.utils.setupColorSelect(this, productID, true);
+        FashionLime.Product.utils.setupSizeSelect(this, true);
+        FashionLime.Product.utils.loadSizesForColor(this, productID, true);
+        FashionLime.Product.utils.setupTotalChangedEvent(this, FashionLime.Outfit.cart.onTotalChanged);
+        FashionLime.Outfit.cart.setupQtyChange(this);
+      }
+      
+      FashionLime.Outfit.cart.setupDeleteProduct(this);
+    });
+  });
+</script>
+
+

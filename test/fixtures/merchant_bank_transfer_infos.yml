@@ -1,0 +1,15 @@
+merchant_bank_transfer_info_1:
+  id: 1
+  company_name: 'Azedine INC'
+  iban: BG80BNBG96611020345678
+  bic_code: FINVBGSF
+  currency: BGN
+  bank_name: First Investment Bank
+  
+merchant_bank_transfer_info_2:
+  id: 2
+  company_name: 'Azedine INC'
+  iban: BG80BNBG96611020345679
+  bic_code: FINVBGSF
+  currency: NUL
+  bank_name: First Investment Bank

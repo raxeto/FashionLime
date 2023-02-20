@@ -1,0 +1,6 @@
+<%= form_for(@decoration, url: { action: action}, html: { multipart: true } ) do |f| %>
+     Category <%= f.collection_select(:category, OutfitDecoration.categories_i18n, :first, :last) %> <br/>
+     Order Index <%= f.text_field :order_index  %> <br/> 
+     Picture <%= f.file_field :picture %> <br/>
+     <%= f.submit(action.to_s.capitalize) %>
+<% end %>

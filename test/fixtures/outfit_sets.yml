@@ -1,0 +1,27 @@
+    os1:
+      id: 1
+      meta_title: "Визии - цялостни предложения за облекло"
+      meta_description: "Открийте различни идеи за това как дрехи, обувки и аксесоари могат да бъдат успешно съчетавани във визии, с които ще впечатлявате."
+
+
+<% curr_id = 2 %>
+
+<% OutfitCategory.all.each do |c| %>
+    os<%= curr_id %>:
+      id: <%= curr_id %>
+      outfit_category_id: <%= c.id %>
+      
+  <% curr_id = curr_id + 1 %>
+<% end %>
+
+
+<% OutfitCategory.all.each do |c| %>
+  <% Occasion.all.each do |o| %>
+    os<%= curr_id %>:
+      id: <%= curr_id %>
+      outfit_category_id: <%= c.id %>
+      occasion_id: <%= o.id %>
+    
+    <% curr_id = curr_id + 1 %>
+  <% end %>
+<% end %>

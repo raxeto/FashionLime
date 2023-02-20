@@ -1,0 +1,6 @@
+bg:
+  activerecord:
+    models:
+      article:
+        one: Артикул
+        other: Артикула

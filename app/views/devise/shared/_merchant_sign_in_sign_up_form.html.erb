@@ -1,0 +1,36 @@
+<% @sign_up_user = @sign_up_user || User.new %>
+
+<div class="col-sm-6">
+  <div class="box sign-up-information">
+    <h2>Нов търговски профил</h2>
+
+    <p class="lead">
+      Щастливи сме да разберем, че искате да станете наш партньор!
+    </p>
+
+    <p>
+      Ако вече имате търговски профил, използвайте формата вдясно, за да влезете в системата.
+    </p>
+
+    <p class="unregistered-user-info">
+      Ако пък нямате търговски профил, разберете как може да създадете такъв, като последвате линка по-долу.
+    </p>
+
+    <p>
+      <%= link_to information_new_merchant_path, :class => "link-important" do %>
+          <i class="fa fa-info-circle" aria-hidden="true"></i>Информация нов търговец
+      <% end %>
+    </p>
+
+  </div>
+</div>
+
+<div class="col-sm-6">
+  <div class="box">
+    <h2>Вход</h2>
+
+    <%= render partial: "devise/shared/new_user_session_long_form", locals: { form_url: merchant_sessions_create_path, autofocus: true } %>
+
+    <%= link_to "Забравена парола?", new_password_path(resource_name) %>
+  </div>
+</div>

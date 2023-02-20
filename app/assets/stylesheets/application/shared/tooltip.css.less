@@ -1,0 +1,11 @@
+@import "/template/less/modules/variables-custom.css.less";
+
+.light-tooltip {
+  &+ .tooltip > {
+    .tooltip-inner {
+      background-color: white;
+      color: @gray;
+      border: 1px solid @gray;
+    }
+  }
+}

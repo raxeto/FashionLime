@@ -1,0 +1,38 @@
+admin:
+  id: 1
+  email: admin@fashionlime.bg
+  encrypted_password: <%= User.new.send(:password_digest, '11111111') %>
+  username: admin
+  profile_id: 1
+  url_path: admin
+
+merchant:
+  id: 2
+  email: merchant@test.bg
+  encrypted_password: <%= User.new.send(:password_digest, '11111111') %>
+  username: merchant
+  profile_id: 2
+  url_path: merchant
+
+customer:
+  id: 3
+  email: ralica.peicheva@gmail.com
+  encrypted_password: <%= User.new.send(:password_digest, '11111111') %>
+  username: raxeto
+  gender: F
+  phone: +359899927354
+  profile_id: 3
+  url_path: raxeto
+
+guest:
+  id: 4
+  email: guest@example.com
+  encrypted_password: <%= User.new.send(:password_digest, '11111111') %>
+  username: Guest
+  first_name: Temenug
+  last_name: Obama
+  phone: +16502834660
+  profile_id: 4
+  url_path: temenug_obama
+
+

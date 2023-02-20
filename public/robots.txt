@@ -1,0 +1,18 @@
+User-agent: *
+Disallow: /merchant
+Disallow: /admin
+Disallow: /users
+Disallow: /cart
+Disallow: /search
+Disallow: /favorites
+Disallow: /orders
+Disallow: /outfits
+Disallow: /ratings
+Disallow: /email_promotions
+Disallow: /products
+Disallow: /ping
+Disallow: /maje
+Disallow: /vizii
+Disallow: /outfits
+
+Sitemap: https://fashionlime.bg/sitemap.xml.gz

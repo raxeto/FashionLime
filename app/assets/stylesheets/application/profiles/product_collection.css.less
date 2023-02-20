@@ -1,0 +1,36 @@
+@import "/template/less/modules/variables-custom.css.less";
+
+#profiles-product-collection {
+  .collection-heading {
+    margin-top: 0px;
+    @media (max-width: @screen-xs-max) { 
+      margin-bottom: 10px;
+    }
+    span {
+      border-bottom: solid 2px @text-muted;
+      letter-spacing: 0.08em;
+      padding-bottom: 3px;
+    }
+  }
+
+  .col-navigate {
+    padding-top: 10px;
+    a {
+      @media (min-width: @screen-sm-min) { 
+        float: right;
+      }
+      text-transform: uppercase;
+    }
+    @media (max-width: @screen-xs-max) { 
+        margin-bottom: 15px;
+    }
+  }
+
+  .img-collection {
+    margin-bottom: 40px;
+  }
+
+  .description {
+    margin-bottom: 40px;
+  }
+}

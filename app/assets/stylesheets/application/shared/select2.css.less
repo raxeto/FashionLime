@@ -1,0 +1,20 @@
+@import "/template/less/modules/variables-custom.css.less";
+@import "/template/less/modules/mixins/forms.css.less";
+@import "/template/less/modules/mixins/vendor-prefixes.css.less";
+
+.select2-container--bootstrap {
+  .select2-results__option--highlighted[aria-selected] {
+    background-color: @gray-lighter;
+    color: @gray;
+  }
+
+  &.select2-container--focus, &.select2-container--open {
+    .select2-selection {
+      .form-control-focus();
+    }
+  }
+
+  .select2-dropdown {
+    border-color: @input-border-focus;
+  }
+}

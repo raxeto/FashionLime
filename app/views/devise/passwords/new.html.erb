@@ -1,0 +1,31 @@
+<div class="col-sm-12">
+  <div id="newPassword" class="box">
+    <div class="row">
+      <p class="lead">
+        Можете да възстановите Вашата парола, ако сте попълнили в профила си валиден имейл адрес. 
+        Въведете го в полето долу и ние ще Ви изптратим там инструкциите за промяна на паролата.
+      </p>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-5 col-md-4">
+        <%= bootstrap_form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
+        <%= f.email_field :email, autofocus: true, label: 'Имейл' %>
+
+        <div class="form-group">
+          <%= f.submit "Изпрати инструкции за промяна", :class => "btn btn-template-main btn-send-new" %>
+        </div>
+      <% end %>
+      </div>
+    </div>
+    <div class="row">
+      <p class="lead">
+        Ако не сте попълнили имейла си, отново може да възстановите паролата си -  
+        <%= link_to contact_path do %>
+          свържете се с нас
+        <% end %>, за да разберете как.
+      </p>
+    </div>
+  </div>
+</div>
+

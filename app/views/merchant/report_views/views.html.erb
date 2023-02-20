@@ -1,0 +1,26 @@
+<%= render partial: 'shared/report', locals: { 
+  form_id: "reportViewsForm",
+  report_path: merchant_reports_generate_views_path,
+  filters: [ :view_date, :model_type, :model, :user_type, :user, :city],
+  filter_labels:  { :view_date => 'Дата', :model_type => 'Тип обект', :model => 'Обект', :user_type => 'Тип потребител', :user => 'Потребител', :city => 'Град' },
+  filters_control: {
+    :view_date => "#{text_field_tag("selected_filters[view_date][date_from]", !params["selected_filters"].nil? && !params["selected_filters"]["view_date"].nil? ? params["selected_filters"]["view_date"]["date_from"] : "", :class => "form-control filter date-filter")} до #{text_field_tag("selected_filters[view_date][date_to]", !params["selected_filters"].nil? && !params["selected_filters"]["view_date"].nil? ? params["selected_filters"]["view_date"]["date_to"] : "", :class => "form-control filter date-filter")}".html_safe,
+    :model_type => select_tag("selected_filters[model_type]", options_for_select([['Продукти', 'product'], ['Визии', 'outfit'], ['Профил', 'merchant']], !params[:selected_filters].nil? ? params[:selected_filters][:model_type] : ""), {:multiple => true, :class => "multiselect-combo filter"}),
+    :model => text_field_tag("selected_filters[model]", !params[:selected_filters].nil? ? params[:selected_filters][:model] : "", :class => "form-control filter"),
+    :user_type => select_tag("selected_filters[user_type]", options_for_select([['Нов', 'New Visitor'], ['Стар', 'Returning Visitor']], !params[:selected_filters].nil? ? params[:selected_filters][:user_type] : ""), {:multiple => true, :class => "multiselect-combo filter"}),
+    :user => text_field_tag("selected_filters[user]", !params[:selected_filters].nil? ? params[:selected_filters][:user] : "", :class => "form-control filter"),
+    :city => text_field_tag("selected_filters[city]", !params[:selected_filters].nil? ? params[:selected_filters][:city] : "", :class => "form-control filter")
+  },
+  fields: {
+      :date_fields => { :title => 'Дата', :fields => { :date => 'Дата', :month => 'Месец', :quarter => 'Тримесечие', :year => 'Година', :day => 'Ден'}},
+      :model_fields => { :title => 'Обект', :fields => { :model_name => 'Обект', :model_type => 'Тип обект'}},
+      :user_fields => { :title => 'Потребител', :fields => { :username => 'Потребител', :city => 'Град', :user_type => 'Тип потребител', :device_category => 'Тип устройство', :previous_page => 'Предишна страница'}}
+  },
+  sumators:  { 
+    :page_views => 'Брой преглеждания', :unique_page_views => 'Брой уникални преглеждания', :time_on_page => 'Прекарано време (сек)'
+    },
+  field_types: { 
+    :date => :date,
+    :page_views => :integer, :unique_page_views => :integer, :time_on_page => :integer
+  }
+} %>

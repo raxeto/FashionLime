@@ -1,0 +1,198 @@
+<% help_steps "edit_pictures" %>
+
+<script language="JavaScript">
+    function setupFileInput() {
+      $.ajaxSetup({
+        dataType: null,
+        headers: null,
+        timeout: 60000
+      });
+
+      var footerTemplate =
+      '<div class="file-thumbnail-footer picture-container">\n' +
+      '     <div class="row">' +
+      '       <div class="col-sm-4">' +
+      '         <label for="color_id__TAG_NUM_" class="control-label">Цвят</label>' +
+      '       </div>'+
+      '       <div class="col-sm-8">' +
+      '        <%= escape_javascript(select_tag("color_id__TAG_NUM_", options_from_collection_for_select(@product.colors.order("name"), :id, :name), {:include_blank => true, :class=>"color-id form-control input-sm"})) %>' +
+      '       </div>'+
+      '     </div>'+
+      '     <div class="row">' +
+      '       <div class="col-sm-4">' +
+      '        <label for="order_index__TAG_NUM_" class="control-label">Подредба</label>' +
+      '       </div>'+
+      '       <div class="col-sm-8">' +
+      '        <%= number_field_tag "order_index__TAG_NUM_", "_TAG_ORDER_INDEX_", :class=>"order-index form-control input-sm" %>' +
+      '       </div>'+
+      '     </div>'+
+      '        <%= hidden_field_tag("picture_id__TAG_NUM_", "_TAG_PICTURE_ID_", :class => "picture-id") %>' +
+      '        <%= hidden_field_tag("color_id_val__TAG_NUM_", "_TAG_COLOR_", :class => "color-id-val") %>' +
+      '   {actions}\n' +
+      '</div>';
+
+      $("#cool-file-input").fileinput({
+        showUpload: true,
+        maxFileCount: 10,
+        language: 'bg',
+        browseClass: "btn btn-default",
+        layoutTemplates: { footer: footerTemplate },
+        allowedFileTypes: ['image'],
+        showCancel: false,
+        showClose: false,
+        overwriteInitial: false,
+        previewThumbTags: {
+            '_TAG_COLOR_': '',
+            '_TAG_ORDER_INDEX_': function() {
+                var maxInd = 0;
+                $('.order-index').each(function() {
+                  var currInd = parseInt($(this).val());
+                  if (currInd > maxInd) {
+                    maxInd = currInd;
+                  }
+                });
+                return maxInd + 1;
+            },
+            '_TAG_PICTURE_ID_' : 0,
+            '_TAG_NUM_' : function() {
+              return $('.picture-container').length;
+            }
+        },
+        initialPreviewShowDelete: true,
+        initialPreview: [
+          <% @product.non_outfit_pictures.each do |pp| %>
+            '<%= image_tag pp.picture.url(:thumb), class: "file-preview-image" %>',
+          <% end %>
+        ],
+        initialPreviewConfig: [
+          <% @product.non_outfit_pictures.each do |pp| %>
+            {
+              caption: '<%= pp.picture.instance.picture_file_name %>',
+              url: '<%= delete_picture_merchant_product_path(picture_id: pp.id) %>',
+            },
+          <% end %>
+        ],
+        initialPreviewThumbTags: [
+          <% @product.non_outfit_pictures.each_with_index do |pp, index| %>
+            {
+              '_TAG_NUM_' : <%= index %>,
+              '_TAG_COLOR_': <%= pp.color_id || 0 %>,
+              '_TAG_ORDER_INDEX_': <%= pp.order_index %> ,
+              '_TAG_PICTURE_ID_' : <%= pp.id %>
+            },
+          <% end %>
+        ],
+        uploadExtraData: function(previewId, index) {  // callback example
+          if (FashionLime.Common.utils.isUndefined(previewId)) {
+            return {};
+          }
+
+          var preview = $('#' + previewId);
+          var out = {};
+
+          out["color_id"] = $(preview).find('.color-id').val();
+          out["order_index"] = $(preview).find('.order-index').val();
+
+          return out;
+        },
+        uploadUrl: '<%= add_picture_merchant_product_path %>',
+        mainClass: "input-group"
+      });
+
+      $('#cool-file-input').on('fileunlock', function(event, previewId, index) {
+        location.reload(true);
+      });
+
+      setProductPicturesInitialValues();
+    }
+
+    function getInitialPicturesAttributes() {
+      var picParams = {};
+      var i = 0;
+      $('.file-preview-initial').each(function() {
+        var p = {};
+        p["id"] = $(this).find('.picture-id').val();
+        p["color_id"] = $(this).find('.color-id').val();
+        p["order_index"] = $(this).find('.order-index').val();
+        picParams[i] = p;
+        ++i;
+      });
+      return picParams;
+    }
+
+    function hasNewProductPictures() {
+      var hasNew = false;
+      $('.file-preview-frame').each(function() {
+        if (!$(this).hasClass('file-preview-initial')) {
+          hasNew = true;
+        }
+      });
+
+      return hasNew;
+    }
+
+    function setProductPicturesInitialValues() {
+      $('.picture-container').each(function() {
+        $(this).find('.color-id').val($(this).find('.color-id-val').val());
+      });
+    }
+
+    function productPicturesDetailsSubmited() {
+      if (hasNewProductPictures()) {
+        alert("Натиснете бутона 'Качи' за да добавите новите снимки.")
+        return false;
+      }
+      return true;
+    }
+
+    FashionLime.Common.utils.onPageLoad(function() {
+      setupFileInput();
+      FashionLime.Common.utils.onFormSubmit('#product_pictures_form', productPicturesDetailsSubmited);
+    });
+    FashionLime.Common.utils.onLoadFromCache(function() {
+      $.ajaxSetup({
+        dataType: null,
+        headers: null,
+        timeout: 60000
+      });
+    }, '#edit-pictures');
+    FashionLime.Common.utils.onPageUnload(FashionLime.Common.net.initJQueryAjax,
+      '#edit-pictures');
+</script>
+
+
+<div class="tabs product-tabs">
+
+  <%= render partial: 'edit_product_menu' %>
+
+  <div class="tab-content">
+
+    <div class="alert alert-warning">
+      <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+      <%= render partial: '/merchant/products/picture_size_message'%>
+    </div>
+
+    <div class="edit-product-content" id="edit-pictures">
+     <%= form_for(@product, url: { action: :update_picture_details}, html: { multipart: true, method: :post, id: "product_pictures_form" }) do |f| %>
+      <div class="row">
+        <div class="col-sm-12">
+          <button type="submit" class="btn btn-template-main btn-save">
+            <i class="fa fa-floppy-o"></i> Запази
+          </button>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-12">
+         <div class="new-pictures help-tour-step-1">
+            <input id="cool-file-input" type="file" multiple=true class="file-loading">
+          </div>
+        </div>
+      </div>
+
+      <% end %>
+    </div>
+
+  </div>
+
+</div>

@@ -1,0 +1,31 @@
+<h2>Users</h2>
+
+<table class="centered">
+  <thead>
+    <tr>
+      <th class="id">id</th>
+      <th class="username">username</th>
+      <th class="email">email</th>
+      <th class="date">created</th>
+      <th class="sign-ins">sign ins</th>
+      <th class="date">last sign in</th>
+      <th class="admin">admin</th>
+      <th class="link"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @users.each do |user| %>
+      <tr>
+        <td class="id"> <%= user.id %> </td>
+        <td class="username"> <%= user.username %> </td>
+        <td class="email"> <%= user.email %> </td>
+        <td class="date"> <%= date_time_to_s(user.created_at) %> </td>
+        <td class="sign-ins"> <%= user.sign_in_count %> </td>
+        <td class="date"> <%= date_time_to_s(user.current_sign_in_at) %> </td>
+        <td class="admin"> <%= user.admin? ? 'YES' : 'NO' %> </td>
+        <td class="link"><%= link_to('edit', edit_admin_user_path(user)) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

@@ -1,0 +1,49 @@
+<h2>Статистики</h2>
+
+<div>
+  <h3>Времена за изпълнение на рекуест</h3>
+  <div id="max-execution-times-graph-warning" class="alert alert-warning">
+    </div>
+    <div id="max-execution-times-graph-container">
+      <div>
+        <canvas id="max-execution-times-graph"></canvas>
+      </div>
+      <div id="max-execution-times-graph-legend">
+      </div>
+    </div>
+</div>
+
+<div>
+  <h3>Брой рекуести</h3>
+  <div id="num-requests-graph-warning" class="alert alert-warning">
+    </div>
+    <div id="num-requests-graph-container">
+      <div>
+        <canvas id="num-requests-graph"></canvas>
+      </div>
+      <div id="num-requests-graph-legend">
+      </div>
+    </div>
+</div>
+
+<script language="JavaScript">
+  FashionLime.Common.utils.onPageLoad(function () {
+    FashionLime.Shared.chart.create('max-execution-times-graph',
+        'line', ['scanned_at', 'measure_type'],
+        [{"key" : "request_time", "label" : "Време в секунди"}],
+        <%= raw @data.to_json %>,
+        'max-execution-times-graph-warning',
+        'max-execution-times-graph-legend');
+  });
+
+  FashionLime.Common.utils.onPageLoad(function () {
+    FashionLime.Shared.chart.create('num-requests-graph',
+        'line', ['scanned_at'],
+        [{"key" : "num_requests", "label" : "Брой рекуести"}],
+        <%= raw @num_requests.to_json %>,
+        'num-requests-graph-warning',
+        'num-requests-graph-legend');
+  });
+
+</script>
+

@@ -1,0 +1,25 @@
+@import "/template/less/modules/variables-custom.css.less";
+
+.epay-payment {
+  .generate-info {
+    margin-bottom: 20px;
+  }
+  .still-asking-container {
+    height: 32px;
+    div {
+      float: left;
+    }
+    .loading-icon {
+      width: 32px;
+      height: 32px;
+      background: url('/img/loading-big.gif') no-repeat center;
+    }
+    .loading-message {
+      margin-left: 10px;
+    }
+  }
+  .error-container {
+    background-color: @state-warning-bg;
+    color: @state-warning-text;
+  }
+}

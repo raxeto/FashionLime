@@ -1,0 +1,36 @@
+<% instruction = '' %>
+<% if status == "not_processed" || status == "waiting_return" %>
+   <div class=" change-status-links-container">
+    
+      <% if return_type == "return" && status == "not_processed" %>
+        <%= link_to merchant_order_process_returns_path(:number => order_return.number), :method => :post, :class =>"btn btn-template-main btn-process-returns help-tour-step-12" do %>
+          <i class="fa fa-refresh" aria-hidden="true"></i> Обработка
+        <% end %>
+        <% instruction = 'Натиснете бутона за обработка, за да маркирате продуктите като очакващи връщане от клиента.' %>
+      
+      <% elsif return_type == "return" && status == "waiting_return" %>
+        <%= link_to merchant_order_mark_returned_path(:number => order_return.number, :return_type => "return"), :method => :post, :class => "btn btn-template-main btn-mark-returned help-tour-step-13" do %>
+          <i class="fa fa-exchange" aria-hidden="true"></i> Марк. върнати
+        <% end %>
+        <% instruction = 'Маркирайте продуктите като върнати, когато пристигнат от клиента, за да освободите бройката им отново за продажба.' %>
+
+      <% elsif return_type == "exchange" && status == "not_processed" %>
+        <%= link_to('#', {"data-toggle" => "modal", "data-target" => "#exchangeArticlesModal", "class" => "btn btn-template-main btn-process-returns help-tour-step-19"}) do %>
+          <i class="fa fa-refresh" aria-hidden="true"></i>Обработка
+        <% end %>
+        <% instruction = 'Натиснете бутона за обработка, за да изберете новите продукти и да маркирате старите като очакващи връщане от клиента.' %>
+
+      <% elsif return_type == "exchange" && status == "waiting_return" %>
+        <%= link_to merchant_order_mark_returned_path(:number => order_return.number, :return_type => "exchange"), :method => :post, :class => "btn btn-template-main btn-mark-returned help-tour-step-20" do %>
+          <i class="fa fa-exchange" aria-hidden="true"></i> Марк. върнати
+        <% end %>
+        <% instruction = 'Маркирайте старите продуктите като върнати, когато пристигнат от клиента, за да освободите бройката им отново за продажба.' %>
+
+      <% end %>
+      <div class="well well-sm">
+        <%= instruction %>
+      </div>
+
+  </div>
+<% end %>
+               

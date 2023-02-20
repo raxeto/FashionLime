@@ -1,0 +1,16 @@
+<p>Здравейте <%= @article.product.merchant.name %>,</p>
+
+<p>
+   Наличното количество за артикул <%= @article.full_name %> вече е <%= @article.available_qty.to_i %> във FashionLime.
+</p>
+
+<p>
+   Получавате този имейл, защото това количество е по-малко или равно на минимално количество за предупреждение по имейл за този продукт, 
+   зададено от Вас на <%= @article.product.min_available_qty.to_i %>.
+</p>
+
+<p>
+  Ако искате да увеличите наличното количество, можете да го направите от търговската секция на FashionLime.
+</p>
+
+<%= render partial: '/shared/mailer/merchant_email_signature' %>

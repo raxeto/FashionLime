@@ -1,0 +1,62 @@
+<% help_steps "profile_user" %>
+
+<div id="profileUsersList" class="col-sm-12 clearfix">
+  <div class="box">
+
+    <div class="row">
+      <div class="col-sm-12">
+        <%= link_to merchant_profile_users_new_path, :class => "btn btn-template-main btn-new-record help-tour-step-2" do %>
+          Създай нов потребител
+        <% end %>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-12">
+        <%= bootstrap_form_for(@merchant, url: { action: "update_profile_users"} ) do |f| %>
+          <div class="table-responsive">
+            <table class="table help-tour-step-1">
+              <thead>
+                <tr>
+                  <th class="help-tour-step-3">Потребител</th>
+                  <th class="help-tour-step-4">Email</th>
+                  <th class="help-tour-step-5">Име</th>
+                  <th class="help-tour-step-6">Фамилия</th>
+                  <th class="help-tour-step-7">Последно влизане</th>
+                  <th class="help-tour-step-8">Статус</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <% if @users.size == 0 %>
+                      <tr>
+                        <td colspan="7">
+                          Няма въведени потребители.  
+                        </td>
+                      </tr>
+                <% else %>
+                   <%= f.fields_for :users, @users do |u|%>
+                      <tr>
+                       <td> <%= u.object.username %> </td>
+                       <td> <%= u.object.email %> </td>
+                       <td> <%= u.object.first_name %> </td>
+                       <td> <%= u.object.last_name %> </td>
+                       <td> <%= date_time_to_s(u.object.last_sign_in_at) %> </td>
+                       <td><%= u.collection_select(:status, User.statuses_i18n, :first, :last, :hide_label => true) %></td>
+                      </tr>
+                  <% end %>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+
+          <button type="submit" class="btn btn-template-main btn-save help-tour-step-9">
+            <i class="fa fa-floppy-o"></i> Запази
+          </button>
+          
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+

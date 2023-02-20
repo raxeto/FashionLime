@@ -1,0 +1,55 @@
+<% help_steps "form" %>
+
+<%= bootstrap_form_for(@collection, url: { action: action }, html: { multipart: true, id: "collection_form" } ) do |f| %>
+
+  <div class="row">
+   <div class="col-sm-12">
+      <button type="submit" class="btn btn-template-main btn-save help-tour-step-6">
+        <i class="fa fa-floppy-o"></i> Запази
+      </button>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-6">
+      
+      <div class="row">
+        <div class="col-sm-12">
+          <%= f.text_field :name, :label => "Име", :class => "help-tour-step-1" %>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-12">
+         <%= f.text_area :description, :label => "Описание", :rows => 11, :class => "help-tour-step-2" %>
+        </div>
+      </div>
+
+    </div>
+    <div class="col-sm-6">
+      <% if !f.object.picture_file_name.nil? %>
+        <%= image_tag f.object.picture.url(:original), :id => "picture_image", :class=> "img-responsive" %>
+      <% end %>
+      <br/>
+        Препоръчван размер на снимката: ширина 996px и височина 547px
+      <br/>
+      <span id="picture_file_name">
+      </span>
+      <span class="btn btn-default btn-file help-tour-step-5">
+        Избери снимка <%= f.file_field_without_bootstrap :picture, :id => "picture_input", :onchange => "FashionLime.Merchant.ProductCollection.form.onPictureSelected();" %>
+      </span>
+     
+    </div>
+  </div>
+
+
+  <div class="row">
+    <div class="col-sm-6">
+      <%= f.collection_select(:season_id, Season.all.order("order_index"), :id, :name, { :include_blank => true, :label => "Сезон" }, { :class => "help-tour-step-3"}) %>
+    </div>
+    <div class="col-sm-6">
+      <%= f.number_field :year, :label => "Година", :class => "help-tour-step-4" %>
+    </div>
+  </div>
+
+<% end %>

@@ -1,0 +1,70 @@
+<div class="product">
+  {{#if locals.has_watermark }}
+    <div class="picture-watermark {{ locals.picture_watermark_class }}">
+      <img src="{{ product.picture_watermark_url }}">
+    </div>
+  {{/if}}
+  <div class="image">
+    <a href="{{ product.link }}">
+      <img class="img-responsive img-center product_image {{ locals.pic_style }}" alt="{{ product.image_alt }}" src="{{ locals.image_url }}">
+    </a>
+  </div>
+  <div class="text">
+    {{#if locals.show_name }}
+      <p class="info">
+        <a class="name-link" href="{{ product.link }}">
+          {{ product.name }}
+        </a>
+      </p>
+    {{/if}}
+    {{#if locals.show_owner }}
+      <p class="owner">
+      {{#if locals.show_name }}
+        <a title="" class="light-tooltip" data-toggle="tooltip" data-placement="top" href="{{ product.merchant_link }}" data-original-title="Разгледай профила на търговеца">
+          {{ product.merchant_name }}
+        </a>
+      {{else}}
+        <a href="{{ product.link }}">
+          {{ product.merchant_name }}
+        </a>
+      {{/if}}
+    {{/if}}
+    <p class="price">
+      {{#if locals.has_deleted_price }}
+        <del> {{ product.deleted_price }} </del>
+      {{/if}}
+      {{ product.price }}
+    </p>
+    <p class="rating">
+      {{> shared/_rating locals.rating_params}}
+    </p>
+    <div class="colors">
+      {{#if locals.multiple_colors }}
+        <table>
+          <tr>
+            <td class="available-colors-text">
+              Цветове
+            </td>
+            {{#each product.colors}}
+              <td>
+                <div style="{{ this }}"></div>
+              </td>
+            {{/each}}
+          </tr>
+        </table>
+      {{/if}}
+    </div>
+  </div>
+  {{#if locals.has_discount }}
+    <div class="ribbon discount">
+      <div class="theribbon"> {{ product.discount }} </div>
+      <div class="ribbon-background"></div>
+    </div>
+  {{/if}}
+  {{#unless product.available }}
+    <div class="ribbon availability product-not-available">
+      <div class="theribbon">Изчерпан</div>
+      <div class="ribbon-background"></div>
+    </div>
+  {{/unless}}
+</div>

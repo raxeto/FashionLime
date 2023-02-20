@@ -1,0 +1,6 @@
+bg:
+  activerecord:
+    models:
+      merchant:
+        one: Търговец
+        other: Търговци

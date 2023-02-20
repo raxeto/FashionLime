@@ -1,0 +1,107 @@
+ <% help_steps "index", [{:location =>"shared.bootstrap_table"}] %>
+
+<div id="ordersList" class="col-sm-12 clearfix">
+    <div class="box">
+        <div class="row form-inline">
+            <div class="form-group  well well-sm">
+              <%= label_tag(:filter, "Филтрирай по статус:", :class => "help-tour-step-1") %>
+             
+              <%= collection_select(:filter, :status, MerchantOrder.statuses_i18n, :first, :last, 
+                { :selected => @status_filter }, 
+                { :multiple => true, :class => "form-control multiselect-combo" }) 
+               %>
+            </div>
+        </div>
+        <div class="row">
+          <div class="table-responsive">
+            <table id="ordersTable" class="table help-tour-step-3">
+            </table>
+          </div>
+        </div>
+    </div>
+</div>
+
+<script language="JavaScript">
+  function detailFormatterInner(value, row, index, includeHelp) {
+    return ['<a class="btn btn-template-main btn-sm' + (index === 0 && includeHelp ? " help-tour-step-2" : "") + '" title="Детайли" href="/merchant/orders/', row.number, '/edit">',
+              '<i class="fa fa-search"></i>',
+            '</a>'].join('');
+  }
+
+  function detailFormatter(value, row, index) {
+    return detailFormatterInner(value, row, index, false);
+  }
+
+  function detailFormatterHelp(value, row, index) {
+    return detailFormatterInner(value, row, index, true);
+  }
+
+  FashionLime.Common.utils.onPageLoad(function() {
+    FashionLime.Shared.comboMultiselect.setupAll('multiselect-combo', {});
+    FashionLime.Shared.postBackFilter.setup('filter_status', 'status');
+    FashionLime.Shared.bootstrapTable.create('ordersTable',
+        [{
+          formatter: detailFormatterHelp
+        }, {
+            id: 'number',
+            name: 'Номер'
+        }, {
+            id: 'created_at',
+            name: 'Дата на поръчката',
+            filterType: 'range_date',
+            dataType: 'date'
+        }, {
+            id: 'user_full_name',
+            name: 'Клиент'
+        }, {
+            id: 'location_name',
+            name: 'Нас.място'
+        }, {
+            id: 'only_business_days',
+            name: 'Работни дни'
+        }, {
+            id: 'issue_invoice',
+            name: 'Фактура'
+        }, {
+            id: 'merchant_shipment_name',
+            name: 'Доставка'
+        }, {
+            id: 'merchant_payment_type_name',
+            name: 'Плащане'
+        },{
+            id: 'payment_code',
+            name: 'Код за плащане'
+        },{
+            id: 'total_with_shipment',
+            name: 'Сума',
+            filterType: 'range_float',
+            dataType: 'float'
+        }, {
+            id: 'has_return',
+            name: 'Връщане / замяна'
+        },{
+            id: 'aprox_delivery',
+            name: 'Прогнозиран срок'
+        }, {
+            id: 'note_to_merchants',
+            name: 'Заб. от клиента',
+            filterable: false
+        }, {
+            id: 'acknowledged_date',
+            name: 'Дата на доставка',
+            filterType: 'range_date',
+            dataType: 'date'
+        }, {
+            id: 'status',
+            name: 'Статус'
+        }, {
+          formatter: detailFormatter
+        }], 
+        [
+          <% @orders.each do |o| %>
+            <%= raw o %>,
+          <% end %>
+        ]
+      );
+  });
+</script>

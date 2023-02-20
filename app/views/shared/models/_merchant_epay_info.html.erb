@@ -1,0 +1,40 @@
+<div class="payment-info-container epay-payment">
+  <% if show_title %>
+    <div class="payment-type-title">
+      Плащане чрез EasyPay
+    </div>
+  <% end %>
+
+  <div class="generate-info">
+    <div class="still-asking-container">
+      <div class="loading-icon"></div>
+      <div class="loading-message">
+        Извършва се заявка към системата на ePay.bg. Моля изчакайте ...
+      </div>
+    </div>
+
+    <div class="code-container">
+      Код за плащане: <strong><span class='code-holder'></span></strong>
+    </div>
+
+    <div class="error-container">
+    </div>
+  </div>
+
+  <div>
+    <%= render partial: "shared/epay_how_to" %>
+  </div>
+</div>
+
+<script language="JavaScript">
+  FashionLime.Common.utils.onPageLoad(function () {
+    var info = new FashionLime.PaymentInfo.EpayInfo('<%= merchant_order_number %>', '<%= holder_id %>');
+    info.startAskingForCode();
+
+    FashionLime.Common.utils.onLoadFromCache(function() {
+      info.loadedFromCache(); }, '<%= holder_id %>');
+
+    FashionLime.Common.utils.onPageUnload(function() {
+      info.cleanup(); }, '<%= holder_id %>');
+  });
+</script>

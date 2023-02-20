@@ -1,0 +1,24 @@
+c1:
+  id: 1
+  size_category_id: 1
+  size_descriptor_id: 1 
+
+c2:
+  id: 2
+  size_category_id: 1
+  size_descriptor_id: 2
+
+c3:
+  id: 3
+  size_category_id: 1
+  size_descriptor_id: 3 
+
+c4:
+  id: 4
+  size_category_id: 1
+  size_descriptor_id: 4 
+
+s1:
+  id: 5
+  size_category_id: 2
+  size_descriptor_id: 5 

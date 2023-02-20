@@ -1,0 +1,43 @@
+<p>
+Здравейте <%= "#{@merchant_order.order.user_first_name} #{@merchant_order.order.user_last_name}" %>,
+</p>
+
+<p>
+Поръчката Ви с номер <%= @merchant_order.number %> за покупка на:
+</p>
+
+<%= render partial: 'order_details', locals: { :merchant_order => @merchant_order } %>
+
+<p>
+<% if @merchant_order.has_additional_payment? %>
+и плащането Ви към нея бяха потвърдени успешно от <%= @merchant_order.merchant.name %>.
+<% else %>
+бе потвърдена успешно от <%= @merchant_order.merchant.name %>.
+<% end %>
+</p>
+
+<p>
+  <% if !@merchant_order.acknowledged_date.nil? %>
+    Поръчката ще бъде доставена на <%= date_to_s(@merchant_order.acknowledged_date) %>.
+  <% else %>
+    <% if @merchant_order.aprox_delivery_date_from == @merchant_order.aprox_delivery_date_to %>
+      Поръчката се очаква се да бъде доставена на 
+    <% else %>
+      Поръчката се очаква да бъде доставена в периода
+    <% end %>
+      <%= @merchant_order.aprox_delivery %>.
+  <% end %>
+</p>
+
+<% if @merchant_order.note_to_user.present? %>
+<p>
+  Бележка от търговеца: <%= @merchant_order.note_to_user %>
+</p>
+<% end %>
+
+<p>
+Ако не сте удовлетворени от продуктите, можете да ги върнете или замените, като направите заявка на следния адрес:
+<%= link_to return_order_url(@merchant_order), return_order_url(@merchant_order), :target => '_blank' %>
+</p>
+
+<%= render partial: '/shared/mailer/user_email_signature' %>

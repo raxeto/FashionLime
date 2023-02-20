@@ -1,0 +1,285 @@
+c1:
+  id: 1
+  name: 'Облекло'
+  url_path: 'obleklo'
+  key: 'outfit'
+
+c2:
+  id: 2
+  name: 'Мъже'
+  key: 'men'
+  url_path: 'maje'
+  parent_id: 1
+  order_index: 2
+
+c3:
+  id: 3
+  name: 'Жени'
+  key: 'women'
+  url_path: 'jeni'
+  parent_id: 1
+  order_index: 1
+
+# Women
+c4:
+  id: 4
+  name: 'Дрехи'
+  key: 'women_clothing'
+  url_path: 'drehi'
+  parent_id: 3
+  
+c5:
+  id: 5
+  name: 'Обувки'
+  key: 'women_shoes'
+  url_path: 'obuvki'
+  parent_id: 3
+
+## Women clothing  
+c6:
+  id: 6
+  name: 'Рокли'
+  key: 'dresses'
+  url_path: 'rokli'
+  parent_id: 4
+  
+c7:
+  id: 7
+  name: 'Панталони'
+  key: 'women_pants'
+  url_path: 'pantaloni'
+  parent_id: 4
+  
+c8:
+  id: 8
+  name: 'Блузи'
+  key: 'women_tops'
+  url_path: 'bluzi'
+  parent_id: 4
+
+c9:
+  id: 9
+  name: 'Поли'
+  key: 'skirts'
+  url_path: 'poli'
+  parent_id: 4
+
+c10:
+  id: 10
+  name: 'Комплекти и костюми'
+  key: 'women_suits'
+  url_path: 'komplekti-kostjumi'
+  parent_id: 4
+
+c11:
+  id: 11
+  name: 'Връхни дрехи'
+  key: 'women_coats'
+  url_path: 'vrahni-drehi'
+  parent_id: 4
+
+c12:
+  id: 12
+  name: 'Бельо и бански'
+  key: 'women_underwear'
+  url_path: 'belio-banski'
+  parent_id: 4
+
+## Women shoes
+c13:
+  id: 13
+  name: 'Обувки'
+  key: 'women_standart_shoes'
+  url_path: 'standartni-obuvki'
+  parent_id: 5
+
+c14:
+  id: 14
+  name: 'Боти и ботуши'
+  key: 'women_boots'
+  url_path: 'boti-botushi'
+  parent_id: 5
+
+c15:
+  id: 15
+  name: 'Пантофи'
+  key: 'women_slippers'
+  url_path: 'pantofi'
+  parent_id: 5 
+
+c16:
+  id: 17
+  name: 'Маратонки и кецове'
+  key: 'women_sneakers'
+  url_path: 'maratonki-kecove'
+  parent_id: 5 
+
+c18:
+  id: 18
+  name: 'Сандали и чехли'
+  key: 'women_sandals'
+  url_path: 'sandali-chehli'
+  parent_id: 5 
+
+# Men
+c19:
+  id: 19
+  name: 'Дрехи'
+  key: 'men_clothing'
+  url_path: 'drehi'
+  parent_id: 2
+  
+c20:
+  id: 20
+  name: 'Обувки'
+  key: 'men_shoes'
+  url_path: 'obuvki'
+  parent_id: 2
+
+## Men clothing
+c21:
+  id: 21
+  name: 'Панталони'
+  key: 'men_pants'
+  url_path: 'pantaloni'
+  parent_id: 19
+  
+c22:
+  id: 22
+  name: 'Блузи'
+  key: 'men_tops'
+  url_path: 'bluzi'
+  parent_id: 19
+
+c23:
+  id: 23
+  name: 'Ризи'
+  key: 'men_shirts'
+  url_path: 'rizi'
+  parent_id: 19
+
+c24:
+  id: 24
+  name: 'Костюми'
+  key: 'men_suits'
+  url_path: 'kostjumi'
+  parent_id: 19
+
+c25:
+  id: 25
+  name: 'Връхни дрехи'
+  key: 'men_coats'
+  url_path: 'vrahni-drehi'
+  parent_id: 19
+
+c26:
+  id: 26
+  name: 'Бельо и бански'
+  key: 'men_underwear'
+  url_path: 'belio-banski'
+  parent_id: 19
+
+
+## Men shoes
+c27:
+  id: 27
+  name: 'Обувки'
+  key: 'men_standart_shoes'
+  url_path: 'standartni-obuvki'
+  parent_id: 20
+
+c28:
+  id: 28
+  name: 'Боти и ботуши'
+  key: 'men_boots'
+  url_path: 'boti-botushi'
+  parent_id: 20
+
+c29:
+  id: 29
+  name: 'Маратонки и кецове'
+  key: 'men_sneakers'
+  url_path: 'maratonki-kecove'
+  parent_id: 20
+
+c30:
+  id: 30
+  name: 'Сандали и чехли'
+  key: 'men_sandals'
+  url_path: 'sandali-chehli'
+  parent_id: 20 
+
+
+# Accessories
+c31:
+  id: 31
+  name: 'Аксесоари'
+  key: 'women_accessories'
+  url_path: 'aksesoari'
+  parent_id: 3
+
+c32:
+  id: 32
+  name: 'Аксесоари'
+  key: 'men_accessories'
+  url_path: 'aksesoari'
+  parent_id: 2 
+
+## Women accessories
+c33:
+  id: 33
+  name: 'Шапки и шалове'
+  key: 'women_scarfs'
+  url_path: 'shapki-shalove'
+  parent_id: 31
+
+c34:
+  id: 34
+  name: 'Бижута и часовници'
+  key: 'women_jewelry'
+  url_path: 'bijuta-chasovnici'
+  parent_id: 31
+
+c35:
+  id: 35
+  name: 'Колани'
+  key: 'women_belts'
+  url_path: 'kolani'
+  parent_id: 31
+
+c39:
+  id: 39
+  name: 'Чанти'
+  key: 'women_bags'
+  url_path: 'chanti'
+  parent_id: 31
+
+
+## Men accessories
+c36:
+  id: 36
+  name: 'Шапки и шалове'
+  key: 'men_scarfs'
+  url_path: 'shapki-shalove'
+  parent_id: 32
+
+c37:
+  id: 37
+  name: 'Часовници'
+  key: 'men_watches'
+  url_path: 'chasovnici'
+  parent_id: 32
+
+c38:
+  id: 38
+  name: 'Колани'
+  key: 'men_belts'
+  url_path: 'kolani'
+  parent_id: 32
+
+c40:
+  id: 40
+  name: 'Чанти'
+  key: 'men_bags'
+  url_path: 'chanti'
+  parent_id: 32

@@ -1,0 +1,13 @@
+<% title "Колекции на #{@merchant.name}", true %>
+<% description "Вижте различните колекции, които #{@merchant.name} представя за Вас.", true %>
+<% allow_search_engine_index %>
+
+<%= render :layout => 'layout', :locals => { merchant: @merchant} do %>
+ <div class="row product-collections-list"> 
+    <% @product_collections.each do |c| %>
+      <div class="col-ms-6 col-sm-6">
+        <%= render partial: '/product_collections/product_collection', locals: { product_collection: c } %>
+      </div>
+    <% end %>
+  </div>
+<% end %>

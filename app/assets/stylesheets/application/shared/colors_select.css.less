@@ -1,0 +1,68 @@
+@import "/template/less/modules/variables-custom.css.less";
+
+.colors-multiselect {
+  display: inline-block;
+
+  .color-select-link {
+      float:  left;
+
+    .color-select-option {
+      margin: 1px;
+      width:  28px;
+      height: 28px;
+      border: 1px solid #ccc;
+      color:  white;
+      i {
+        margin-top: 10px;
+        margin-left: 10px;
+        display: none;
+      }
+      &:hover, &.selected{
+        border: 2px solid #ccc;
+      }
+
+      &.selected, &:hover {
+        .remove-icon {
+          display: none;
+        }
+        .check-icon {
+          display: inline-block;
+        }
+      }
+
+      &.selected:hover{
+        .remove-icon {
+          display: inline-block;
+        }
+        .check-icon {
+          display: none;
+        }
+      }
+
+      &[style*="background-color: #FFFFFF"] { 
+        color: @gray-light;
+      }
+    }
+  }
+}
+
+.multiselect-combo-colors-option-box, .combo-colors-option-box {
+  display: inline-block;
+  margin-top: 3px;
+  margin-right: 4px;
+  border: 1px solid #ccc;
+}
+
+.multiselect-combo-colors-option-box {
+  width:  14px;
+  height: 14px;
+  -webkit-background-size: 14px 14px;
+  -moz-background-size: 14px 14px;
+  -o-background-size: 14px 14px; 
+  background-size: 14px 14px;
+}
+
+.combo-colors-option-box {
+  width: 17px;
+  height: 17px;
+}

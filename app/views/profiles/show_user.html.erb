@@ -1,0 +1,138 @@
+<% if @user.regular_user? %>
+  <% title @user.username, true %>
+  <% description "#{@user.username} е във FashionLime. Разгледайте как потребителят и още много хора изразяват вижданията си за модата в най-голямата платформа за мода в България.", true %>
+  <% allow_search_engine_index %>
+
+  <% if @user.avatar.present? %>
+    <% og_images [{ 
+        :url    => image_url(@user.avatar.url(:medium)), 
+        :type   => @user.avatar_content_type,
+        :width  => image_width(@user.avatar,  :medium),
+        :height => image_height(@user.avatar, :medium)
+    }]%>
+  <% end %>
+
+<% end %>
+
+<div id="userProfile" class="col-sm-12">
+  <div class="row">
+    <div class="col-sm-6">
+      <%= user_image @user, :original, :class => "img-responsive profile-img original" %>
+    </div>
+
+    <div class="col-sm-6">
+       <div class="row">
+          <div class="col-xs-10">
+           <div id="basic-info-header">
+              <h1>
+                <%= @user.username %>
+              </h1>
+              <p>
+                <%= render partial: '/shared/owner_rating', locals: { owner: @user, add_parentheses: false, add_rating_word: true } %>
+              </p>
+              <% if user_signed_in? && current_user.id == @user.id %>
+                  <p>
+                    <%= link_to('Обнови информацията за профила си', edit_user_registration_path) %>
+                  </p>
+              <% end %>
+              <p>
+                <i class="fa fa-user"></i> Регистриран преди <%= time_ago_in_words(@user.created_at) %>
+              </p>
+            </div>
+          </div>
+          <div id="profile-info-navigation" class="col-xs-2">
+             <a href="#outfits" class="scroll-to" title="Отиди на визии">
+              <div class="box-simple box-simple-sm box-go-to-outfits">
+                <div class="icon icon-sm">
+                    <%= outfit_icon %> 
+                </div>
+              </div>
+            </a>
+
+            <a href="#products" class="scroll-to" title="Отиди на любими продукти">
+              <div class="box-simple box-simple-sm">
+                <div class="icon icon-sm">
+                    <%= product_icon %> 
+                </div>
+              </div>
+            </a>
+          </div> 
+        </div>
+    </div>
+  </div>
+
+  <div id="outfits">
+    <div class="heading text-center">
+       <h2>Визии</h2>
+    </div>
+
+    <div>
+      <% if @outfits.size > 0 %>
+      <div class="row outfits-list">
+      </div>
+      <div class="row">
+        <div class="col-sm-12 text-center">
+          <%= link_to user_profile_outfits_path(:url_path => @user.url_path), :class => "btn btn-template-main" do %>
+            <i class="fa fa-search"></i> Виж всички визии
+          <% end %>
+        </div>
+      </div>
+      <% else %>
+        <p class="lead text-center">
+          Няма визии за показване.
+        </p>
+      <% end %>
+    </div>
+  </div>  
+
+  <div id="products">
+    <div class="heading text-center">
+       <h2>Любими продукти</h2>
+    </div>
+
+    <div>
+      <% if @products.size > 0 %>
+        <div class="row products-list ">
+        </div>
+        <div class="row">
+          <div class="col-sm-12 text-center">
+            <%= link_to user_profile_favorite_products_path(:url_path => @user.url_path), :class => "btn btn-template-main" do %>
+              <i class="fa fa-search"></i> Виж всички продукти
+            <% end %>
+          </div>
+        </div>
+      <% else %>
+        <p class="lead text-center">
+          Няма любими продукти за показване.
+        </p>
+      <% end %>
+    </div>
+  </div>
+  
+</div>
+
+<script type="text/javascript">
+  FashionLime.Common.utils.onPageLoad(function() {
+    FashionLime.Common.list.setup(
+      ".products-list",
+      <%= raw items_array @products %>,
+      "FashionLime.Profile.userProduct",
+      function(itemHtml) {
+        return "<div class='col-xs-6 col-ms-4 col-sm-4 col-md-3'>" + itemHtml + "</div>"
+      }
+    );
+
+    FashionLime.Common.list.setup(
+      ".outfits-list",
+      <%= raw items_array @outfits %>,
+      "FashionLime.Profile.outfit",
+      function(itemHtml) {
+        return "<div class='col-xs-6 col-ms-4 col-sm-4 col-md-3'>" + itemHtml + "</div>";
+      }
+    );
+  });
+</script>
+
+
+
+

@@ -1,0 +1,22 @@
+@import "/template/less/modules/variables-custom.css.less";
+
+.input-group {
+   &.short-group {
+    width: 100px;
+   }
+   &.medium-group {
+    width: 120px;
+   }
+}
+
+input.disabled-hidden {
+  border: none;
+  background-color: transparent;
+  color: @text-color;
+  
+  // Bacause the Safari pale looking of this kind of inputs
+  // http://stackoverflow.com/questions/262158/disabled-input-text-color
+  -webkit-text-fill-color: @text-color; /* Override iOS / Android font color change */
+  -webkit-opacity: 1; /* Override iOS opacity change affecting text & background color */
+  opacity: 1;
+}

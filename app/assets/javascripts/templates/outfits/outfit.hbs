@@ -1,0 +1,61 @@
+<div class="outfit">
+    <div class="image">
+      <a href="{{ outfit.link }}">
+        <img class="img-responsive img-center outfit_image" alt="{{ outfit.image_alt }}" src="{{ locals.image_url }}">
+      </a>
+    </div>
+    <div class="text">
+      {{#if locals.show_name }}
+          <p class="info">
+           {{#if locals.show_btn_edit}}
+              <a class="edit-icon-link" href="{{ outfit.edit_link }}">
+                <i class="fa fa-edit" aria-hidden="true"></i>
+              </a>
+            {{/if}}
+
+            <a href="{{ outfit.link }}" class="name-link">
+              {{ outfit.name }}
+            </a>
+
+            {{#if locals.show_btn_delete }}
+                <a type="button" onclick="FashionLime.Outfit.utils.delete(this, {{ outfit.id }});">
+                  <i class="fa fa-trash-o" aria-hidden="true"></i>
+                </a>
+            {{/if}}
+          </p>
+      {{/if}}
+
+      {{#if locals.show_creator}}
+        <p class="owner">
+          {{#if locals.show_name}}
+              <a href="{{ outfit.profile_link }}" title="" class="light-tooltip" data-toggle="tooltip" data-placement="top" data-original-title="Разгледай профил">
+                {{ outfit.profile_name }}
+              </a>
+          {{else}}
+              <a href="{{ outfit.link }}" class="name-link">
+                 {{ outfit.profile_name }}
+              </a>
+          {{/if}}
+        </p>
+      {{/if}}
+
+      <p class="rating">
+        {{> shared/_rating locals.rating_params}}
+      </p>
+
+      {{#if outfit.not_available}}
+        <div class="ribbon availability outfit-not-available">
+            <div class="theribbon">Изчерпана</div>
+            <div class="ribbon-background"></div>
+        </div>
+      {{else}}
+        {{#if outfit.partly_available}}
+          <div class="ribbon availability outfit-partly-available">
+            <div class="theribbon">Частично изчерпана</div>
+            <div class="ribbon-background"></div>
+          </div>
+        {{/if}}
+      {{/if}}
+
+    </div>
+</div>

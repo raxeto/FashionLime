@@ -1,0 +1,23 @@
+@import "/template/less/modules/variables-custom.css.less";
+
+.modal-backdrop {
+  z-index: @zindex-modal-background; 
+}
+
+.modal {
+  z-index: @zindex-modal;
+}
+
+#sizeChartModal, #login-modal, #outfit-attrubutes-modal {
+   .modal-dialog {
+    @media (min-width: @screen-sm-min) { 
+      margin-top: 150px;
+    }
+  }
+}
+
+#login-modal {
+  #login-modal-warn {
+    display: none;
+  }
+}

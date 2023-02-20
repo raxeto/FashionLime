@@ -1,0 +1,95 @@
+Sinqta roklq:
+Snimka: 415 x 553
+og:image: 415 × 553 ratio 0.75
+FB: 158 x 237; ratio 0.66
+
+Obuvki:
+Snimka: 414 x 553 - Това им е и снимката, която показват в категориите на продуктите.
+og:image: 415 × 553
+FB: 158 x 237
+
+Polyvore:
+Snimka: 600x600
+FB: 487 x 255 ; ratio: 1.91 - spodelq se golqmo i go crop-va
+
+H&M:
+Snimka: 384 × 576 ratio 0.66, 444x666 използват за категориите
+og:image: 384 × 576  
+FB: 158 x 237
+
+Fashion Days:
+Snimka 780 x 1132 ratio 0.69, 310 x 450 използват за категориите 
+og:image 390 × 566
+FB: 158 x 237
+
+Business Page Preview:
+Големи:
+Farfetch:
+og:image зададени 480 x 640
+Koketna
+og:image зададени 421 x 553 ratio 0.76
+
+Малки:
+Asos
+og:imag зададени 290 x 370
+Zapos
+og:image - не са зададени, но са толкова 240 × 320
+
+
+Nashite sa s ratio 0.75
+248x330
+
+Moje bi trqbva da se uvelichat product pictures da sa po-golemi srednite razmeri
+
+Като имаме повече от една снимка на страница при постване излизат стрелкички отстрани и потребителя си избира коя снимка
+да постне.
+Пример: https://www.fashiondays.bg/p/%D0%95%D0%BB%D0%B0%D1%81%D1%82%D0%B8%D1%87%D0%BD%D0%B0-%D1%80%D0%BE%D0%BA%D0%BB%D1%8F-%D1%81-%D0%B4%D1%80%D0%B0%D0%BF%D0%B8%D1%80%D0%B0%D0%BD-%D0%B4%D0%B8%D0%B7%D0%B0%D0%B9%D0%BD-%D0%96%D0%B5%D0%BD%D0%B8-new-look-3227912-1/?p=10&lt=gpl
+
+За да избегнем първия потребител, който шерва страницата да не вижда снимката, трябва да и зададем width & height
+Use og:image:width and og:image:height Open Graph tags
+Using these tags will specify the image to the crawler so that it can render it immediately without having to asynchronous
+
+Размери на снимките във Фейсбук. 
+Обяснени са тук и аз ги проверих: https://blog.bufferapp.com/ideal-image-sizes-social-media-posts
+
+1. Големи снимки 470 x 246
+Излизат на цял екран
+
+2. Малки снимки - има два варианта
+  - 158 x 158 
+  - 158 x 237 ако са много високи
+
+В документацията се казва, че по размера на снимката се преценява дали да излиза голяма или малка при шерването.
+Голяма: 
+Images smaller than 600 x 315 pixels but larger than 200 x 200 pixels will be rendered with a small, square image.
+Има обаче разлика в това дали линка се шерва от човек, или от страница. Страниците винаги излизат с голямата версия.
+Page posts always use a large, landscape image for link shares. This is the same across desktop and mobile News Feed. 
+Try to keep your images as close to 1.91:1 aspect ratio as possible to display the full image in News Feed without any cropping.
+
+За кеширане на съдържанието във Facebook.
+За снимките в тази статия пише, че timestamp отзад ще помогне за кеширането.
+http://www.envano.com/2015/04/clear-facebooks-open-graph-cache-on-demand-with-this-snippet-of-javascript/
+http://stackoverflow.com/questions/5776567/facebook-open-graph-not-clearing-cache
+
+Facebook пише, че страницата, която ще се споделя ако не направим ние нещо ще се рефрешне от Facebook след първото
+споделяне чак след 30дни.
+https://developers.facebook.com/docs/sharing/opengraph/using-objects#update
+https://developers.facebook.com/docs/plugins/faqs/#scraperinfo  ето така с post може да се рефрешва кеша https://developers.facebook.com/docs/sharing/opengraph/using-objects  
+Когато кеша не се рефрешва - https://woorkup.com/facebook-open-graph-debugger-cache-clearing/
+
+За og:image пише, че ако искаме да се смени картинката за най-сигурно трябва да сменим името на файла, защото
+те може да ги кешират по името. Но като тествах като се scrape-не отново се рефрешва и картинката, ако е променена,
+дори и името на файла да не е променено. Затова засега няма да се прави нищо по въпроса, ако има проблем по-нататък да се помисли.
+https://developers.facebook.com/docs/sharing/webmasters/optimizing  - Optimizing Images
+
+Какво се прави с изтрити снимки, които вече са били споделени - https://developers.facebook.com/docs/sharing/webmasters/optimizing 
+Пише, да не се изтриват старите снимки, т.като те вече може да са били споделени. Обаче
+тук пише, че вече споделено съдържание няма как да се промени - https://developers.facebook.com/docs/sharing/webmasters/faq  
+Обаче споделянето на стената оформя снимка във фейсбук, а после в news feed-a на първия човек, който види тази снимка
+се прави обръщение към сървъра отново за снимката. И така явно се кешира снимката в 2 формата. Затова пише да не се изтриват,
+защото ако е споделена, но никой не я е видял на news feed-a си то тогава няма да се намери снимката.
+Ако снимката е със същото име може и да излиза променена някой като я види в news feed-a от тази, която е на
+стената на човека, който я е публикувал. Като се rescrape-ва автоматично при промяна е ок, иначе на news feed-a
+излиза бяла снимка, ако е била променена и не е scrape-ната отново.
+
+

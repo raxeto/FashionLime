@@ -1,0 +1,94 @@
+@import "/template/less/modules/variables-custom.css.less";
+@import "/template/less/modules/mixins-custom.css.less";
+
+.outfit-product {
+
+    .product_image {
+       margin: 0 auto;
+    }
+
+    .visible-actions() {
+      opacity: 1;
+      bottom: 0;
+    }
+
+    .hidden-actions() {
+      opacity: 0;
+      bottom: -57px;  
+    }
+
+    .product-meta {
+      overflow: hidden;
+      position: relative;
+      display: block;
+      height: 56px;
+      margin-top: -50px;
+
+      .product-action {
+
+        .hidden-actions();
+
+        width: 100%;
+        height: 56px;
+        overflow: hidden;
+        position: relative;
+        background: #FFF;
+        border-bottom: 1px solid #EDEDED;
+        z-index: 12 !important;
+        display: block;
+        position: absolute;
+        width: 100%;
+        font-size: 0px;
+        .ondrTransition(0.5s, ease-in-out);
+        .ondrTransitionDelay(0.2s);
+
+         a {
+          display: inline-block;
+          text-align: center;
+          height: 56px;
+          color: #CCC;
+          font-size: 13px;
+          div {
+            display: table;
+            height: 100%;
+            width: 100%;
+            span {
+              display: table-cell;
+              vertical-align: middle;
+            }
+          }
+        }
+        a:hover {
+          background: #F4F4F4;
+        }
+
+        a.add {
+          width: 70%;
+          color: #000;
+          &:hover {
+          color: @brand-primary;
+         }
+        }
+
+        a.link {
+          width: 30%;
+          color: #000;
+          &:hover {
+          color: @brand-primary;
+         }
+        }
+      }
+    }
+
+    &:hover {
+      .product-meta {
+        .product-action {
+          .visible-actions();
+          
+          &.hidden-actions-class {
+            .hidden-actions();
+          }
+        }
+      }
+    }
+  }

@@ -1,0 +1,38 @@
+<h2>Campaigns</h2>
+
+<%= link_to('Create New', new_admin_campaign_path) %>
+
+<table class="table centered">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Title</th>
+      <th>Link</th>
+      <th>Description</th>
+      <th>Products</th>
+      <th>Outfits</th>
+      <th>Created</th>
+      <th>Updated</th>
+      <th>Delete</th>
+      <th>Add outfits</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @campaigns.each do |c| %>
+      <tr>
+        <td> <%= c.id %> </td>
+        <td> <%= c.title %> </td>
+        <td><%= link_to "link", campaign_path(c) %></td>
+        <td> <%= truncate_string(c.description, 50) %> </td>
+        <td> <%= c.object_ids('Product').join(', ') %> </td>
+        <td> <%= c.object_ids('Outfit').join(', ') %> </td>
+        <td class="date"> <%= date_to_s(c.created_at)%> </td>
+        <td class="date"> <%= date_to_s(c.updated_at)%> </td>
+
+        <td class="link"><%= link_to('delete', admin_campaign_path(c.id), method: :delete, data: { confirm: "Are you sure?" }) %></td>
+        <td class="link"><%= link_to('add outfits', new_outfits_admin_campaign_path(c.id)) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

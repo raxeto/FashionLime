@@ -1,0 +1,61 @@
+<% help_steps "index" %>
+ 
+<div id="collectionsList" class="col-sm-12 clearfix">
+      <div class="box">
+      <%= link_to new_merchant_product_collection_path, :class => "btn btn-template-main btn-new-record help-tour-step-1" do %>
+         Създай нова колекция
+      <% end %>
+      
+      <div class="table-responsive">
+        <table class="table help-tour-step-4">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Име</th>
+              <th>Описание</th>
+              <th>Сезон</th>
+              <th>Година</th>
+              <th>Брой продукти</th>
+              <th>Създадено на</th>
+              <th>Последна редакция</th>
+              <th class="help-tour-step-2"></th>
+              <th class="help-tour-step-3"></th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <% @collections.each do |c| %>
+              <tr>
+                <td># <%= c.id %> </td>
+                <td> <%= c.name %> </td>
+                <td> <%= truncate(c.description, { :length => 200, :separator => ' ' }) %> </td>
+                <td> <%= c.season.name %> </td>
+                <td> <%= c.year %> </td>
+                <td> <%= c.products.size %> </td>
+                <td> <%= date_time_to_s(c.created_at) %> </td>
+                <td> <%= date_time_to_s(c.updated_at) %> </td>
+                <td>
+                  <%= link_to edit_merchant_product_collection_path(c.id), :class => "btn btn-template-main btn-sm", :title => "Редактиране" do %>
+                    <i class="fa fa-edit"></i>
+                  <% end %>
+                </td>
+                <td>
+                  <%= hidden_field_tag "id#{c.id}", c.id, :class=> "collection-id" %>
+                  <button type="button" class="btn btn-template-main btn-sm btn-delete-collection" title="Изтриване">
+                    <i class="fa fa-trash-o"></i>
+                  </button>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+  </div>
+</div>
+
+
+<script language="JavaScript">
+  FashionLime.Common.utils.onPageLoad(function () {
+   FashionLime.Merchant.ProductCollection.index.setup();
+  });
+</script>

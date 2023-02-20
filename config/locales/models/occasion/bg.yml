@@ -1,0 +1,6 @@
+bg:
+  activerecord:
+    models:
+      occasion:
+        one: Тип облекло
+        other: Типове облекло

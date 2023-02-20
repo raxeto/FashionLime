@@ -1,0 +1,19 @@
+<div id="<%= id %>" class="colors-multiselect">
+  <% Color.order(:order_index).each do |c| %>
+    <a class="color-select-link">
+      <div class="color-select-option" data-color-id="<%= c.id %>" style="<%= color_background_css(c) %>" title="<%= c.name %>">
+        <i class="fa fa-check check-icon"></i>
+        <i class="fa fa-times remove-icon"></i>
+      </div>
+    </a>
+  <% end %>
+</div>
+
+<script type="text/javascript">
+  FashionLime.Common.utils.onPageLoad(function() {
+    FashionLime.Shared.colorsMultiselect.setup('#<%= id %>');
+    FashionLime.Shared.colorsMultiselect.preselectIds(<%= preselected_color_ids.to_json.html_safe %>);
+  });
+
+
+</script>

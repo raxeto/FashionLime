@@ -1,0 +1,45 @@
+<h2>Search Pages</h2>
+
+<%= link_to('Create New', new_admin_search_page_path) %>
+
+<table class="centered">
+  <thead>
+    <tr>
+      <th class="id">ID</th>
+      <th class="text">Title</th>
+      <th class="text">Description</th>
+      <th class="text">Meta Title</th>
+      <th class="text">Meta Description</th>
+      <th class="text">URL Path</th>
+      <th class="file">OG Image</th>
+      <th class="text">Category</th>
+      <th class="date">Created</th>
+      <th class="date">Updated</th>
+      <th class="actions">Actions</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @search_pages.each do |p| %>
+      <tr>
+        <td class="id"> <%= p.id %> </td>
+        <td class="text"> <%= p.title %> </td>
+        <td class="text"> <%= truncate_string(p.description, 70) %> </td>
+        <td class="text"> <%= p.meta_title %> </td>
+        <td class="text"> <%= truncate_string(p.meta_description, 70) %> </td>
+        <td class="text"> <%= p.url_path %> </td>
+        <td class="file"> 
+          <% if p.og_image.present? %>
+            YES
+          <% else %>
+            NO
+          <%end%>
+        </td>
+        <td class="text"> <%= p.category %> </td>
+        <td class="date"> <%= date_to_s(p.created_at) %> </td>
+        <td class="date"> <%= date_to_s(p.updated_at) %> </td>
+        <td class="link"><%= link_to('edit', edit_admin_search_page_path(p.id)) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

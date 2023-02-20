@@ -1,0 +1,68 @@
+@import "/template/less/modules/variables-custom.css.less";
+
+#filtered-items {
+
+  #items-footer {
+    text-align: center;
+  }
+
+  #item-list {
+    margin-top: 10px;
+    margin-left: 0px;
+  }
+
+  .item-filters {
+    input.price-filter {
+      display: inline-block;
+      width: 50px;
+      &.compact {
+        width: 45px;
+      }
+    }
+  }
+
+  .item-sort-search {
+    background: @gray-lightest;
+    padding: 20px;
+    margin: 0px 0px 0px 0px;
+    &.compact {
+      padding: 10px !important;
+    }
+
+    .item-sort {
+      width: 265px;
+      label {
+        margin-left: 3px;
+      }
+      .form-control {
+        display: inline-block;
+        width: auto;
+        vertical-align: middle;
+      }
+    }
+
+    @media (min-width: @grid-float-breakpoint) { 
+      .item-sort {
+        float: left;
+      }
+      .item-search {
+        left: 290px;
+      }
+    }
+
+    @media (max-width: @grid-float-breakpoint-max) { 
+      .item-sort {
+        float: none;
+      }
+      .item-search {
+        left: 0px;
+        margin-top: 10px;
+      }
+    }
+
+  }
+}
+
+
+
+

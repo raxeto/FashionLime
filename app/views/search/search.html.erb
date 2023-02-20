@@ -1,0 +1,22 @@
+<div class="col-sm-12">
+
+  <div class="search-form">
+    <%= form_tag generic_search_path, method: :get do %>
+      <span class="input-group item-search">
+        <span class="input-group-addon" id="search-addon"><i class="fa fa-search"></i></span>
+        <%= text_field_tag(:q, params[:q], { :class => "form-control", :placeholder => 'Търси', "aria-describedby" => "search-addon"}) %>
+      </span>
+    <% end %>
+  </div>
+
+  <div class="search-results">
+    <% if @no_results %>
+      <p class="text-muted lead">Няма намерени резултати...</p>
+    <% else %>
+      <%= render partial: "search_section", locals: {items: @outfits, has_more: @has_more_outfits, section_name: 'Визии', list_class: "outfits-list", js_partial: "FashionLime.Outfit.listItem", compact: false, path: outfits_path(search_str: params[:q])} %>
+      <%= render partial: "search_section", locals: {items: @products, has_more: @has_more_products, section_name: 'Продукти', list_class: "products-list", js_partial: "FashionLime.Product.listItem", compact: false, path: products_path(search_str: params[:q])} %>
+      <%= render partial: "search_section", locals: {items: @merchants, has_more: @has_more_merchants, section_name: 'Тръговци', list_class: "merchants-list", html_partial: "/search/merchant", compact: false } %>
+    <% end %>
+  </div>
+
+</div>

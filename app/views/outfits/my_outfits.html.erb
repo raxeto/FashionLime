@@ -1,0 +1,29 @@
+<div id="outfits-my-outfits" class="col-md-9">
+  <div class="outfits-header">
+    <%= link_to new_outfit_path, :class => "btn btn-template-main" do %>
+        <i class="fa fa-plus"></i> Създай нова визия
+    <% end %>
+  </div>
+
+  <div id="items-section">
+    <div id="item-list" class="row outfits-list">
+    </div>
+  </div>
+</div>
+<div class="col-md-3">
+  <%= render partial: '/shared/user_profile_menu' %>
+</div>
+
+<script type="text/javascript">
+  FashionLime.Common.utils.onPageLoad(function() {
+     FashionLime.Common.list.setup(
+      ".outfits-list",
+      <%= raw items_array @outfits %>,
+      "FashionLime.Outfit.myOutfit",
+      function(itemHtml) {
+        return "<div class='col-xs-6 col-ms-4 col-sm-4'>" + itemHtml + "</div>";
+      }
+    );
+  });
+</script>
+

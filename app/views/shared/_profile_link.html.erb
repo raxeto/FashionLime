@@ -1,0 +1,27 @@
+<% user = nil if local_assigns[:user].nil? %>
+<% merchant = nil if local_assigns[:merchant].nil? %>
+<% html_opitons = {} if local_assigns[:html_opitons].nil? %>
+
+<% if user.present? %>
+
+  <% if user.merchant? %>
+
+    <%= link_to merchant_profile_path(user.merchant.url_path), html_opitons do %>
+      <%= yield %>
+    <% end %>
+
+  <% else %>
+
+    <%= link_to user_profile_path(:url_path => user.url_path), html_opitons do %>
+      <%= yield %>
+    <% end %>
+
+  <% end %>
+
+<% elsif merchant.present? %>
+
+    <%= link_to merchant_profile_path(merchant.url_path), html_opitons do %>
+      <%= yield %>
+    <% end %>
+
+<% end %>

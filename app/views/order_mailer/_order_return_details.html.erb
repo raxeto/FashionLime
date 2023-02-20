@@ -1,0 +1,49 @@
+<% details = order_return.merchant_order_return_details.where(:return_type => MerchantOrderReturnDetail.return_types[return_type]) %>
+<% if details.length > 0 %>
+<% border = "border: 1px solid #eee;" %>
+
+<p>
+  <table style="border-collapse: collapse;">
+    <thead>
+      <tr style="background-color: #eee; border: 1px solid white;">
+        <th colspan="<%= case return_type when :return then 5 else 4 end %>">
+          <%= case return_type 
+            when :return then  "Артикули за връщане" 
+            when :exchange then "Артикули за замяна" 
+          end %>
+        </th>
+      </tr>
+      <tr style="background-color: #eee;">
+        <th style="width: 60%">Артикул</th>
+        <th style="width: 10%">Количество поръчка</th>
+        <th style="width: 10%">Ед. цена с отстъпка</th>
+        <% case return_type %>
+        <% when :return %>
+        <th style="width: 10%">Количество за връщане</th>
+        <th style="width: 10%">Сума за връщане</th>
+        <% when :exchange %>
+        <th style="width: 20%">Количество за замяна</th>
+        <% end %>
+      </tr>
+    </thead>
+
+    <tbody>
+    <% details.each do |d| %>
+    <tr>
+      <td style="width: 60%; <%= border %>"><%= d.merchant_order_detail.article.full_name %></td>
+      <td style="width: 10%; text-align: center; <%= border %> "><%= d.merchant_order_detail.qty.to_i %></td>
+      <td style="width: 10%; text-align: right; <%= border %>"><%= d.merchant_order_detail.price_with_discount_formatted %></td>
+      <% case return_type %>
+      <% when :return %>
+      <td style="width: 10%; text-align: center; <%= border %> "><%= d.return_qty.to_i %></td>
+      <td style="width: 10%; text-align: right; <%= border %> "><%= d.return_total_formatted %></td>
+      <% when :exchange %>
+      <td style="width: 20%; text-align: center; <%= border %> "><%= d.return_qty.to_i %></td>
+      <% end %>
+    </tr>
+    <% end %>
+    </tbody>
+  </table>
+</p>
+
+<% end %>

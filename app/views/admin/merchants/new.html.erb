@@ -1,0 +1,12 @@
+<%= form_for(@user, url: { action: :create}, html: { multipart: true } ) do |f| %>
+
+    <%= ("Грешки потребител: " + @user.errors.full_messages.join(', ') + "<br/>").html_safe if @user.errors.any? %>
+    <%= ("Грешки търговец: " + @merchant.errors.full_messages.join(', ') + "<br/>").html_safe if @merchant.errors.any? %>
+
+     Merchant Name <%= text_field_tag :merchant_name, @merchant.name %> <br/>
+     Username <%= f.text_field :username %> <br/>
+     Email <%= f.email_field :email %> <br/>
+     Password <%= f.password_field :password, :autocomplete => 'off' %> <br/>
+     <%= f.submit("Create") %>
+
+<% end %>

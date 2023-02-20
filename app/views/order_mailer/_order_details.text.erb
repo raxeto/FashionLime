@@ -1,0 +1,7 @@
+<% merchant_order.merchant_order_details.each do |d| %>
+- Продукт: <%= d.article.full_name %>, SKU: <%= d.article.sku %>, Цена с отстъпка: <%= d.price_with_discount_formatted %>, Количество: <%= d.qty.to_i %>, Общо: <%= d.total_with_discount_formatted %>
+<% end %>
+
+Сума: <%= merchant_order.total_with_discount_formatted %>
+Доставка: <%= merchant_order.shipment_price_formatted %>
+Общо: <%= merchant_order.total_with_shipment_formatted %>

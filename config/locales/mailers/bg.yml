@@ -1,0 +1,23 @@
+bg:
+  mailers:
+    order:
+      user_new:
+        subject: 'Нова поръчка във Fashion Lime'
+      merchant_new:
+        subject: 'Нова поръчка във Fashion Lime'
+      user_confirmed:
+        subject: 'Потвърждение на поръчката Ви във Fashion Lime'
+      user_canceled:
+        subject: 'Поръчката Ви бе отказана'
+      merchant_return:
+        subject: 'Нова заявка за %{return_type} във Fashion Lime'
+      user_return:
+        subject: 'Направихте заявка за %{return_type} във Fashion Lime'
+    contact:
+      new_inquiry:
+        subject: 'Ново запитване във Fashion Lime'
+      reply_inquiry:
+        subject: 'Отговор на запитване във Fashion Lime'
+    product:
+      merchant_min_available_qty:
+        subject: 'Наличното количество във Fashion Lime за %{article_name} стана по-малко от зададаното'

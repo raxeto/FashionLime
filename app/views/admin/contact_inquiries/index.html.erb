@@ -1,0 +1,58 @@
+<h2>Contact Inquiries</h2>
+
+<div class="table-responsive">
+  <table id="inquiriesTable" class="table">
+  </table>
+</div>
+
+<script language="JavaScript">
+  function editFormatter(value, row, index) {
+    return ['<a class="btn btn-template-main btn-sm" title="Edit" href="/admin/contact_inquiries/' + row.id + '/edit">',
+              'edit',
+            '</a>'].join('');
+  }
+
+  FashionLime.Common.utils.onPageLoad(function() {
+    FashionLime.Shared.bootstrapTable.create('inquiriesTable',
+        [{
+            id: 'id',
+            name: 'ID',
+            filterType: 'range'
+        }, {
+            id: 'username',
+            name: 'Username'
+        }, {
+            id: 'name',
+            name: 'Name'
+        }, {
+            id: 'email',
+            name: 'Email'
+        }, {
+            id: 'subject',
+            name: 'Subject'
+        }, {
+            id: 'status',
+            name: 'Status'
+        }, {
+            id: 'message',
+            name: 'Message'
+        }, {
+            id: 'reply_message',
+            name: 'Reply'
+        }, {
+            id: 'created_at',
+            name: 'Submit Date',
+            filterType: 'range_date',
+            dataType: 'date'
+        }, {
+          formatter: editFormatter
+        }], 
+        [
+          <% @inquiries.each do |i| %>
+            <%= raw i %>,
+          <% end %>
+        ]
+      );
+  });
+</script>
+

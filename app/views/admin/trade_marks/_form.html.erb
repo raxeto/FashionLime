@@ -1,0 +1,6 @@
+<%= form_for(@trade_mark, url: { action: action}, html: { multipart: true } ) do |f| %>
+     Name <%= f.text_field :name %>
+     Key <%= f.text_field :key  %>
+     Logo <%= f.file_field :logo %>
+     <%= f.submit(action.to_s.capitalize) %>
+<% end %>

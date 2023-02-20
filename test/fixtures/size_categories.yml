@@ -1,0 +1,14 @@
+clothes:
+  id: 1
+  name: 'Облекло'
+  order_index: 1 
+
+shoes:
+  id: 2
+  name: 'Обувки'
+  order_index: 2
+
+nosize:
+  id: 3
+  name: 'Без размер'
+  order_index: 3

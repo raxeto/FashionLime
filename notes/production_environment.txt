@@ -1,0 +1,12 @@
+Nginx
+
+SSL setup:
+http://nginx.org/en/docs/http/configuring_https_servers.html
+http://stackoverflow.com/questions/25116103/how-do-i-setup-ssl-on-a-rails-4-app-nginx-passenger
+
+TODO:
+1. should rails care if it's SSL or not? Should NGINX handle all of that? Is force_ssl = true needed in the config? I believe not.
+  - check Development/nginx-sample.txt
+  - setup HTTP_Strict_Transport_Security
+2. setup nxing ssl so that it has high performance
+3. ssl chain?

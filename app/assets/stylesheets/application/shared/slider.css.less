@@ -1,0 +1,38 @@
+@import "/template/less/modules/variables-custom.css.less";
+
+.slider {
+  .col-arrow-left, .col-arrow-right {
+    // Fix for very narrow screens
+    padding: 0;
+  }
+
+  .arrow-left, .arrow-right {
+    background-color: white;
+    color: @brand-primary;
+    font-size: 22px;
+    top: 38%;
+    border: none;
+    padding: 0;
+  }
+
+  .arrow-left {
+    right: 0;
+  }
+
+  .arrow-right {
+    left: 0;
+  }
+
+  .lSSlideOuter {
+    .lSPager.lSpg {
+      li {
+        a {
+          background-color: @gray-light;
+        }
+        &:hover a, &.active a {
+          background-color: @brand-primary;
+        }
+      }
+    }
+  }
+}

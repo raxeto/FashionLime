@@ -1,0 +1,132 @@
+  <ul class="nav navbar-nav navbar-left">
+  <li class="dropdown <%= active_class_if_section(:home) %>">
+      <%= link_to merchant_root_path, { "class" => "dropdown-toggle"} do %>
+        Начало
+      <% end %>
+  </li>
+
+  <li class="dropdown <%= active_class_if_section(:products) %>">
+    <a href="javascript: void(0)" class="dropdown-toggle" data-toggle="dropdown">Продукти <b class="caret"></b></a>
+    <ul class="dropdown-menu">
+        <li>
+          <%= link_to merchant_products_path do %>
+            Списък продукти
+          <% end %>
+        </li>
+        <li>
+          <%= link_to merchant_product_collections_path do %>
+            Колекции
+          <% end %>
+        </li>
+    </ul>
+  </li>
+
+  <li class="dropdown <%= active_class_if_section(:orders) %>">
+    <a href="javascript: void(0)" class="dropdown-toggle" data-toggle="dropdown">Поръчки <b class="caret"></b></a>
+    <ul class="dropdown-menu">
+        <li>
+          <%= link_to merchant_orders_path(:status => ['active', 'waiting_payment']) do %>
+            Списък поръчки
+          <% end %>
+        </li>
+        <li>
+          <%= link_to merchant_order_returns_path(:status => 'active') do %>
+            Заявки за връщане и замяна
+          <% end %>
+        </li>
+    </ul>
+  </li>
+
+</ul>
+
+ <!-- *** LEFT END *** -->
+
+<%= render partial: "shared/logo_home_link", locals: { logo_path: logo_path } %>
+
+<!-- *** RIGHT  *** -->
+
+<ul class="nav navbar-nav navbar-right">
+
+<li class="dropdown <%= active_class_if_section(:settings) %>">
+  <a href="javascript: void(0)" class="dropdown-toggle" data-toggle="dropdown">Настройки <b class="caret"></b></a>
+    <ul class="dropdown-menu">
+        <li>
+         <%= link_to merchant_shipments_path, { "class" => "dropdown-toggle"} do %>
+           Доставки
+         <% end %>
+        </li>
+        <li>
+         <%= link_to merchant_payment_types_path, { "class" => "dropdown-toggle"} do %>
+           Начини на плащане
+         <% end %>
+        </li>
+        <li>
+          <%= link_to merchant_size_charts_path, { "class" => "dropdown-toggle"} do %>
+            Таблици с размери
+          <% end %>
+        </li>
+    </ul>
+  </li>
+
+<li class="dropdown <%= active_class_if_section(:reports) %>">
+    <a href="javascript: void(0)" class="dropdown-toggle" data-toggle="dropdown">Справки <b class="caret"></b></a>
+    <ul class="dropdown-menu">
+        <li>
+          <%= link_to merchant_reports_views_path do %>
+            Разглеждания <br/> на обектите ви
+          <% end %>
+        </li>
+        <li>
+          <%= link_to merchant_reports_orders_path do %>
+            Поръчки
+          <% end %>
+        </li>
+        <li>
+          <%= link_to merchant_reports_carts_path do %>
+            Продукти в количка
+          <% end %>
+        </li>
+    </ul>
+</li>
+
+<li class="dropdown <%= active_class_if_section(:my_menu) %>">
+    <a href="javascript: void(0)" class="dropdown-toggle" data-toggle="dropdown">Профил <b class="caret"></b></a>
+    <ul class="dropdown-menu">
+        <% if current_or_guest_user.merchant_admin? %>
+          <li>
+            <%= link_to merchant_edit_merchant_path do %>
+              Търговски профил
+            <% end %>
+          </li>
+          <li>
+            <%= link_to merchant_profile_users_path do %>
+              Асоциирани потребители
+            <% end %>
+          </li>
+        <% end %>
+        <li>
+            <%= link_to merchant_edit_path do %>
+               Потребителски профил
+            <% end %>
+        </li>
+        <li>
+            <%= link_to merchant_password_edit_path do %>
+               Промяна на парола
+            <% end %>
+        </li>
+        <li>
+           <%= link_to merchant_sessions_destroy_path, :method => :delete do %>
+              Излез
+           <% end %>
+        </li>
+    </ul>
+</li>
+</ul>
+
+<script type="text/javascript">
+  $($('.dropdown-menu input, .dropdown-menu label').click(function(e) {
+      e.stopPropagation();
+  }));
+</script>
+
+

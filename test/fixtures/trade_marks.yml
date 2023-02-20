@@ -1,0 +1,14 @@
+tm1:
+  id: 1
+  name: 'Guess'
+  key: 'guess'
+
+tm2:
+  id: 2
+  name: 'Armani'
+  key: 'armani'
+
+tm3:
+  id: 3
+  name: 'D&G'
+  key: 'd&g'
